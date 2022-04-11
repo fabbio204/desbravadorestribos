@@ -1,4 +1,5 @@
 import 'package:desbravadores_tribos/app/modules/calendario/models/evento_model.dart';
+import 'package:desbravadores_tribos/app/modules/home/models/resumo_model.dart';
 import 'package:googleapis/sheets/v4.dart';
 import 'package:desbravadores_tribos/app/core/api/google_sheets_api.dart';
 import 'package:desbravadores_tribos/app/core/models/aniversariante_model.dart';
@@ -21,59 +22,19 @@ class HomeRepository {
     return aniversariantes;
   }
 
-  Future<String> quantidadeMembros() async {
+  Future<List<ResumoModel>> listarResumo() async {
     ValueRange resultados = await GoogleSheetsApi.api!.spreadsheets.values
-        .get(GoogleSheetsApi.id, 'Dashboard!C4');
+        .get(GoogleSheetsApi.id, 'Dashboard!C2:D8');
 
     if (resultados.values == null) {
-      return "";
+      return [];
     }
 
-    return resultados.values![0][0].toString();
-  }
+    List<ResumoModel> resumo = resultados.values!.map((List<Object?> item) {
+      return ResumoModel(titulo: item[0].toString(), valor: item[1].toString());
+    }).toList();
 
-  Future<String> inscricoesCampori() async {
-    ValueRange resultados = await GoogleSheetsApi.api!.spreadsheets.values
-        .get(GoogleSheetsApi.id, 'Dashboard!E4');
-
-    if (resultados.values == null) {
-      return "";
-    }
-
-    return resultados.values![0][0].toString();
-  }
-
-  Future<String> saldoCaixa() async {
-    ValueRange resultados = await GoogleSheetsApi.api!.spreadsheets.values
-        .get(GoogleSheetsApi.id, 'Dashboard!C7');
-
-    if (resultados.values == null) {
-      return "";
-    }
-
-    return resultados.values![0][0].toString();
-  }
-
-  Future<String> rankingCampori() async {
-    ValueRange resultados = await GoogleSheetsApi.api!.spreadsheets.values
-        .get(GoogleSheetsApi.id, 'Dashboard!E7');
-
-    if (resultados.values == null) {
-      return "";
-    }
-
-    return resultados.values![0][0].toString();
-  }
-
-  Future<String> rankingMto() async {
-    ValueRange resultados = await GoogleSheetsApi.api!.spreadsheets.values
-        .get(GoogleSheetsApi.id, 'Dashboard!G4');
-
-    if (resultados.values == null) {
-      return "";
-    }
-
-    return resultados.values![0][0].toString();
+    return resumo;
   }
 
   Future<List<EventoModel>> proximosEventos() async {

@@ -17,25 +17,7 @@ class HomeController extends ValueNotifier<HomeState> {
       model.aniversariantes = await repository.listarAniversariantes();
       model.eventos = await repository.proximosEventos();
 
-      model.resumo.add(ResumoModel(
-          titulo: ResumoTitulo.membros,
-          valor: await repository.quantidadeMembros()));
-
-      model.resumo.add(ResumoModel(
-          titulo: ResumoTitulo.rankingCampori,
-          valor: await repository.rankingCampori()));
-
-      model.resumo.add(ResumoModel(
-          titulo: ResumoTitulo.saldoCaixa,
-          valor: await repository.saldoCaixa()));
-
-      model.resumo.add(ResumoModel(
-          titulo: ResumoTitulo.inscricoesCampori,
-          valor: await repository.inscricoesCampori()));
-
-      model.resumo.add(ResumoModel(
-          titulo: ResumoTitulo.rankingMto,
-          valor: await repository.rankingMto()));
+      model.resumo = await repository.listarResumo();
 
       HomeLoadedState state = HomeLoadedState(model);
       value = state;

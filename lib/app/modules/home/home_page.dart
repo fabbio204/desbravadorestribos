@@ -7,6 +7,7 @@ import 'package:desbravadores_tribos/app/utils/extensions/build_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:desbravadores_tribos/app/modules/home/widgets/menu_lateral_widget.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -19,6 +20,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends ModularState<HomePage, HomeController> {
   @override
   void initState() {
+    // Remove a splash screen, pois a inicialização foi concluída
+    FlutterNativeSplash.remove();
     controller.carregar();
     super.initState();
   }

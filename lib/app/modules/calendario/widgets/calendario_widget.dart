@@ -10,20 +10,31 @@ class CalendarioWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: eventos.length,
-        itemBuilder: (context, index) {
-          EventoModel evento = eventos[index];
-          String diaFormatado = formatador.format(evento.dia);
-          return Card(
-            child: ListTile(
-              title: Text(evento.titulo),
-              subtitle: Text(diaFormatado),
-            ),
-          );
-        });
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Column(
+        children: [
+          Text(
+            'Próximos Eventos',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: eventos.length,
+              itemBuilder: (context, index) {
+                EventoModel evento = eventos[index];
+                String diaFormatado = formatador.format(evento.dia);
+                return Card(
+                  child: ListTile(
+                    title: Text(evento.titulo),
+                    subtitle: Text(diaFormatado),
+                  ),
+                );
+              }),
+        ],
+      ),
+    );
     ;
   }
 }

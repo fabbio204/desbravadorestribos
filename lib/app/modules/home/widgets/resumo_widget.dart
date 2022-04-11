@@ -9,11 +9,14 @@ class ResumoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 150,
+      width: 160,
       child: Card(
         child: ListTile(
           isThreeLine: true,
-          title: Text(titulo),
+          title: Text(
+            titulo,
+            style: const TextStyle(fontSize: 13),
+          ),
           subtitle: Text(valor),
         ),
       ),

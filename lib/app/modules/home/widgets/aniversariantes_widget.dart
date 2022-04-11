@@ -9,12 +9,23 @@ class AniversariantesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: aniversariantes.length,
-      itemBuilder: (context, index) =>
-          AniversarianteCardWidget(aniversariante: aniversariantes[index]),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Column(
+        children: [
+          Text(
+            'Aniversariantes do Mês',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: aniversariantes.length,
+            itemBuilder: (context, index) => AniversarianteCardWidget(
+                aniversariante: aniversariantes[index]),
+          ),
+        ],
+      ),
     );
   }
 }

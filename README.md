@@ -17,3 +17,11 @@ Execute o comando para instalar o slidy globalmente em seu computador
 Qual alterar os actions e observer do Mobx (classes _store.dart) use o comando para gerar os arquivos do mobx
 
 > slidy run mobx
+
+## Gerando o splash screen
+
+Pacote utilizado: [flutter_native_splash](https://pub.dev/packages/flutter_native_splash)
+
+Caso de atualize o splash screen, execute o comando para gerar novamente os arquivos
+
+> flutter pub run flutter_native_splash:create
