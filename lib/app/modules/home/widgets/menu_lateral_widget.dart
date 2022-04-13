@@ -1,4 +1,6 @@
+import 'package:desbravadores_tribos/app/modules/home/home_module.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class MenuLateralWidget extends StatefulWidget {
   const MenuLateralWidget({Key? key}) : super(key: key);
@@ -12,6 +14,32 @@ class _MenuLateralWidgetState extends State<MenuLateralWidget> {
     Navigator.pop(context);
   }
 
+  void abrirTela(Tela tela) {
+    switch (tela) {
+      case Tela.inicio:
+        Modular.to.navigate(HomeModule.rotaResumo);
+        break;
+
+      case Tela.calendario:
+        Modular.to.navigate(HomeModule.rotaCalendario);
+        break;
+
+      case Tela.membros:
+        Modular.to.navigate(HomeModule.rotaMembros);
+        break;
+
+      case Tela.financeiro:
+        Modular.to.navigate(HomeModule.rotaFinanceiro);
+        break;
+
+      default:
+        Modular.to.navigate(HomeModule.rotaResumo);
+        break;
+    }
+
+    _fecharDrawer();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -19,31 +47,25 @@ class _MenuLateralWidgetState extends State<MenuLateralWidget> {
       child: ListView(
         children: [
           ListTile(
-            leading: const Text('Aniversariantes'),
-            onTap: () {
-              _fecharDrawer();
-            },
+            leading: const Text('Início'),
+            onTap: () => abrirTela(Tela.inicio),
           ),
           ListTile(
             leading: const Text('Calendário'),
-            onTap: () {
-              _fecharDrawer();
-            },
+            onTap: () => abrirTela(Tela.calendario),
           ),
           ListTile(
             leading: const Text('Membros'),
-            onTap: () {
-              _fecharDrawer();
-            },
+            onTap: () => abrirTela(Tela.membros),
           ),
           ListTile(
             leading: const Text('Financeiro'),
-            onTap: () {
-              _fecharDrawer();
-            },
+            onTap: () => abrirTela(Tela.financeiro),
           ),
         ],
       ),
     );
   }
 }
+
+enum Tela { inicio, calendario, membros, financeiro }

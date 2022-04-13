@@ -5,7 +5,7 @@ import 'package:modular_test/modular_test.dart';
 main() {
   group('CalendarioWidget', () {
     testWidgets('has a title and message', (WidgetTester tester) async {
-      await tester.pumpWidget(buildTestableWidget(CalendarioWidget(title: 'T')));
+      await tester.pumpWidget((CalendarioWidget(eventos: [],)));
       final titleFinder = find.text('T');
       expect(titleFinder, findsOneWidget);
     });

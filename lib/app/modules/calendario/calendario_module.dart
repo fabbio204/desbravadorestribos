@@ -12,6 +12,6 @@ class CalendarioModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
-    ChildRoute('/', child: (_, args) => CalendarioPage()),
+    ChildRoute('/', child: (_, args) => const CalendarioPage()),
   ];
 }

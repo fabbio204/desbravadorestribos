@@ -13,13 +13,6 @@ class CalendarioPageState extends State<CalendarioPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Column(
-        children: <Widget>[],
-      ),
-    );
+    return const Center(child: Text('Calendario'),);
   }
 }
