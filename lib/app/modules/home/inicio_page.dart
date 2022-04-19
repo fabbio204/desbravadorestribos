@@ -1,3 +1,4 @@
+import 'package:desbravadores_tribos/app/core/widgets/carregando.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/widgets/calendario_widget.dart';
 import 'package:desbravadores_tribos/app/modules/home/controllers/home_controller.dart';
 import 'package:desbravadores_tribos/app/modules/home/models/home_state.dart';
@@ -27,9 +28,7 @@ class _InicioPageState extends ModularState<InicioPage, HomeController> {
       valueListenable: controller,
       builder: ((BuildContext context, HomeState value, Widget? child) {
         if (value is HomeLoadingState) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Carregando();
         }
 
         if (value is HomeErrorState) {

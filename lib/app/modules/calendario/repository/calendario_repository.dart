@@ -1,6 +1,7 @@
 import 'package:desbravadores_tribos/app/core/api/google_sheets_api.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/models/evento_model.dart';
 import 'package:googleapis/sheets/v4.dart';
+import 'package:intl/intl.dart';
 
 class CalendarioRepository {
   Future<List<EventoModel>> proximosEventos() async {
@@ -21,5 +22,24 @@ class CalendarioRepository {
     }).toList();
 
     return aniversariantes;
+  }
+
+  Future<List<EventoModel>> calendarioCompleto() async {
+    ValueRange resultados = await GoogleSheetsApi.api!.spreadsheets.values
+        .get(GoogleSheetsApi.id, 'Calendario!A3:C');
+
+    if (resultados.values == null) {
+      return [];
+    }
+
+    DateFormat format = DateFormat('dd/MM/yyyy');
+
+    List<EventoModel> eventos = resultados.values!.map((List<Object?> item) {
+      DateTime novaData = format.parse(item[0].toString());
+
+      return EventoModel(dia: novaData, titulo: item[1].toString());
+    }).toList();
+
+    return eventos;
   }
 }
