@@ -1,16 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:desbravadores_tribos/app/modules/financeiro/financeiro_store.dart';
+import 'package:desbravadores_tribos/app/modules/financeiro/financeiro_controller.dart';
  
 void main() {
-  late FinanceiroStore store;
+  late FinanceiroController store;
 
   setUpAll(() {
-    store = FinanceiroStore();
+    store = FinanceiroController();
   });
 
   test('increment count', () async {
-    expect(store.value, equals(0));
-    store.increment();
-    expect(store.value, equals(1));
+    expect(store.state, equals(0));
+    store.update(store.state + 1);
+    expect(store.state, equals(1));
   });
 }

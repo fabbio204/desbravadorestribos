@@ -12,7 +12,7 @@ class HomeModule extends Module {
   static String rotaResumo = '/inicio';
   static String rotaCalendario = '/calendario/';
   static String rotaMembros = '/membros';
-  static String rotaFinanceiro = '/financeiro';
+  static String rotaFinanceiro = '/financeiro/';
 
   // Configura a injeção de dependência do módulo
   @override

@@ -8,7 +8,7 @@ class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Setando rota inicial
-    Modular.setInitialRoute(HomeModule.rotaCalendario);
+    Modular.setInitialRoute(HomeModule.rotaResumo);
 
     return MaterialApp.router(
       title: 'Desbravadores Tribos',

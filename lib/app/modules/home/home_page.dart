@@ -1,4 +1,3 @@
-import 'package:desbravadores_tribos/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:desbravadores_tribos/app/modules/home/widgets/menu_lateral_widget.dart';
