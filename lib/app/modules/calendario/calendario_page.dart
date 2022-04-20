@@ -2,6 +2,7 @@ import 'package:desbravadores_tribos/app/core/widgets/carregando.dart';
 import 'package:desbravadores_tribos/app/core/widgets/log_erro.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/controllers/eventos_controller.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/models/evento_model.dart';
+import 'package:desbravadores_tribos/app/modules/calendario/widgets/evento_widget.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
@@ -21,7 +22,6 @@ class CalendarioPageState
   final CalendarFormat _calendarFormat = CalendarFormat.month;
   final DateTime _hoje = DateTime.now();
   late final ValueNotifier<List<EventoModel>> eventosDoDia = ValueNotifier([]);
-  final DateFormat formataData = DateFormat('dd/MM');
   late List<EventoModel> listaEventos;
 
   @override
@@ -39,6 +39,7 @@ class CalendarioPageState
       onError: (_, exception) => LogErro(erro: exception),
       onState: (context, eventos) {
         listaEventos = eventos;
+        _carregarEventosDoMes(_hoje);
         return Column(
           children: [
             TableCalendar<EventoModel>(
@@ -50,6 +51,7 @@ class CalendarioPageState
               startingDayOfWeek: StartingDayOfWeek.sunday,
               eventLoader: (hoje) => _getEventosDoAno(hoje, eventos),
               onDaySelected: _diaSelecionado,
+              onPageChanged: _carregarEventosDoMes,
               headerStyle: const HeaderStyle(formatButtonVisible: false),
             ),
             const SizedBox(height: 8.0),
@@ -60,20 +62,7 @@ class CalendarioPageState
                   return ListView.builder(
                     itemCount: eventos.length,
                     itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 12.0,
-                          vertical: 4.0,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: ListTile(
-                          leading: Text(formataData.format(eventos[index].dia)),
-                          title: Text(eventos[index].titulo),
-                        ),
-                      );
+                      return EventoWidget(evento: eventos[index]);
                     },
                   );
                 },
@@ -95,14 +84,25 @@ class CalendarioPageState
   }
 
   void _diaSelecionado(DateTime diaSelecionado, DateTime focusedDay) {
-    print('$diaSelecionado');
-    print('$focusedDay');
-
     var lista = listaEventos
         .where((element) =>
             element.dia.day == diaSelecionado.day &&
             element.dia.month == diaSelecionado.month &&
             element.dia.year == diaSelecionado.year)
+        .toList();
+
+    if (lista.isNotEmpty) {
+      eventosDoDia.value = lista;
+    } else {
+      _carregarEventosDoMes(diaSelecionado);
+    }
+  }
+
+  void _carregarEventosDoMes(DateTime inicioMes) {
+    var lista = listaEventos
+        .where((element) =>
+            element.dia.month == inicioMes.month &&
+            element.dia.year == inicioMes.year)
         .toList();
 
     eventosDoDia.value = lista;

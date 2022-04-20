@@ -1,5 +1,5 @@
 import 'package:desbravadores_tribos/app/core/widgets/carregando.dart';
-import 'package:desbravadores_tribos/app/modules/calendario/widgets/calendario_widget.dart';
+import 'package:desbravadores_tribos/app/modules/calendario/widgets/proximos_eventos_widget.dart';
 import 'package:desbravadores_tribos/app/modules/home/controllers/home_controller.dart';
 import 'package:desbravadores_tribos/app/modules/home/models/home_state.dart';
 import 'package:desbravadores_tribos/app/modules/home/widgets/aniversariantes_widget.dart';
@@ -61,7 +61,7 @@ class _InicioPageState extends ModularState<InicioPage, HomeController> {
                 ),
                 AniversariantesWidget(
                     aniversariantes: value.model.aniversariantes),
-                CalendarioWidget(eventos: value.model.eventos),
+                ProximosEventosWidget(eventos: value.model.eventos),
               ],
             ),
           );
