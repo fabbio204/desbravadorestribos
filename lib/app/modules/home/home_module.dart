@@ -10,7 +10,7 @@ import 'home_page.dart';
 
 class HomeModule extends Module {
   static String rotaResumo = '/inicio';
-  static String rotaCalendario = '/calendario';
+  static String rotaCalendario = '/calendario/';
   static String rotaMembros = '/membros';
   static String rotaFinanceiro = '/financeiro';
 

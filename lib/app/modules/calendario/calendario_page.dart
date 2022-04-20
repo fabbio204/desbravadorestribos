@@ -1,4 +1,5 @@
 import 'package:desbravadores_tribos/app/core/widgets/carregando.dart';
+import 'package:desbravadores_tribos/app/core/widgets/log_erro.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/controllers/eventos_controller.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/models/evento_model.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -21,12 +22,13 @@ class CalendarioPageState
   final DateTime _hoje = DateTime.now();
   late final ValueNotifier<List<EventoModel>> eventosDoDia = ValueNotifier([]);
   final DateFormat formataData = DateFormat('dd/MM');
-  late final List<EventoModel> listaEventos;
+  late List<EventoModel> listaEventos;
 
   @override
   void initState() {
     super.initState();
     controller.init();
+    listaEventos = [];
   }
 
   @override
@@ -34,7 +36,7 @@ class CalendarioPageState
     return ScopedBuilder<EventoController, Exception, List<EventoModel>>(
       store: store,
       onLoading: (_) => const Carregando(),
-      onError: (_, exception) => const Text('Ocorreu um erro'),
+      onError: (_, exception) => LogErro(erro: exception),
       onState: (context, eventos) {
         listaEventos = eventos;
         return Column(
@@ -48,6 +50,7 @@ class CalendarioPageState
               startingDayOfWeek: StartingDayOfWeek.sunday,
               eventLoader: (hoje) => _getEventosDoAno(hoje, eventos),
               onDaySelected: _diaSelecionado,
+              headerStyle: const HeaderStyle(formatButtonVisible: false),
             ),
             const SizedBox(height: 8.0),
             Expanded(
