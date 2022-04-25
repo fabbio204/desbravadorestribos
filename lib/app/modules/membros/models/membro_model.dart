@@ -2,18 +2,18 @@ import 'dart:convert';
 
 class MembroModel {
   String nome;
-  String dataNascimento;
+  String? dataNascimento;
   String? unidade;
   String aniversario;
   String? foto;
-  int idade;
+  int? idade;
   MembroModel({
     required this.nome,
-    required this.dataNascimento,
+    this.dataNascimento,
     this.unidade,
     required this.aniversario,
     this.foto,
-    required this.idade,
+    this.idade,
   });
 
   MembroModel copyWith({

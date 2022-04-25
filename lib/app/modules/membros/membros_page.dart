@@ -1,5 +1,6 @@
 import 'package:desbravadores_tribos/app/core/widgets/carregando.dart';
 import 'package:desbravadores_tribos/app/core/widgets/log_erro.dart';
+import 'package:desbravadores_tribos/app/core/widgets/membro_widget.dart';
 import 'package:desbravadores_tribos/app/modules/membros/membro_controller.dart';
 import 'package:desbravadores_tribos/app/modules/membros/models/membro_model.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -30,21 +31,9 @@ class MembrosPageState extends ModularState<MembrosPage, MembroController> {
         return ListView.builder(
             itemCount: membros.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                leading: setImage(membros[index]),
-                title: Text(membros[index].nome),
-                subtitle: Text(membros[index].dataNascimento),
-              );
+              return MembroWidget(membro: membros[index]);
             });
       },
     );
-  }
-
-  setImage(MembroModel membro) {
-    if (membro.foto != null && membro.foto!.isNotEmpty) {
-      return Image.network(membro.foto!);
-    }
-
-    return const Icon(Icons.person);
   }
 }

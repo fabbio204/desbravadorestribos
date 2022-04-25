@@ -1,5 +1,4 @@
 import 'package:desbravadores_tribos/app/modules/home/models/home_model.dart';
-import 'package:desbravadores_tribos/app/modules/home/models/resumo_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:desbravadores_tribos/app/modules/home/models/home_state.dart';
@@ -16,7 +15,6 @@ class HomeController extends ValueNotifier<HomeState> {
       HomeModel model = HomeModel();
       model.aniversariantes = await repository.listarAniversariantes();
       model.eventos = await repository.proximosEventos();
-
       model.resumo = await repository.listarResumo();
 
       HomeLoadedState state = HomeLoadedState(model);

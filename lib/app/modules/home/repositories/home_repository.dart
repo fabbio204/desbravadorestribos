@@ -1,22 +1,24 @@
 import 'package:desbravadores_tribos/app/modules/calendario/models/evento_model.dart';
 import 'package:desbravadores_tribos/app/modules/home/models/resumo_model.dart';
+import 'package:desbravadores_tribos/app/modules/membros/models/membro_model.dart';
 import 'package:googleapis/sheets/v4.dart';
 import 'package:desbravadores_tribos/app/core/api/google_sheets_api.dart';
-import 'package:desbravadores_tribos/app/core/models/aniversariante_model.dart';
 
 class HomeRepository {
-  Future<List<AniversarianteModel>> listarAniversariantes() async {
+  Future<List<MembroModel>> listarAniversariantes() async {
     ValueRange resultados = await GoogleSheetsApi.api!.spreadsheets.values
-        .get(GoogleSheetsApi.id, 'Dashboard!A12:B21');
+        .get(GoogleSheetsApi.id, 'Dashboard!A12:C21');
 
     if (resultados.values == null) {
       return [];
     }
 
-    List<AniversarianteModel> aniversariantes =
+    List<MembroModel> aniversariantes =
         resultados.values!.map((List<Object?> item) {
-      return AniversarianteModel(
-          dia: item[0].toString(), nome: item[1].toString());
+      return MembroModel(
+          aniversario: item[1].toString(),
+          nome: item[2].toString(),
+          foto: item[0].toString());
     }).toList();
 
     return aniversariantes;
