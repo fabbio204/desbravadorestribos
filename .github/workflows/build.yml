@@ -33,16 +33,25 @@ jobs:
         run: flutter build apk --dart-define=ID_PLANILHA=${{ secrets.ID_PLANILHA }} --dart-define=API_KEY=${{ secrets.API_KEY }}
 
       - name: list files
-        run: ls -l /github/workspace/build/app/outputs/flutter-apk/
+        run: ls -l build/app/outputs/flutter-apk/
 
-      - name: show working directory
-        run: echo ${{env.working-directory}} 
+      - uses: actions/upload-artifact@v3
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      - uses: actions/download-artifact@v3
+        with:
+          path: build/app/outputs/flutter-apk/app-release.apk
+          
+      - name: Display structure of downloaded files
+        run: ls -R
+        working-directory: build/app/outputs/flutter-apk/
       
       - name: upload to gdrive
         uses: adityak74/google-drive-upload-git-action@main
         with:
           credentials: ${{ secrets.API_KEY_GDRIVE }}
-          filename: "/github/workspace/build/app/outputs/flutter-apk/app-release.apk"
+          filename: "app-release.apk"
           folderId: ${{ secrets.FOLDER_ID }}
           overwrite: "true"
-          useCompleteSourceFilenameAsName: "true"
