@@ -34,6 +34,7 @@ jobs:
 
       - name: list files
         run: ls -l ./build/app/outputs/flutter-apk/
+        run: echo ${{env.working-directory}}
       
       - name: upload to gdrive
         uses: adityak74/google-drive-upload-git-action@main
