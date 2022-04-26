@@ -1,6 +1,6 @@
 import 'package:desbravadores_tribos/app/modules/calendario/controllers/eventos_controller.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/repository/calendario_repository.dart';
-import 'package:desbravadores_tribos/app/modules/calendario/calendario_Page.dart';
+import 'package:desbravadores_tribos/app/modules/calendario/calendario_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class CalendarioModule extends Module {
