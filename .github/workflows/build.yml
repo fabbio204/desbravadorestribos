@@ -42,7 +42,7 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: release-apk
           
       - name: Display structure of downloaded files
         run: ls -R
