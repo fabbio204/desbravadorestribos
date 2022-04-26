@@ -47,11 +47,11 @@ jobs:
       - name: Display structure of downloaded files
         run: ls -R
         working-directory: build/app/outputs/flutter-apk/
-      
-      - name: upload to gdrive
-        uses: adityak74/google-drive-upload-git-action@main
-        with:
-          credentials: ${{ secrets.API_KEY_GDRIVE }}
-          filename: "app-release.apk"
-          folderId: ${{ secrets.FOLDER_ID }}
-          overwrite: "true"
+
+        - name: upload to gdrive
+          uses: adityak74/google-drive-upload-git-action@main
+          with:
+            credentials: ${{ secrets.API_KEY_GDRIVE }}
+            filename: "app-release.apk"
+            folderId: ${{ secrets.FOLDER_ID }}
+            overwrite: "true"
