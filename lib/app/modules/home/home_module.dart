@@ -9,9 +9,9 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'home_page.dart';
 
 class HomeModule extends Module {
-  static String rotaResumo = '/inicio';
+  static String rotaResumo = '/inicio/';
   static String rotaCalendario = '/calendario/';
-  static String rotaMembros = '/membros';
+  static String rotaMembros = '/membros/';
   static String rotaFinanceiro = '/financeiro/';
 
   // Configura a injeção de dependência do módulo

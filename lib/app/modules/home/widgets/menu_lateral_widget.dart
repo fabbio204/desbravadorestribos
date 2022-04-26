@@ -1,4 +1,5 @@
 import 'package:desbravadores_tribos/app/modules/home/home_module.dart';
+import 'package:desbravadores_tribos/app/utils/extensions/build_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -46,20 +47,44 @@ class _MenuLateralWidgetState extends State<MenuLateralWidget> {
       elevation: 5,
       child: ListView(
         children: [
+          SizedBox(
+            height: 120,
+            child: DrawerHeader(
+              decoration: BoxDecoration(color: context.primaryColor),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  SizedBox(
+                    height: 50,
+                    child: Image.asset('splash.png'),
+                  ),
+                  const Text(
+                    'Clube Tribos',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          ),
           ListTile(
-            leading: const Text('Início'),
+            leading: const Icon(Icons.home),
+            title: const Text('Início'),
             onTap: () => abrirTela(Tela.inicio),
           ),
           ListTile(
-            leading: const Text('Calendário'),
+            leading: const Icon(Icons.calendar_month),
+            title: const Text('Calendário'),
             onTap: () => abrirTela(Tela.calendario),
           ),
           ListTile(
-            leading: const Text('Membros'),
+            leading: const Icon(Icons.group),
+            title: const Text('Membros'),
             onTap: () => abrirTela(Tela.membros),
           ),
           ListTile(
-            leading: const Text('Financeiro'),
+            leading: const Icon(Icons.monetization_on),
+            title: const Text('Financeiro'),
             onTap: () => abrirTela(Tela.financeiro),
           ),
         ],
