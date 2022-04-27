@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Flutter
+name: Geração do Apk
 
 on:
   pull_request:
@@ -39,4 +39,5 @@ jobs:
           filename: build/app/outputs/flutter-apk/app-release.apk
           folderId: ${{ secrets.FOLDER_ID }}
           overwrite: "true"
-          name: "app.apk"
+          name: "desbravadores_tribos.apk"
+          mimeType: "application/vnd.android.package-archive"
