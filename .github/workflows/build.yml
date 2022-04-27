@@ -32,14 +32,10 @@ jobs:
       - name: build apk
         run: flutter build apk --dart-define=ID_PLANILHA=${{ secrets.ID_PLANILHA }} --dart-define=API_KEY=${{ secrets.API_KEY }}
 
-      - name: list files
-        run: ls -l ./build/app/outputs/flutter-apk/
-      
       - name: upload to gdrive
         uses: adityak74/google-drive-upload-git-action@main
         with:
           credentials: ${{ secrets.API_KEY_GDRIVE }}
-          filename: "./build/app/outputs/flutter-apk/app-release.apk"
+          filename: build/app/outputs/flutter-apk/app-release.apk
           folderId: ${{ secrets.FOLDER_ID }}
           overwrite: "true"
-          useCompleteSourceFilenameAsName: "true"
