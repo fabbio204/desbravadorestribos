@@ -40,4 +40,3 @@ jobs:
           folderId: ${{ secrets.FOLDER_ID }}
           overwrite: "true"
           name: "app.apk"
-          useCompleteSourceFilenameAsName: "true"
