@@ -43,4 +43,5 @@ jobs:
           filename: "./build/app/outputs/flutter-apk/app-release.apk"
           folderId: ${{ secrets.FOLDER_ID }}
           overwrite: "true"
+          name: "app.apk"
           useCompleteSourceFilenameAsName: "true"
