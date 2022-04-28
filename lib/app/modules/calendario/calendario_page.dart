@@ -6,7 +6,6 @@ import 'package:desbravadores_tribos/app/modules/calendario/widgets/evento_widge
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
-import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarioPage extends StatefulWidget {
