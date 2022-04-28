@@ -1,3 +1,5 @@
+[![Flutter](https://github.com/fabbio204/desbravadorestribos/actions/workflows/build.yml/badge.svg)](https://github.com/fabbio204/desbravadorestribos/actions/workflows/build.yml)
+
 # Tribos App
 
 Aplicativo do Clube de Desbravadores Tribos
