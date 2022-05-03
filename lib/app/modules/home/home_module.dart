@@ -4,6 +4,7 @@ import 'package:desbravadores_tribos/app/modules/home/controllers/home_controlle
 import 'package:desbravadores_tribos/app/modules/home/inicio_page.dart';
 import 'package:desbravadores_tribos/app/modules/home/repositories/home_repository.dart';
 import 'package:desbravadores_tribos/app/modules/membros/membros_module.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'home_page.dart';
@@ -17,6 +18,7 @@ class HomeModule extends Module {
   // Configura a injeção de dependência do módulo
   @override
   final List<Bind> binds = [
+    Bind.singleton((i) => ValueNotifier<String>('Início')),
     Bind.lazySingleton((i) => HomeController(i.get<HomeRepository>())),
     Bind.lazySingleton((i) => HomeRepository()),
   ];
