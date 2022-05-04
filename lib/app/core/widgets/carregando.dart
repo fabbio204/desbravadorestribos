@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 class Carregando extends StatefulWidget {
   const Carregando({Key? key}) : super(key: key);
@@ -16,13 +15,23 @@ class _CarregandoState extends State<Carregando> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     controller = AnimationController(
-        duration: const Duration(milliseconds: 500), vsync: this);
+        duration: const Duration(milliseconds: 400), vsync: this);
 
-    animation = Tween<double>(begin: 0, end: 300).animate(controller)
+    animation = Tween<double>(begin: 75, end: 85).animate(controller)
       ..addListener(() {
         setState(() {
-          // The state that has changed here is the animation object’s value.
+          // Aciona a mudança de estado para atualizar o tamanho do ícone
         });
+      })
+      ..addStatusListener((status) {
+        // controles para fazer loop infinito da animação
+        if (status == AnimationStatus.completed) {
+          // finaliza
+          controller.reverse();
+        } else if (status == AnimationStatus.dismissed) {
+          // inicia
+          controller.forward();
+        }
       });
 
     controller.forward();
@@ -30,11 +39,12 @@ class _CarregandoState extends State<Carregando> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-
-    return AnimatedContainer(
-      duration: const Duration(seconds: 1),
-      curve: ShakeCurve(),
-      child: Image.asset('triangulo.png'),
+    return Center(
+      child: SizedBox(
+        height: animation.value,
+        width: animation.value,
+        child: Image.asset('triangulo.png'),
+      ),
     );
   }
 
@@ -43,10 +53,4 @@ class _CarregandoState extends State<Carregando> with TickerProviderStateMixin {
     controller.dispose();
     super.dispose();
   }
-}
-
-class ShakeCurve extends Curve {
-  // https://docs.flutter.dev/development/ui/animations/tutorial
-  @override
-  double transform(double t) => sin(t * pi * 2);
 }

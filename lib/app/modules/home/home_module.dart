@@ -25,13 +25,16 @@ class HomeModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
-    ChildRoute(Modular.initialRoute,
-        child: (_, args) => const HomePage(),
-        children: [
-          ChildRoute(rotaResumo, child: (_, args) => const InicioPage()),
-          ModuleRoute(rotaCalendario, module: CalendarioModule()),
-          ModuleRoute(rotaMembros, module: MembrosModule()),
-          ModuleRoute(rotaFinanceiro, module: FinanceiroModule()),
-        ]),
+    ChildRoute(
+      Modular.initialRoute,
+      child: (_, args) => const HomePage(),
+      children: [
+        ChildRoute(rotaResumo, child: (_, args) => const InicioPage()),
+        ModuleRoute(rotaCalendario, module: CalendarioModule()),
+        ModuleRoute(rotaMembros, module: MembrosModule()),
+        ModuleRoute(rotaFinanceiro, module: FinanceiroModule()),
+      ],
+      transition: TransitionType.noTransition,
+    ),
   ];
 }
