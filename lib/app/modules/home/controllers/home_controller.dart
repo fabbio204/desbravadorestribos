@@ -16,6 +16,7 @@ class HomeController extends ValueNotifier<HomeState> {
       model.aniversariantes = await repository.listarAniversariantes();
       model.eventos = await repository.proximosEventos();
       model.resumo = await repository.listarResumo();
+      model.temNovaVersao = await repository.temNovaVersao();
 
       HomeLoadedState state = HomeLoadedState(model);
       value = state;
