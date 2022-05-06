@@ -4,14 +4,14 @@ class MembroModel {
   String nome;
   String? dataNascimento;
   String? unidade;
-  String aniversario;
+  String? aniversario;
   String? foto;
   int? idade;
   MembroModel({
     required this.nome,
     this.dataNascimento,
     this.unidade,
-    required this.aniversario,
+    this.aniversario,
     this.foto,
     this.idade,
   });

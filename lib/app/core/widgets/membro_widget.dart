@@ -8,10 +8,56 @@ class MembroWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: setImage(),
-      title: Text(membro.nome),
-      subtitle: Text(membro.aniversario),
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: setImage(),
+              flex: 3,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(membro.nome),
+                  if (membro.idade != null)
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.star,
+                          size: 14,
+                        ),
+                        Text('${membro.idade} anos'),
+                      ],
+                    ),
+                  if (membro.unidade != null)
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.group,
+                          size: 14,
+                        ),
+                        Text('Unidade ${membro.unidade}'),
+                      ],
+                    ),
+                  if (membro.aniversario != null)
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.group,
+                          size: 14,
+                        ),
+                        Text('Aniversário ${membro.aniversario}'),
+                      ],
+                    )
+                ],
+              ),
+              flex: 8,
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -26,8 +72,11 @@ class MembroWidget extends StatelessWidget {
     }
 
     return const SizedBox(
-      width: 55,
-      child: Center(child: Icon(Icons.person)),
+      child: Center(
+          child: Icon(
+        Icons.person,
+        size: 55,
+      )),
     );
   }
 }
