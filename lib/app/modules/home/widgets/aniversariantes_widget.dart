@@ -24,8 +24,8 @@ class AniversariantesWidget extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: aniversariantes.length,
-            itemBuilder: (context, index) =>
-                MembroWidget(membro: aniversariantes[index]),
+            itemBuilder: (context, index) => MembroWidget(
+                membro: aniversariantes[index], ocultarIcone: true),
           ),
         ],
       ),
