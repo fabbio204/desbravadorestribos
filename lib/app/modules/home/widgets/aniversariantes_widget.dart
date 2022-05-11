@@ -21,6 +21,7 @@ class AniversariantesWidget extends StatelessWidget {
             style: Theme.of(context).textTheme.headline6,
           ),
           ListView.builder(
+            key: const Key('listaAniversariantes'),
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: aniversariantes.length,

@@ -15,9 +15,13 @@ class ResumoWidget extends StatelessWidget {
           isThreeLine: true,
           title: Text(
             titulo,
+            key: const Key('titulo'),
             style: const TextStyle(fontSize: 13),
           ),
-          subtitle: Text(valor),
+          subtitle: Text(
+            valor,
+            key: const Key('valor'),
+          ),
         ),
       ),
     );

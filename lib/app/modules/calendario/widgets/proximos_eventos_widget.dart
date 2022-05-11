@@ -17,9 +17,11 @@ class ProximosEventosWidget extends StatelessWidget {
         children: [
           Text(
             'Próximos Eventos',
+            key: const Key('tituloEventos'),
             style: Theme.of(context).textTheme.headline6,
           ),
           ListView.builder(
+            key: const Key('listaEventos'),
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: eventos.length,

@@ -51,6 +51,7 @@ class _MenuLateralWidgetState extends State<MenuLateralWidget> {
     return Drawer(
       elevation: 5,
       child: ListView(
+        key: const Key('listaItensMenu'),
         children: [
           SizedBox(
             height: 120,
