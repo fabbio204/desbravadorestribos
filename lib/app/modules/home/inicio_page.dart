@@ -55,7 +55,8 @@ class _InicioPageState extends ModularState<InicioPage, HomeController> {
                       TextButton(
                         onPressed: () {
                           launchUrl(Uri.parse(
-                              'https://drive.google.com/file/d/1uEEy1d5ek_73bCwQiYMwW5tjZWbiMj4G/view?usp=sharing'));
+                            const String.fromEnvironment('URL_APK'),
+                          ));
                         },
                         child: const Text('Baixar'),
                       )
