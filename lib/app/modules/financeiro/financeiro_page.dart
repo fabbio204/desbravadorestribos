@@ -42,6 +42,13 @@ class FinanceiroPageState
               },
             ),
           ),
+          DropdownButtonFormField<String>(
+              items: financeiro.subCaixas
+                  .map(
+                      (x) => DropdownMenuItem<String>(value: x, child: Text(x)))
+                  .toList(),
+              onChanged: (String? opcao) {},
+              value: financeiro.subCaixas.first),
         ],
       ),
     );
