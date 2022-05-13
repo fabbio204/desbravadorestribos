@@ -1,4 +1,5 @@
 import 'package:desbravadores_tribos/app/modules/financeiro/models/financeiro_model.dart';
+import 'package:desbravadores_tribos/app/modules/financeiro/models/lancamento_model.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/repositories/financeiro_repository.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 
@@ -19,5 +20,10 @@ class FinanceiroController extends NotifierStore<Exception, FinanceiroModel> {
     } finally {
       setLoading(false);
     }
+  }
+
+  Future<List<LancamentoModel>> setSubCaixa(String subCaixa) async {
+    await repository.setSubCaixa(subCaixa);
+    return await repository.lancamentos();
   }
 }

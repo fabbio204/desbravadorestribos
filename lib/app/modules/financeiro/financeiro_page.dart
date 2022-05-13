@@ -3,6 +3,8 @@ import 'package:desbravadores_tribos/app/core/widgets/log_erro.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/financeiro_controller.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/models/caixa_model.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/models/financeiro_model.dart';
+import 'package:desbravadores_tribos/app/modules/financeiro/models/lancamento_model.dart';
+import 'package:desbravadores_tribos/app/modules/financeiro/widgets/lancamento_widget.dart';
 import 'package:desbravadores_tribos/app/modules/home/widgets/resumo_widget.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,7 @@ class FinanceiroPage extends StatefulWidget {
 
 class FinanceiroPageState
     extends ModularState<FinanceiroPage, FinanceiroController> {
+  ValueNotifier<List<LancamentoModel>> _lancamentos = ValueNotifier([]);
   @override
   void initState() {
     super.initState();
@@ -47,8 +50,24 @@ class FinanceiroPageState
                   .map(
                       (x) => DropdownMenuItem<String>(value: x, child: Text(x)))
                   .toList(),
-              onChanged: (String? opcao) {},
+              onChanged: (String? opcao) async {
+                _lancamentos.value = await controller.setSubCaixa(opcao!);
+              },
               value: financeiro.subCaixas.first),
+          Expanded(
+            child: ValueListenableBuilder<List<LancamentoModel>>(
+              valueListenable: _lancamentos,
+              builder: (BuildContext context, List<LancamentoModel> value,
+                  Widget? child) {
+                return ListView.builder(
+                  itemCount: value.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return LancamentoWidget(model: value[index]);
+                  },
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
