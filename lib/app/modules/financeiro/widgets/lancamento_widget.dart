@@ -7,14 +7,41 @@ class LancamentoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(model.data),
-        Text(model.descricao),
-        if (model.entrada != null) Text(model.entrada.toString()),
-        if (model.saida != null) Text(model.saida.toString()),
-        if (model.envolvido != null) Text(model.envolvido.toString()),
-      ],
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              icone(),
+              Expanded(
+                child: Text(model.descricao),
+                flex: 5,
+              ),
+              Expanded(
+                child: Text(model.data),
+                flex: 2,
+              ),
+            ],
+          ),
+          if (model.entrada != null && model.entrada!.isNotEmpty)
+            Text(model.entrada.toString()),
+          if (model.saida != null && model.saida!.isNotEmpty)
+            Text("-" + model.saida.toString()),
+          if (model.envolvido != null) Text(model.envolvido.toString()),
+        ],
+      ),
     );
+  }
+
+  Widget icone() {
+    if (model.entrada != null && model.entrada!.isNotEmpty) {
+      return Icon(
+        Icons.add,
+        color: Colors.green[600],
+      );
+    }
+
+    return Icon(Icons.remove, color: Colors.red[600]);
   }
 }

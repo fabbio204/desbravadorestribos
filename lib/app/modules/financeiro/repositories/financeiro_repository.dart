@@ -59,13 +59,21 @@ class FinanceiroRepository {
     }
 
     List<LancamentoModel> lista = resultados.values!.map((List<Object?> item) {
-      return LancamentoModel(
+      var lancamento = LancamentoModel(
         data: item[0].toString(),
         descricao: item[1].toString(),
-        entrada: item[2].toString(),
-        saida: item[3].toString(),
-        envolvido: item[4].toString(),
+        entrada: item[2]?.toString(),
       );
+
+      if (item.asMap().keys.contains(3)) {
+        lancamento.saida = item[3]?.toString();
+      }
+
+      if (item.asMap().keys.contains(4)) {
+        lancamento.envolvido = item[4]?.toString();
+      }
+
+      return lancamento;
     }).toList();
 
     return lista;

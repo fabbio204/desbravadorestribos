@@ -18,7 +18,8 @@ class FinanceiroPage extends StatefulWidget {
 
 class FinanceiroPageState
     extends ModularState<FinanceiroPage, FinanceiroController> {
-  ValueNotifier<List<LancamentoModel>> _lancamentos = ValueNotifier([]);
+  final ValueNotifier<List<LancamentoModel>> _lancamentos = ValueNotifier([]);
+  
   @override
   void initState() {
     super.initState();
