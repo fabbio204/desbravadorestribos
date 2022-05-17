@@ -19,7 +19,7 @@ class FinanceiroPage extends StatefulWidget {
 class FinanceiroPageState
     extends ModularState<FinanceiroPage, FinanceiroController> {
   final ValueNotifier<List<LancamentoModel>> _lancamentos = ValueNotifier([]);
-  
+
   @override
   void initState() {
     super.initState();
@@ -37,7 +37,8 @@ class FinanceiroPageState
         children: [
           SizedBox(
             height: 80,
-            child: ListView.builder(
+            child: ListView.separated(
+              separatorBuilder: (context, _) => const Divider(),
               scrollDirection: Axis.horizontal,
               itemCount: financeiro.saldoCaixas.length,
               itemBuilder: (context, index) {

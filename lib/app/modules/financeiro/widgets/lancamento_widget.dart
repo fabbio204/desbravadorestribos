@@ -7,21 +7,22 @@ class LancamentoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              icone(),
               Expanded(
-                child: Text(model.descricao),
+                child: Text(
+                  model.descricao,
+                  style: const TextStyle(fontSize: 16),
+                ),
                 flex: 5,
               ),
-              Expanded(
-                child: Text(model.data),
-                flex: 2,
-              ),
+              Text(model.data),
             ],
           ),
           if (model.entrada != null && model.entrada!.isNotEmpty)
