@@ -40,8 +40,12 @@ class FinanceiroPageState
                 tabs: financeiro.saldoCaixas
                     .map(
                       (e) => Tab(
-                        child: SizedBox(
-                          child: Text(e.nome),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(e.nome),
+                            if (e.saldo != null) Text(e.saldo!),
+                          ],
                         ),
                       ),
                     )

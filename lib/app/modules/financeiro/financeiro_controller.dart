@@ -1,3 +1,4 @@
+import 'package:desbravadores_tribos/app/modules/financeiro/models/caixa_model.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/models/financeiro_model.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/models/lancamento_model.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/repositories/financeiro_repository.dart';
@@ -14,9 +15,18 @@ class FinanceiroController extends NotifierStore<Exception, FinanceiroModel> {
       FinanceiroModel model = FinanceiroModel();
       model.saldoCaixas = await repository.saldoCaixas();
 
+      model.lancamentos = await repository.lancamentos();
+
       for (var x in model.saldoCaixas) {
-        x.lancamentos = await setSubCaixa(x.nome);
+        x.lancamentos = await getLancamentos(x.nome, model.lancamentos);
       }
+
+      model.saldoCaixas.insert(
+          0,
+          CaixaModel(
+            nome: 'Todos',
+            lancamentos: model.lancamentos,
+          ));
 
       update(model);
     } on Exception catch (e) {
@@ -26,8 +36,11 @@ class FinanceiroController extends NotifierStore<Exception, FinanceiroModel> {
     }
   }
 
-  Future<List<LancamentoModel>> setSubCaixa(String subCaixa) async {
-    await repository.setSubCaixa(subCaixa);
-    return await repository.lancamentos();
+  getLancamentos(String nome, List<LancamentoModel> lancamentos) {
+    var lista =
+        lancamentos.where((element) => element.subCaixa == nome).toList();
+    lista.sort((a, b) => b.dataEvento.compareTo(a.dataEvento));
+
+    return lista;
   }
 }

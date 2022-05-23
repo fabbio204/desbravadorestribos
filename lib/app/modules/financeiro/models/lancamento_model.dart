@@ -5,12 +5,19 @@ class LancamentoModel {
   String descricao;
   String? entrada;
   String? saida;
+  String? subCaixa;
   String? envolvido;
+  DateTime get dataEvento {
+    List<String> pedacos = data.split('/');
+    return DateTime(int.parse(pedacos[2]), int.parse(pedacos[1]), int.parse(pedacos[0]));
+  }
+  
   LancamentoModel({
     required this.data,
     required this.descricao,
     this.entrada,
     this.saida,
+    required this.subCaixa,
     this.envolvido,
   });
 
@@ -19,6 +26,7 @@ class LancamentoModel {
     String? descricao,
     String? entrada,
     String? saida,
+    String? subCaixa,
     String? envolvido,
   }) {
     return LancamentoModel(
@@ -26,6 +34,7 @@ class LancamentoModel {
       descricao: descricao ?? this.descricao,
       entrada: entrada ?? this.entrada,
       saida: saida ?? this.saida,
+      subCaixa: subCaixa ?? this.subCaixa,
       envolvido: envolvido ?? this.envolvido,
     );
   }
@@ -35,9 +44,18 @@ class LancamentoModel {
 
     result.addAll({'data': data});
     result.addAll({'descricao': descricao});
-    result.addAll({'entrada': entrada});
-    result.addAll({'saida': saida});
-    result.addAll({'envolvido': envolvido});
+    if (entrada != null) {
+      result.addAll({'entrada': entrada});
+    }
+    if (saida != null) {
+      result.addAll({'saida': saida});
+    }
+    if (subCaixa != null) {
+      result.addAll({'subCaixa': subCaixa});
+    }
+    if (envolvido != null) {
+      result.addAll({'envolvido': envolvido});
+    }
 
     return result;
   }
@@ -46,9 +64,10 @@ class LancamentoModel {
     return LancamentoModel(
       data: map['data'] ?? '',
       descricao: map['descricao'] ?? '',
-      entrada: map['entrada'] ?? '',
-      saida: map['saida'] ?? '',
-      envolvido: map['envolvido'] ?? '',
+      entrada: map['entrada'],
+      saida: map['saida'],
+      subCaixa: map['subCaixa'],
+      envolvido: map['envolvido'],
     );
   }
 
@@ -59,7 +78,7 @@ class LancamentoModel {
 
   @override
   String toString() {
-    return 'LancamentoModal(data: $data, descricao: $descricao, entrada: $entrada, saida: $saida, envolvido: $envolvido)';
+    return 'LancamentoModel(data: $data, descricao: $descricao, entrada: $entrada, saida: $saida, subCaixa: $subCaixa, envolvido: $envolvido)';
   }
 
   @override
@@ -71,6 +90,7 @@ class LancamentoModel {
         other.descricao == descricao &&
         other.entrada == entrada &&
         other.saida == saida &&
+        other.subCaixa == subCaixa &&
         other.envolvido == envolvido;
   }
 
@@ -80,6 +100,7 @@ class LancamentoModel {
         descricao.hashCode ^
         entrada.hashCode ^
         saida.hashCode ^
+        subCaixa.hashCode ^
         envolvido.hashCode;
   }
 }

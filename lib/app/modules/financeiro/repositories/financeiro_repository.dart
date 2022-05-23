@@ -49,7 +49,7 @@ class FinanceiroRepository {
 
   Future<List<LancamentoModel>> lancamentos() async {
     ValueRange resultados = await GoogleSheetsApi.api!.spreadsheets.values
-        .get(GoogleSheetsApi.id, 'SubCaixas!C4:G');
+        .get(GoogleSheetsApi.id, 'Caixa!A7:F');
 
     if (resultados.values == null) {
       return [];
@@ -57,17 +57,17 @@ class FinanceiroRepository {
 
     List<LancamentoModel> lista = resultados.values!.map((List<Object?> item) {
       var lancamento = LancamentoModel(
-        data: item[0].toString(),
-        descricao: item[1].toString(),
-        entrada: item[2]?.toString(),
-      );
+          data: item[0].toString(),
+          descricao: item[1].toString(),
+          entrada: item[2]?.toString(),
+          subCaixa: item[4]?.toString());
 
       if (item.asMap().keys.contains(3)) {
         lancamento.saida = item[3]?.toString();
       }
 
-      if (item.asMap().keys.contains(4)) {
-        lancamento.envolvido = item[4]?.toString();
+      if (item.asMap().keys.contains(5)) {
+        lancamento.envolvido = item[5]?.toString();
       }
 
       return lancamento;

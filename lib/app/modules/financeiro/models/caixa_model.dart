@@ -6,11 +6,11 @@ import 'package:desbravadores_tribos/app/modules/financeiro/models/lancamento_mo
 
 class CaixaModel {
   String nome;
-  String saldo;
+  String? saldo;
   List<LancamentoModel>? lancamentos;
   CaixaModel({
     required this.nome,
-    required this.saldo,
+    this.saldo,
     this.lancamentos,
   });
 
@@ -27,17 +27,24 @@ class CaixaModel {
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      'nome': nome,
-      'saldo': saldo,
-      'lancamentos': lancamentos?.map((x) => x?.toMap())?.toList(),
-    };
+    final result = <String, dynamic>{};
+
+    result.addAll({'nome': nome});
+    if (saldo != null) {
+      result.addAll({'saldo': saldo});
+    }
+    if (lancamentos != null) {
+      result.addAll(
+          {'lancamentos': lancamentos!.map((x) => x?.toMap()).toList()});
+    }
+
+    return result;
   }
 
   factory CaixaModel.fromMap(Map<String, dynamic> map) {
     return CaixaModel(
       nome: map['nome'] ?? '',
-      saldo: map['saldo'] ?? '',
+      saldo: map['saldo'],
       lancamentos: map['lancamentos'] != null
           ? List<LancamentoModel>.from(
               map['lancamentos']?.map((x) => LancamentoModel.fromMap(x)))
