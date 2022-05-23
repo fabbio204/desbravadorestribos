@@ -13,7 +13,11 @@ class FinanceiroController extends NotifierStore<Exception, FinanceiroModel> {
     try {
       FinanceiroModel model = FinanceiroModel();
       model.saldoCaixas = await repository.saldoCaixas();
-      model.subCaixas = await repository.subCaixas();
+
+      for (var x in model.saldoCaixas) {
+        x.lancamentos = await setSubCaixa(x.nome);
+      }
+
       update(model);
     } on Exception catch (e) {
       setError(e);

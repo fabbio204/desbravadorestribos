@@ -16,9 +16,6 @@ class FinanceiroRepository {
       return CaixaModel(nome: item[0].toString(), saldo: item[1].toString());
     }).toList();
 
-    // Ordena pelo nome
-    lista.sort((a, b) => a.nome.compareTo(b.nome));
-
     return lista;
   }
 

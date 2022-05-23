@@ -2,5 +2,4 @@ import 'package:desbravadores_tribos/app/modules/financeiro/models/caixa_model.d
 
 class FinanceiroModel {
   late List<CaixaModel> saldoCaixas;
-  late List<String> subCaixas;
 }
