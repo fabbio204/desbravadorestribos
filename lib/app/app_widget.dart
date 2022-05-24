@@ -13,7 +13,10 @@ class AppWidget extends StatelessWidget {
     return MaterialApp.router(
       title: 'Desbravadores Tribos',
       theme: ThemeData(
-          primarySwatch: Colors.green, backgroundColor: Colors.grey[200]),
+        primarySwatch: Colors.green,
+        backgroundColor: Colors.grey[200],
+        secondaryHeaderColor: Colors.greenAccent,
+      ),
       routeInformationParser: Modular.routeInformationParser,
       routerDelegate: Modular.routerDelegate,
     );

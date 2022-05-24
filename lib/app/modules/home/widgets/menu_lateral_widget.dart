@@ -19,22 +19,27 @@ class _MenuLateralWidgetState extends State<MenuLateralWidget> {
     switch (tela) {
       case Tela.inicio:
         Modular.to.navigate(HomeModule.rotaResumo);
+        Modular.get<ValueNotifier<String>>().value = 'Início';
         break;
 
       case Tela.calendario:
         Modular.to.navigate(HomeModule.rotaCalendario);
+        Modular.get<ValueNotifier<String>>().value = 'Calendário';
         break;
 
       case Tela.membros:
         Modular.to.navigate(HomeModule.rotaMembros);
+        Modular.get<ValueNotifier<String>>().value = 'Membros';
         break;
 
       case Tela.financeiro:
         Modular.to.navigate(HomeModule.rotaFinanceiro);
+        Modular.get<ValueNotifier<String>>().value = 'Financeiro';
         break;
 
       default:
         Modular.to.navigate(HomeModule.rotaResumo);
+        Modular.get<ValueNotifier<String>>().value = 'Início';
         break;
     }
 
@@ -46,6 +51,7 @@ class _MenuLateralWidgetState extends State<MenuLateralWidget> {
     return Drawer(
       elevation: 5,
       child: ListView(
+        key: const Key('listaItensMenu'),
         children: [
           SizedBox(
             height: 120,

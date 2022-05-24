@@ -13,10 +13,21 @@ class HomeController extends ValueNotifier<HomeState> {
     value = HomeLoadingState();
     try {
       HomeModel model = HomeModel();
-      model.aniversariantes = await repository.listarAniversariantes();
-      model.eventos = await repository.proximosEventos();
-      model.resumo = await repository.listarResumo();
 
+      // Rodando todas as consultas em paralelo
+      await Future.wait<void>([
+        (() async => repository
+            .listarAniversariantes()
+            .then((value) => model.aniversariantes = value))(),
+        (() async => repository
+            .proximosEventos()
+            .then((value) => model.eventos = value))(),
+        (() async =>
+            repository.listarResumo().then((value) => model.resumo = value))(),
+        (() async => repository
+            .temNovaVersao()
+            .then((value) => model.temNovaVersao = value))(),
+      ]);
       HomeLoadedState state = HomeLoadedState(model);
       value = state;
     } on Exception catch (e) {

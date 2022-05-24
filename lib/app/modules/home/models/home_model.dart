@@ -6,4 +6,5 @@ class HomeModel {
   List<ResumoModel> resumo = [];
   List<MembroModel> aniversariantes = [];
   List<EventoModel> eventos = [];
+  bool temNovaVersao = false;
 }

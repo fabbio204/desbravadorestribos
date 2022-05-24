@@ -7,6 +7,7 @@ import 'package:desbravadores_tribos/app/modules/home/widgets/resumo_widget.dart
 import 'package:desbravadores_tribos/app/utils/extensions/build_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class InicioPage extends StatefulWidget {
   const InicioPage({Key? key}) : super(key: key);
@@ -45,6 +46,22 @@ class _InicioPageState extends ModularState<InicioPage, HomeController> {
           return SingleChildScrollView(
             child: Column(
               children: [
+                if (value.model.temNovaVersao)
+                  MaterialBanner(
+                    padding: const EdgeInsets.all(10),
+                    leading: const Icon(Icons.new_releases),
+                    content: const Text('Existe uma nova versão do aplicativo'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          launchUrl(Uri.parse(
+                            const String.fromEnvironment('URL_APK'),
+                          ));
+                        },
+                        child: const Text('Baixar'),
+                      )
+                    ],
+                  ),
                 SizedBox(
                   height: 80,
                   width: context.screenWidth,

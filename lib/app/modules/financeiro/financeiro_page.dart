@@ -1,11 +1,13 @@
 import 'package:desbravadores_tribos/app/core/widgets/carregando.dart';
 import 'package:desbravadores_tribos/app/core/widgets/log_erro.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/financeiro_controller.dart';
-import 'package:desbravadores_tribos/app/modules/financeiro/models/caixa_model.dart';
-import 'package:desbravadores_tribos/app/modules/home/widgets/resumo_widget.dart';
+import 'package:desbravadores_tribos/app/modules/financeiro/models/financeiro_model.dart';
+import 'package:desbravadores_tribos/app/modules/financeiro/widgets/lancamento_widget.dart';
+import 'package:desbravadores_tribos/app/utils/extensions/build_extension.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
+import 'package:intl/intl.dart';
 
 class FinanceiroPage extends StatefulWidget {
   const FinanceiroPage({Key? key}) : super(key: key);
@@ -24,22 +26,81 @@ class FinanceiroPageState
 
   @override
   Widget build(BuildContext context) {
-    return ScopedBuilder<FinanceiroController, Exception, List<CaixaModel>>(
+    return ScopedBuilder<FinanceiroController, Exception, FinanceiroModel>(
       store: store,
       onLoading: (_) => const Carregando(),
       onError: (_, erro) => LogErro(erro: erro),
-      onState: (context, valores) => Column(children: [
-        SizedBox(
-          height: 80,
-          child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: valores.length,
-              itemBuilder: (context, index) {
-                CaixaModel caixa = valores[index];
-                return ResumoWidget(titulo: caixa.nome, valor: caixa.saldo);
-              }),
-        )
-      ]),
+      onState: (context, financeiro) => DefaultTabController(
+        length: financeiro.saldoCaixas.length,
+        child: Column(
+          children: [
+            Material(
+              color: context.primaryColor,
+              child: TabBar(
+                isScrollable: true,
+                tabs: financeiro.saldoCaixas
+                    .map(
+                      (e) => Tab(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(e.nome),
+                            gerarSaldo(e.saldo),
+                          ],
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+            Expanded(
+              child: TabBarView(
+                children: financeiro.saldoCaixas.map(
+                  (e) {
+                    if (e.lancamentos == null || e.lancamentos!.isEmpty) {
+                      return const Center(
+                        child: Text('Sem lançamentos'),
+                      );
+                    }
+
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        controller.init();
+                      },
+                      child: ListView.builder(
+                        itemCount: e.lancamentos!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return LancamentoWidget(model: e.lancamentos![index]);
+                        },
+                      ),
+                    );
+                  },
+                ).toList(),
+              ),
+            )
+          ],
+        ),
+      ),
     );
+  }
+
+  gerarSaldo(String? saldo) {
+    if (saldo == null) {
+      return Container();
+    }
+
+    NumberFormat numberFormat = NumberFormat.simpleCurrency(locale: 'pt_BR');
+    String valor = saldo.replaceAll("R\$ ", "");
+
+    var numero = numberFormat.parse(valor);
+
+    if (numero < 0) {
+      return Text(
+        saldo,
+        style: const TextStyle(color: Colors.redAccent),
+      );
+    }
+
+    return Text(saldo);
   }
 }
