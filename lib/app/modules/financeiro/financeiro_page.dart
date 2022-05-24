@@ -7,6 +7,7 @@ import 'package:desbravadores_tribos/app/utils/extensions/build_extension.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
+import 'package:intl/intl.dart';
 
 class FinanceiroPage extends StatefulWidget {
   const FinanceiroPage({Key? key}) : super(key: key);
@@ -44,7 +45,7 @@ class FinanceiroPageState
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(e.nome),
-                            if (e.saldo != null) Text(e.saldo!),
+                            gerarSaldo(e.saldo),
                           ],
                         ),
                       ),
@@ -62,11 +63,16 @@ class FinanceiroPageState
                       );
                     }
 
-                    return ListView.builder(
-                      itemCount: e.lancamentos!.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return LancamentoWidget(model: e.lancamentos![index]);
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        controller.init();
                       },
+                      child: ListView.builder(
+                        itemCount: e.lancamentos!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return LancamentoWidget(model: e.lancamentos![index]);
+                        },
+                      ),
                     );
                   },
                 ).toList(),
@@ -76,5 +82,25 @@ class FinanceiroPageState
         ),
       ),
     );
+  }
+
+  gerarSaldo(String? saldo) {
+    if (saldo == null) {
+      return Container();
+    }
+
+    NumberFormat numberFormat = NumberFormat.simpleCurrency(locale: 'pt_BR');
+    String valor = saldo.replaceAll("R\$ ", "");
+
+    var numero = numberFormat.parse(valor);
+
+    if (numero < 0) {
+      return Text(
+        saldo,
+        style: const TextStyle(color: Colors.redAccent),
+      );
+    }
+
+    return Text(saldo);
   }
 }

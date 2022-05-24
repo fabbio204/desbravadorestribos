@@ -34,8 +34,8 @@ class CaixaModel {
       result.addAll({'saldo': saldo});
     }
     if (lancamentos != null) {
-      result.addAll(
-          {'lancamentos': lancamentos!.map((x) => x?.toMap()).toList()});
+      result
+          .addAll({'lancamentos': lancamentos!.map((x) => x.toMap()).toList()});
     }
 
     return result;
