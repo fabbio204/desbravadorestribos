@@ -24,6 +24,14 @@ Qual alterar os actions e observer do Mobx (classes _store.dart) use o comando p
 
 Pacote utilizado: [flutter_native_splash](https://pub.dev/packages/flutter_native_splash)
 
-Caso de atualize o splash screen, execute o comando para gerar novamente os arquivos
+Caso atualize o splash screen, execute o comando para gerar novamente os arquivos
 
 > flutter pub run flutter_native_splash:create
+
+## Gerando o ícone do aplicativo
+
+Pacote utilizado: [flutter_launcher_icons_maker](https://pub.dev/packages/flutter_launcher_icons_maker)
+
+Caso atualize o ícone do aplicativo, execute o comando para gerar novamente os arquivos
+
+> flutter pub run flutter_launcher_icons_maker:main
