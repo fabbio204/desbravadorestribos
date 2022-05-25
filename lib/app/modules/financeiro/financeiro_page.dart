@@ -26,7 +26,8 @@ class FinanceiroPageState
 
   @override
   Widget build(BuildContext context) {
-    return ScopedBuilder<FinanceiroController, Exception, FinanceiroModel>(
+    return ScopedBuilder<FinanceiroController, Exception,
+        FinanceiroModel>.transition(
       store: store,
       onLoading: (_) => const Carregando(),
       onError: (_, erro) => LogErro(erro: erro),

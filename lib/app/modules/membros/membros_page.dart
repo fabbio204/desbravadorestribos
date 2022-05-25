@@ -23,7 +23,8 @@ class MembrosPageState extends ModularState<MembrosPage, MembroController> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedBuilder<MembroController, Exception, List<MembroModel>>(
+    return ScopedBuilder<MembroController, Exception,
+        List<MembroModel>>.transition(
       store: store,
       onLoading: (_) => const Carregando(),
       onError: (_, erro) => LogErro(erro: erro),

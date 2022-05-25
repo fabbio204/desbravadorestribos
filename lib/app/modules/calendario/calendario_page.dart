@@ -34,7 +34,8 @@ class CalendarioPageState
 
   @override
   Widget build(BuildContext context) {
-    return ScopedBuilder<EventoController, Exception, List<EventoModel>>(
+    return ScopedBuilder<EventoController, Exception,
+        List<EventoModel>>.transition(
       store: store,
       onLoading: (_) => const Carregando(),
       onError: (_, exception) => LogErro(erro: exception),
