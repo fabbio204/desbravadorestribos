@@ -1,5 +1,4 @@
 import 'package:desbravadores_tribos/app/modules/home/widgets/menu_lateral_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -11,11 +10,10 @@ main() {
           home: Directionality(
             textDirection: TextDirection.ltr,
             child: MediaQuery(
-              data: MediaQueryData(),
-              child: SingleChildScrollView(child: SizedBox(
-                height: 100,
-                width: 100,
-                child: MenuLateralWidget()))),
+                data: MediaQueryData(),
+                child: SingleChildScrollView(
+                    child: SizedBox(
+                        height: 100, width: 100, child: MenuLateralWidget()))),
           ),
         ),
       );

@@ -1,16 +1,14 @@
 import 'package:desbravadores_tribos/app/modules/home/models/home_model.dart';
-import 'package:flutter/material.dart';
-
-import 'package:desbravadores_tribos/app/modules/home/models/home_state.dart';
+import 'package:flutter_triple/flutter_triple.dart';
 import 'package:desbravadores_tribos/app/modules/home/repositories/home_repository.dart';
 
-class HomeController extends ValueNotifier<HomeState> {
+class HomeController extends NotifierStore<Exception, HomeModel> {
   final HomeRepository repository;
 
-  HomeController(this.repository) : super(HomeInitialState());
+  HomeController(this.repository) : super(HomeModel());
 
   Future carregar() async {
-    value = HomeLoadingState();
+    setLoading(true);
     try {
       HomeModel model = HomeModel();
 
@@ -28,10 +26,12 @@ class HomeController extends ValueNotifier<HomeState> {
             .temNovaVersao()
             .then((value) => model.temNovaVersao = value))(),
       ]);
-      HomeLoadedState state = HomeLoadedState(model);
-      value = state;
+
+      update(model);
     } on Exception catch (e) {
-      value = HomeErrorState(e);
+      setError(e);
+    } finally {
+      setLoading(false);
     }
   }
 }

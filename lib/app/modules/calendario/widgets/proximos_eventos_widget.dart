@@ -32,6 +32,5 @@ class ProximosEventosWidget extends StatelessWidget {
         ],
       ),
     );
-    ;
   }
 }
