@@ -22,6 +22,18 @@ jobs:
       - name: Baixa os pacotes
         run: flutter pub get
 
+      - name: Roda os testes automatizados
+        run: flutter test --coverage
+
+      - uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          files: ./coverage/lcov.info
+          flags: unittests # optional
+          name: codecov-umbrella # optional
+          fail_ci_if_error: true
+          verbose: true
+
       - name: Compila o apk
         run: flutter build apk --dart-define=ID_PLANILHA=${{ secrets.ID_PLANILHA }} --dart-define=API_KEY=${{ secrets.API_KEY }}
 
