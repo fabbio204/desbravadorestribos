@@ -1,20 +1,13 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 name: Geração do Apk
 
 on:
-  pull_request:
-    branches: [ main ]
-    types:
-      - closed
+  push:
+    branches:
+      - main
 
 jobs:
-  if_merged:
-    if: github.event.pull_request.merged == true
-    name: build apk flutter
+  build:
+    name: Gera o APK do aplicativo e envia para o Google Drive
     runs-on: ubuntu-latest
 
     steps:
@@ -26,13 +19,25 @@ jobs:
         with:
           flutter-version: '2.10.5'
 
-      - name: get packages
+      - name: Baixa os pacotes
         run: flutter pub get
 
-      - name: build apk
+      - name: Roda os testes automatizados
+        run: flutter test --coverage
+
+      - uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          files: ./coverage/lcov.info
+          flags: unittests # optional
+          name: codecov-umbrella # optional
+          fail_ci_if_error: true
+          verbose: true
+
+      - name: Compila o apk
         run: flutter build apk --dart-define=ID_PLANILHA=${{ secrets.ID_PLANILHA }} --dart-define=API_KEY=${{ secrets.API_KEY }}
 
-      - name: upload to gdrive
+      - name: Envia para o Google Drive
         uses: adityak74/google-drive-upload-git-action@main
         with:
           credentials: ${{ secrets.API_KEY_GDRIVE }}
