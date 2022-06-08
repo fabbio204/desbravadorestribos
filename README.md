@@ -1,4 +1,5 @@
-[![Flutter](https://github.com/fabbio204/desbravadorestribos/actions/workflows/build.yml/badge.svg)](https://github.com/fabbio204/desbravadorestribos/actions/workflows/build.yml)
+[![build](https://github.com/fabbio204/desbravadorestribos/actions/workflows/build.yml/badge.svg)](https://github.com/fabbio204/desbravadorestribos/actions/workflows/build.yml)
+[![codecov](https://codecov.io/gh/fabbio204/desbravadorestribos/branch/main/graph/badge.svg?token=O6KP8XLO0C)](https://codecov.io/gh/fabbio204/desbravadorestribos)
 
 # Tribos App
 
