@@ -41,6 +41,7 @@ class _CarregandoState extends State<Carregando> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
+        key: const Key('iconeCarregando'),
         height: animation.value,
         width: animation.value,
         child: Image.asset('triangulo.png'),

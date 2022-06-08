@@ -2,6 +2,7 @@ import 'package:desbravadores_tribos/app/core/api/app_version.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/models/evento_model.dart';
 import 'package:desbravadores_tribos/app/modules/home/models/resumo_model.dart';
 import 'package:desbravadores_tribos/app/modules/membros/models/membro_model.dart';
+import 'package:dio/dio.dart';
 import 'package:googleapis/sheets/v4.dart';
 import 'package:desbravadores_tribos/app/core/api/google_sheets_api.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -62,7 +63,8 @@ class HomeRepository {
   }
 
   Future<bool> temNovaVersao() async {
-    String versaoRecente = await AppVersion().releaseVersion();
+    Dio dio = Dio();
+    String versaoRecente = await AppVersion(dio).releaseVersion();
 
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String versaoInstalada = packageInfo.version;

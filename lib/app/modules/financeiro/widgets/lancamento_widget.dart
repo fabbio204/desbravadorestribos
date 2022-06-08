@@ -26,23 +26,13 @@ class LancamentoWidget extends StatelessWidget {
             ],
           ),
           if (model.entrada != null && model.entrada!.isNotEmpty)
-            Text(model.entrada.toString()),
+            Text(model.entrada.toString(), key: const Key('labelEntrada')),
           if (model.saida != null && model.saida!.isNotEmpty)
-            Text("-" + model.saida.toString()),
-          if (model.envolvido != null) Text(model.envolvido.toString()),
+            Text("-" + model.saida.toString(), key: const Key('labelSaida')),
+          if (model.envolvido != null)
+            Text(model.envolvido.toString(), key: const Key('labelEnvolvido')),
         ],
       ),
     );
-  }
-
-  Widget icone() {
-    if (model.entrada != null && model.entrada!.isNotEmpty) {
-      return Icon(
-        Icons.add,
-        color: Colors.green[600],
-      );
-    }
-
-    return Icon(Icons.remove, color: Colors.red[600]);
   }
 }

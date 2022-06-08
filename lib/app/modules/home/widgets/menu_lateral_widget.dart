@@ -36,11 +36,6 @@ class _MenuLateralWidgetState extends State<MenuLateralWidget> {
         Modular.to.navigate(HomeModule.rotaFinanceiro);
         Modular.get<ValueNotifier<String>>().value = 'Financeiro';
         break;
-
-      default:
-        Modular.to.navigate(HomeModule.rotaResumo);
-        Modular.get<ValueNotifier<String>>().value = 'Início';
-        break;
     }
 
     _fecharDrawer();
@@ -49,6 +44,7 @@ class _MenuLateralWidgetState extends State<MenuLateralWidget> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      key: const Key('drawerMenu'),
       elevation: 5,
       child: ListView(
         key: const Key('listaItensMenu'),
@@ -74,21 +70,25 @@ class _MenuLateralWidgetState extends State<MenuLateralWidget> {
             ),
           ),
           ListTile(
+            key: const Key('botaoInicio'),
             leading: const Icon(Icons.home),
             title: const Text('Início'),
             onTap: () => abrirTela(Tela.inicio),
           ),
           ListTile(
+            key: const Key('botaoCalendario'),
             leading: const Icon(Icons.calendar_month),
             title: const Text('Calendário'),
             onTap: () => abrirTela(Tela.calendario),
           ),
           ListTile(
+            key: const Key('botaoMembros'),
             leading: const Icon(Icons.group),
             title: const Text('Membros'),
             onTap: () => abrirTela(Tela.membros),
           ),
           ListTile(
+            key: const Key('botaoFinanceiro'),
             leading: const Icon(Icons.monetization_on),
             title: const Text('Financeiro'),
             onTap: () => abrirTela(Tela.financeiro),

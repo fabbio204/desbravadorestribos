@@ -14,7 +14,6 @@ class MembroRepository {
     List<MembroModel> membros = resultados.values!.map((List<Object?> item) {
       return MembroModel(
           nome: item[0].toString(),
-          dataNascimento: item[1].toString(),
           unidade: item[2].toString(),
           aniversario: item[3].toString(),
           foto: item[4].toString(),

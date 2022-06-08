@@ -5,11 +5,12 @@ import 'package:flutter_test/flutter_test.dart';
 main() {
   group('ResumoWidget', () {
     testWidgets('has a title and message', (WidgetTester tester) async {
-      await tester.pumpWidget(const MediaQuery(
-        data: MediaQueryData(),
+      await tester.pumpWidget(MediaQuery(
+        data: const MediaQueryData(),
         child: Directionality(
           textDirection: TextDirection.ltr,
           child: ResumoWidget(
+            key: UniqueKey(),
             titulo: 'T',
             valor: '',
           ),

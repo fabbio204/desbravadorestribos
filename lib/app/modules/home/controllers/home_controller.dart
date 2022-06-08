@@ -7,7 +7,7 @@ class HomeController extends NotifierStore<Exception, HomeModel> {
 
   HomeController(this.repository) : super(HomeModel());
 
-  Future carregar() async {
+  Future<void> init() async {
     setLoading(true);
     try {
       HomeModel model = HomeModel();

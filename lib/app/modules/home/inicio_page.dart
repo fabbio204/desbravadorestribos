@@ -22,7 +22,7 @@ class _InicioPageState extends ModularState<InicioPage, HomeController> {
   @override
   void initState() {
     super.initState();
-    controller.carregar();
+    controller.init();
   }
 
   @override

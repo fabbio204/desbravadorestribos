@@ -1,9 +1,4 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: Flutter
+name: Executa os testes automatizados
 
 on:
   pull_request:
@@ -11,7 +6,7 @@ on:
 
 jobs:
   build:
-    name: compile flutter
+    name: Compila o flutter
     runs-on: ubuntu-latest
 
     steps:
@@ -23,8 +18,17 @@ jobs:
         with:
           flutter-version: '2.10.5'
 
-      - name: get packages
+      - name: Baixa os pacotes
         run: flutter pub get
 
-      - name: running tests
-        run: flutter test
+      - name: Roda os testes automatizados
+        run: flutter test --coverage
+
+      - uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          files: ./coverage/lcov.info
+          flags: unittests # optional
+          name: codecov-umbrella # optional
+          fail_ci_if_error: true
+          verbose: true

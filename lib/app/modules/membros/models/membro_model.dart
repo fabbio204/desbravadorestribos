@@ -2,14 +2,12 @@ import 'dart:convert';
 
 class MembroModel {
   String nome;
-  String? dataNascimento;
   String? unidade;
   String? aniversario;
   String? foto;
   int? idade;
   MembroModel({
     required this.nome,
-    this.dataNascimento,
     this.unidade,
     this.aniversario,
     this.foto,
@@ -26,7 +24,6 @@ class MembroModel {
   }) {
     return MembroModel(
       nome: nome ?? this.nome,
-      dataNascimento: dataNascimento ?? this.dataNascimento,
       unidade: unidade ?? this.unidade,
       aniversario: aniversario ?? this.aniversario,
       foto: foto ?? this.foto,
@@ -37,7 +34,6 @@ class MembroModel {
   Map<String, dynamic> toMap() {
     return {
       'nome': nome,
-      'dataNascimento': dataNascimento,
       'unidade': unidade,
       'aniversario': aniversario,
       'foto': foto,
@@ -48,7 +44,6 @@ class MembroModel {
   factory MembroModel.fromMap(Map<String, dynamic> map) {
     return MembroModel(
       nome: map['nome'] ?? '',
-      dataNascimento: map['dataNascimento'] ?? '',
       unidade: map['unidade'] ?? '',
       aniversario: map['aniversario'] ?? '',
       foto: map['foto'] ?? '',
@@ -63,7 +58,7 @@ class MembroModel {
 
   @override
   String toString() {
-    return 'MembroModel(nome: $nome, dataNascimento: $dataNascimento, unidade: $unidade, aniversario: $aniversario, foto: $foto, idade: $idade)';
+    return 'MembroModel(nome: $nome, unidade: $unidade, aniversario: $aniversario, foto: $foto, idade: $idade)';
   }
 
   @override
@@ -72,7 +67,6 @@ class MembroModel {
 
     return other is MembroModel &&
         other.nome == nome &&
-        other.dataNascimento == dataNascimento &&
         other.unidade == unidade &&
         other.aniversario == aniversario &&
         other.foto == foto &&
@@ -82,7 +76,6 @@ class MembroModel {
   @override
   int get hashCode {
     return nome.hashCode ^
-        dataNascimento.hashCode ^
         unidade.hashCode ^
         aniversario.hashCode ^
         foto.hashCode ^

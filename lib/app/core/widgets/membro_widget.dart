@@ -30,7 +30,10 @@ class MembroWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(membro.nome),
+                    Text(
+                      membro.nome,
+                      key: const Key('nome'),
+                    ),
                     if (membro.idade != null)
                       Row(
                         children: [
@@ -39,7 +42,11 @@ class MembroWidget extends StatelessWidget {
                             size: tamanhoIcone,
                           ),
                           const SizedBox(width: 4),
-                          Text('${membro.idade} anos', style: estilo),
+                          Text(
+                            '${membro.idade} anos',
+                            style: estilo,
+                            key: const Key('idade'),
+                          ),
                         ],
                       ),
                     if (membro.unidade != null)
@@ -50,7 +57,11 @@ class MembroWidget extends StatelessWidget {
                             size: tamanhoIcone,
                           ),
                           const SizedBox(width: 4),
-                          Text('Unidade ${membro.unidade}', style: estilo),
+                          Text(
+                            'Unidade ${membro.unidade}',
+                            style: estilo,
+                            key: const Key('unidade'),
+                          ),
                         ],
                       ),
                     if (membro.aniversario != null)
@@ -62,7 +73,7 @@ class MembroWidget extends StatelessWidget {
                           ),
                           const SizedBox(width: 4),
                           Text('Aniversário ${membro.aniversario}',
-                              style: estilo),
+                              style: estilo, key: const Key('aniversario')),
                         ],
                       )
                   ],
@@ -79,10 +90,10 @@ class MembroWidget extends StatelessWidget {
   Widget setImage() {
     if (membro.foto != null && membro.foto!.isNotEmpty) {
       return CachedNetworkImage(
+        key: const Key('foto'),
         imageUrl: membro.foto!,
         progressIndicatorBuilder: (context, url, downloadProgress) => Center(
             child: CircularProgressIndicator(value: downloadProgress.progress)),
-        errorWidget: (context, url, error) => const Icon(Icons.error),
       );
     }
 
