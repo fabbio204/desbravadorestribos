@@ -20,6 +20,8 @@ class MembroRepository {
           idade: int.parse(item[5].toString()));
     }).toList();
 
+    membros.sort(((a, b) => a.nome.compareTo(b.nome)));
+
     return membros;
   }
 }
