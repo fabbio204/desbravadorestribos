@@ -10,11 +10,37 @@ class EventoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        leading: Text(formataData.format(evento.dia)),
-        title: Text(evento.titulo),
-      ),
+    return Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.green[50],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: SizedBox(
+                height: 40,
+                width: 40,
+                child: Center(
+                  child: Text(
+                    formataData.format(evento.dia),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding:
+                const EdgeInsets.only(left: 0, top: 8, right: 8, bottom: 8),
+            child: Text(evento.titulo),
+          ),
+        )
+      ],
     );
   }
 }

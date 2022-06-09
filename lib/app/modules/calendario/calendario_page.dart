@@ -42,44 +42,46 @@ class CalendarioPageState
       onState: (context, eventos) {
         listaEventos = eventos;
         _carregarEventosDoMes(_diaFocado.value);
-        return Column(
-          children: [
-            ValueListenableBuilder<DateTime>(
-              valueListenable: _diaClicado,
-              builder: (context, dia, widget) {
-                return TableCalendar<EventoModel>(
-                  firstDay: DateTime.utc(_diaFocado.value.year, 1, 1),
-                  lastDay: DateTime.utc(_diaFocado.value.year, 12, 31),
-                  focusedDay: _diaFocado.value,
-                  locale: 'pt_BR',
-                  calendarFormat: _calendarFormat,
-                  startingDayOfWeek: StartingDayOfWeek.sunday,
-                  eventLoader: (hoje) => _getEventosDoAno(hoje, eventos),
-                  selectedDayPredicate: (day) {
-                    return isSameDay(day, dia);
-                  },
-                  onDaySelected: _diaSelecionado,
-                  onPageChanged: _carregarEventosDoMes,
-                  headerStyle: const HeaderStyle(formatButtonVisible: false),
-                  calendarStyle: CalendarStyle(
-                    selectedDecoration: BoxDecoration(
-                      color: context.primaryColor,
-                      shape: BoxShape.circle,
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              ValueListenableBuilder<DateTime>(
+                valueListenable: _diaClicado,
+                builder: (context, dia, widget) {
+                  return TableCalendar<EventoModel>(
+                    firstDay: DateTime.utc(_diaFocado.value.year, 1, 1),
+                    lastDay: DateTime.utc(_diaFocado.value.year, 12, 31),
+                    focusedDay: _diaFocado.value,
+                    locale: 'pt_BR',
+                    calendarFormat: _calendarFormat,
+                    startingDayOfWeek: StartingDayOfWeek.sunday,
+                    eventLoader: (hoje) => _getEventosDoAno(hoje, eventos),
+                    selectedDayPredicate: (day) {
+                      return isSameDay(day, dia);
+                    },
+                    onDaySelected: _diaSelecionado,
+                    onPageChanged: _carregarEventosDoMes,
+                    headerStyle: const HeaderStyle(formatButtonVisible: false),
+                    calendarStyle: CalendarStyle(
+                      selectedDecoration: BoxDecoration(
+                        color: context.primaryColor,
+                        shape: BoxShape.circle,
+                      ),
+                      todayDecoration: BoxDecoration(
+                        color: context.secondaryColor,
+                        shape: BoxShape.circle,
+                      ),
                     ),
-                    todayDecoration: BoxDecoration(
-                      color: context.secondaryColor,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 8.0),
-            Expanded(
-              child: ValueListenableBuilder<List<EventoModel>>(
+                  );
+                },
+              ),
+              const SizedBox(height: 8.0),
+              ValueListenableBuilder<List<EventoModel>>(
                 valueListenable: eventosDoDia,
                 builder: (context, eventos, _) {
                   return ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
                     itemCount: eventos.length,
                     itemBuilder: (context, index) {
                       return EventoWidget(evento: eventos[index]);
@@ -87,8 +89,8 @@ class CalendarioPageState
                   );
                 },
               ),
-            )
-          ],
+            ],
+          ),
         );
       },
     );
