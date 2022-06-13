@@ -1,24 +1,38 @@
+import 'package:googleapis/calendar/v3.dart';
 import 'package:googleapis/sheets/v4.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
 class GoogleSheetsApi {
-  static SheetsApi? api;
+  static SheetsApi? planilhaApi;
+  static CalendarApi? calendarApi;
 
-  static String get id => const String.fromEnvironment('ID_PLANILHA');
+  static String get idPlanilha => const String.fromEnvironment('ID_PLANILHA');
 
-  static Future init() async {
-    api = await conectar();
+  static String get idCalendario =>
+      const String.fromEnvironment('ID_CALENDARIO');
+
+  static Future<void> init() async {
+    planilhaApi = await conectar();
+    calendarApi = await conectarCalendario();
   }
 
   static conectar() async {
     return SheetsApi(await client);
   }
 
-  static const List<String> _scopes = [
+  static conectarCalendario() async {
+    return CalendarApi(await clientCalendario);
+  }
+
+  static const List<String> _scopesSheets = [
     SheetsApi.spreadsheetsScope,
     SheetsApi.driveScope,
+  ];
+
+  static const List<String> _scopesCalendar = [
+    CalendarApi.calendarEventsScope,
   ];
 
   static Future<Client> get client async {
@@ -26,7 +40,19 @@ class GoogleSheetsApi {
     var chave = const String.fromEnvironment('API_KEY');
     String decoded = stringToBase64.decode(chave);
     var credenciais = await obtainAccessCredentialsViaServiceAccount(
-        ServiceAccountCredentials.fromJson(decoded), _scopes, Client());
+        ServiceAccountCredentials.fromJson(decoded), _scopesSheets, Client());
+
+    AuthClient client = authenticatedClient(Client(), credenciais);
+
+    return client;
+  }
+
+  static Future<Client> get clientCalendario async {
+    Codec<String, String> stringToBase64 = utf8.fuse(base64);
+    var chave = const String.fromEnvironment('API_KEY');
+    String decoded = stringToBase64.decode(chave);
+    var credenciais = await obtainAccessCredentialsViaServiceAccount(
+        ServiceAccountCredentials.fromJson(decoded), _scopesCalendar, Client());
 
     AuthClient client = authenticatedClient(Client(), credenciais);
 

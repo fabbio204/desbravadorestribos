@@ -4,8 +4,9 @@ import 'package:googleapis/sheets/v4.dart';
 
 class MembroRepository {
   Future<List<MembroModel>> listar() async {
-    ValueRange resultados = await GoogleSheetsApi.api!.spreadsheets.values
-        .get(GoogleSheetsApi.id, 'Membros!A3:F100');
+    ValueRange resultados = await GoogleSheetsApi
+        .planilhaApi!.spreadsheets.values
+        .get(GoogleSheetsApi.idPlanilha, 'Membros!A3:F100');
 
     if (resultados.values == null) {
       return [];
@@ -14,12 +15,13 @@ class MembroRepository {
     List<MembroModel> membros = resultados.values!.map((List<Object?> item) {
       return MembroModel(
           nome: item[0].toString(),
-          dataNascimento: item[1].toString(),
           unidade: item[2].toString(),
           aniversario: item[3].toString(),
           foto: item[4].toString(),
           idade: int.parse(item[5].toString()));
     }).toList();
+
+    membros.sort(((a, b) => a.nome.compareTo(b.nome)));
 
     return membros;
   }

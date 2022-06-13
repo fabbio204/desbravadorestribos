@@ -21,10 +21,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final titulo = context.watch<ValueNotifier<String>>();
+    ValueNotifier<String> titulo = context.watch<ValueNotifier<String>>();
     return Scaffold(
       appBar: AppBar(
-        title: Text(titulo.value),
+        title: Text(titulo.value, key: const Key('tituloAppBar')),
       ),
       body: const RouterOutlet(),
       drawer: const MenuLateralWidget(),

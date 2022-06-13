@@ -1,14 +1,11 @@
 import 'package:desbravadores_tribos/app/core/widgets/membro_widget.dart';
 import 'package:desbravadores_tribos/app/modules/membros/models/membro_model.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class AniversariantesWidget extends StatelessWidget {
   final List<MembroModel> aniversariantes;
   const AniversariantesWidget({Key? key, required this.aniversariantes})
       : super(key: key);
-
-  static final DateFormat formatadorData = DateFormat('dd/MM/yyyy');
 
   @override
   Widget build(BuildContext context) {

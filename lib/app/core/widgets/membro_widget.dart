@@ -11,6 +11,7 @@ class MembroWidget extends StatelessWidget {
 
   static const TextStyle estilo = TextStyle(color: Colors.grey, fontSize: 12);
   static const double tamanhoIcone = 12;
+  static const double altura = 60;
 
   @override
   Widget build(BuildContext context) {
@@ -22,15 +23,19 @@ class MembroWidget extends StatelessWidget {
             children: [
               if (!ocultarIcone)
                 Expanded(
-                  child: setImage(),
-                  flex: 3,
+                  child: SizedBox(height: 60, child: setImage()),
+                  flex: 2,
                 ),
               const SizedBox(width: 8),
               Expanded(
+                flex: 10,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(membro.nome),
+                    Text(
+                      membro.nome,
+                      key: const Key('nome'),
+                    ),
                     if (membro.idade != null)
                       Row(
                         children: [
@@ -39,10 +44,14 @@ class MembroWidget extends StatelessWidget {
                             size: tamanhoIcone,
                           ),
                           const SizedBox(width: 4),
-                          Text('${membro.idade} anos', style: estilo),
+                          Text(
+                            '${membro.idade} anos',
+                            style: estilo,
+                            key: const Key('idade'),
+                          ),
                         ],
                       ),
-                    if (membro.unidade != null)
+                    if (membro.unidade != null && membro.unidade!.isNotEmpty)
                       Row(
                         children: [
                           const Icon(
@@ -50,10 +59,15 @@ class MembroWidget extends StatelessWidget {
                             size: tamanhoIcone,
                           ),
                           const SizedBox(width: 4),
-                          Text('Unidade ${membro.unidade}', style: estilo),
+                          Text(
+                            'Unidade ${membro.unidade}',
+                            style: estilo,
+                            key: const Key('unidade'),
+                          ),
                         ],
                       ),
-                    if (membro.aniversario != null)
+                    if (membro.aniversario != null &&
+                        membro.aniversario!.isNotEmpty)
                       Row(
                         children: [
                           const Icon(
@@ -62,12 +76,11 @@ class MembroWidget extends StatelessWidget {
                           ),
                           const SizedBox(width: 4),
                           Text('Aniversário ${membro.aniversario}',
-                              style: estilo),
+                              style: estilo, key: const Key('aniversario')),
                         ],
                       )
                   ],
                 ),
-                flex: 8,
               ),
             ],
           ),
@@ -78,20 +91,25 @@ class MembroWidget extends StatelessWidget {
 
   Widget setImage() {
     if (membro.foto != null && membro.foto!.isNotEmpty) {
-      return CachedNetworkImage(
-        imageUrl: membro.foto!,
-        progressIndicatorBuilder: (context, url, downloadProgress) => Center(
-            child: CircularProgressIndicator(value: downloadProgress.progress)),
-        errorWidget: (context, url, error) => const Icon(Icons.error),
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(50),
+        child: CachedNetworkImage(
+          height: 60,
+          width: 60,
+          fit: BoxFit.cover,
+          key: const Key('foto'),
+          imageUrl: membro.foto!,
+          progressIndicatorBuilder: (context, url, downloadProgress) => Center(
+            child: CircularProgressIndicator(value: downloadProgress.progress),
+          ),
+        ),
       );
     }
 
-    return const SizedBox(
-      child: Center(
-        child: Icon(
-          Icons.person,
-          size: 55,
-        ),
+    return const Center(
+      child: Icon(
+        Icons.person,
+        size: 55,
       ),
     );
   }

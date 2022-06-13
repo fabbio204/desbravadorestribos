@@ -1,16 +1,21 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 
 class AppVersion {
-  static const String _githubApiTags =
+  final Dio dio;
+  static const String githubApiTags =
       'https://api.github.com/repos/fabbio204/desbravadorestribos/tags';
 
-  Future<String> releaseVersion() async {
-    Dio dio = Dio();
+  AppVersion(this.dio);
 
-    Response response = await dio.get(_githubApiTags);
+  Future<String> releaseVersion() async {
+    Response<String> response = await dio.get<String>(githubApiTags);
+
+    var resultado = json.decode(response.data!);
 
     List<String> lista =
-        (response.data as List).map((e) => e["name"] as String).toList();
+        (resultado as List).map((e) => e["name"] as String).toList();
 
     String ultimaTag = lista[0];
 
