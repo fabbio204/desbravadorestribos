@@ -3,14 +3,16 @@ import 'package:desbravadores_tribos/app/modules/calendario/models/evento_model.
 import 'package:desbravadores_tribos/app/modules/home/models/resumo_model.dart';
 import 'package:desbravadores_tribos/app/modules/membros/models/membro_model.dart';
 import 'package:dio/dio.dart';
+import 'package:googleapis/calendar/v3.dart';
 import 'package:googleapis/sheets/v4.dart';
 import 'package:desbravadores_tribos/app/core/api/google_sheets_api.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class HomeRepository {
   Future<List<MembroModel>> listarAniversariantes() async {
-    ValueRange resultados = await GoogleSheetsApi.api!.spreadsheets.values
-        .get(GoogleSheetsApi.id, 'Dashboard!A12:C21');
+    ValueRange resultados = await GoogleSheetsApi
+        .planilhaApi!.spreadsheets.values
+        .get(GoogleSheetsApi.idPlanilha, 'Dashboard!A12:C21');
 
     if (resultados.values == null) {
       return [];
@@ -28,8 +30,9 @@ class HomeRepository {
   }
 
   Future<List<ResumoModel>> listarResumo() async {
-    ValueRange resultados = await GoogleSheetsApi.api!.spreadsheets.values
-        .get(GoogleSheetsApi.id, 'Dashboard!C2:D8');
+    ValueRange resultados = await GoogleSheetsApi
+        .planilhaApi!.spreadsheets.values
+        .get(GoogleSheetsApi.idPlanilha, 'Dashboard!C2:D8');
 
     if (resultados.values == null) {
       return [];
@@ -43,21 +46,27 @@ class HomeRepository {
   }
 
   Future<List<EventoModel>> proximosEventos() async {
-    ValueRange resultados = await GoogleSheetsApi.api!.spreadsheets.values
-        .get(GoogleSheetsApi.id, 'Dashboard!E12:F21');
+    DateTime agora = DateTime.now();
+    DateTime ontem = DateTime(agora.year, agora.month, agora.day).toUtc();
 
-    if (resultados.values == null) {
+    Events resultados = await GoogleSheetsApi.calendarApi!.events.list(
+      GoogleSheetsApi.idCalendario,
+      timeMin: ontem,
+      orderBy: 'startTime',
+      singleEvents: true,
+      maxResults: 10,
+    );
+
+    if (resultados.items == null) {
       return [];
     }
 
-    List<EventoModel> aniversariantes =
-        resultados.values!.map((List<Object?> item) {
-      List<String> numerosData = item[0].toString().split('/');
-      String novaData = numerosData.reversed.join('-');
-
-      return EventoModel(
-          dia: DateTime.parse(novaData), titulo: item[1].toString());
+    List<EventoModel> aniversariantes = resultados.items!.map((Event item) {
+      DateTime? data = item.start?.date ?? item.start?.dateTime;
+      return EventoModel(dia: data!, titulo: item.summary!);
     }).toList();
+
+    aniversariantes.sort((a, b) => a.dia.compareTo(b.dia));
 
     return aniversariantes;
   }

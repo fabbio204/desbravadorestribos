@@ -5,8 +5,9 @@ import 'package:googleapis/sheets/v4.dart';
 
 class FinanceiroRepository {
   Future<List<CaixaModel>> saldoCaixas() async {
-    ValueRange resultados = await GoogleSheetsApi.api!.spreadsheets.values
-        .get(GoogleSheetsApi.id, 'Caixa!I4:J14');
+    ValueRange resultados = await GoogleSheetsApi
+        .planilhaApi!.spreadsheets.values
+        .get(GoogleSheetsApi.idPlanilha, 'Caixa!I4:J14');
 
     if (resultados.values == null) {
       return [];
@@ -20,8 +21,9 @@ class FinanceiroRepository {
   }
 
   Future<List<String>> subCaixas() async {
-    ValueRange resultados = await GoogleSheetsApi.api!.spreadsheets.values
-        .get(GoogleSheetsApi.id, 'SubCaixas!A1:A20');
+    ValueRange resultados = await GoogleSheetsApi
+        .planilhaApi!.spreadsheets.values
+        .get(GoogleSheetsApi.idPlanilha, 'SubCaixas!A1:A20');
 
     if (resultados.values == null) {
       return [];
@@ -38,18 +40,19 @@ class FinanceiroRepository {
   }
 
   Future setSubCaixa(String subCaixa) async {
-    await GoogleSheetsApi.api!.spreadsheets.values.update(
+    await GoogleSheetsApi.planilhaApi!.spreadsheets.values.update(
         ValueRange(range: 'SubCaixas!C2', values: [
           [subCaixa]
         ]),
-        GoogleSheetsApi.id,
+        GoogleSheetsApi.idPlanilha,
         'SubCaixas!C2',
         valueInputOption: 'RAW');
   }
 
   Future<List<LancamentoModel>> lancamentos() async {
-    ValueRange resultados = await GoogleSheetsApi.api!.spreadsheets.values
-        .get(GoogleSheetsApi.id, 'Caixa!A7:F');
+    ValueRange resultados = await GoogleSheetsApi
+        .planilhaApi!.spreadsheets.values
+        .get(GoogleSheetsApi.idPlanilha, 'Caixa!A7:F');
 
     if (resultados.values == null) {
       return [];
