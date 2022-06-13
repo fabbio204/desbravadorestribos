@@ -35,7 +35,7 @@ jobs:
           verbose: true
 
       - name: Compila o apk
-        run: flutter build apk --dart-define=ID_PLANILHA=${{ secrets.ID_PLANILHA }} --dart-define=API_KEY=${{ secrets.API_KEY }}
+        run: flutter build apk --dart-define=ID_PLANILHA=${{ secrets.ID_PLANILHA }} --dart-define=ID_CALENDARIO=${{ secrets.ID_CALENDARIO }} --dart-define=API_KEY=${{ secrets.API_KEY }} 
 
       - name: Envia para o Google Drive
         uses: adityak74/google-drive-upload-git-action@main
