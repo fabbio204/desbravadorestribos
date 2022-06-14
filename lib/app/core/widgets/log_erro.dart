@@ -7,7 +7,11 @@ class LogErro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('Ocorreu um erro. ${erro.toString()}', key: const Key('mensagemErro')),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text('Ocorreu um erro. ${erro.toString()}',
+            key: const Key('mensagemErro')),
+      ),
     );
   }
 }
