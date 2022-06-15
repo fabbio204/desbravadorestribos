@@ -31,43 +31,49 @@ class _InicioPageState extends ModularState<InicioPage, HomeController> {
       store: controller,
       onLoading: (_) => const Carregando(),
       onError: (_, erro) => LogErro(erro: erro),
-      onState: (context, value) => SingleChildScrollView(
-        child: Column(
-          children: [
-            if (value.temNovaVersao)
-              MaterialBanner(
-                padding: const EdgeInsets.all(10),
-                leading: const Icon(Icons.new_releases),
-                content: const Text('Existe uma nova versão do aplicativo'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      launchUrl(Uri.parse(
-                        const String.fromEnvironment('URL_APK'),
-                      ));
-                    },
-                    child: const Text('Baixar'),
-                  )
+      onState: (context, value) => Column(
+        children: [
+          if (value.temNovaVersao)
+            MaterialBanner(
+              padding: const EdgeInsets.all(10),
+              leading: const Icon(Icons.new_releases),
+              content: const Text('Existe uma nova versão do aplicativo'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    launchUrl(Uri.parse(
+                      const String.fromEnvironment('URL_APK'),
+                    ));
+                  },
+                  child: const Text('Baixar'),
+                )
+              ],
+            ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 80,
+                    width: context.screenWidth,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      physics: const BouncingScrollPhysics(),
+                      children: value.resumo
+                          .map((e) => ResumoWidget(
+                                titulo: e.titulo,
+                                valor: e.valor,
+                              ))
+                          .toList(),
+                    ),
+                  ),
+                  AniversariantesWidget(aniversariantes: value.aniversariantes),
+                  ProximosEventosWidget(eventos: value.eventos),
                 ],
               ),
-            SizedBox(
-              height: 80,
-              width: context.screenWidth,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                physics: const BouncingScrollPhysics(),
-                children: value.resumo
-                    .map((e) => ResumoWidget(
-                          titulo: e.titulo,
-                          valor: e.valor,
-                        ))
-                    .toList(),
-              ),
             ),
-            AniversariantesWidget(aniversariantes: value.aniversariantes),
-            ProximosEventosWidget(eventos: value.eventos),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
