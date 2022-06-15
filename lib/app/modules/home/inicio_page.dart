@@ -51,6 +51,7 @@ class _InicioPageState extends ModularState<InicioPage, HomeController> {
             ),
           Expanded(
             child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 children: [
                   SizedBox(

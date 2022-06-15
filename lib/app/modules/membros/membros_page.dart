@@ -30,6 +30,7 @@ class MembrosPageState extends ModularState<MembrosPage, MembroController> {
       onError: (_, erro) => LogErro(erro: erro),
       onState: (context, membros) {
         return ListView.builder(
+            physics: const BouncingScrollPhysics(),
             itemCount: membros.length,
             itemBuilder: (context, index) {
               return MembroWidget(membro: membros[index]);

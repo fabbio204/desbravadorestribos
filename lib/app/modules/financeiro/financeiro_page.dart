@@ -69,6 +69,7 @@ class FinanceiroPageState
                         controller.init();
                       },
                       child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
                         itemCount: e.lancamentos!.length,
                         itemBuilder: (BuildContext context, int index) {
                           return LancamentoWidget(model: e.lancamentos![index]);

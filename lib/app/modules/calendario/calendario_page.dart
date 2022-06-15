@@ -45,6 +45,7 @@ class CalendarioPageState
         return Align(
           alignment: Alignment.topCenter,
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
                 ValueListenableBuilder<DateTime>(
