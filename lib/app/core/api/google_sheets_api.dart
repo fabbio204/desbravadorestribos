@@ -1,28 +1,56 @@
+import 'package:desbravadores_tribos/app/core/api/google_api_base.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:googleapis/sheets/v4.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
-class GoogleSheetsApi {
-  static SheetsApi? planilhaApi;
-  static CalendarApi? calendarApi;
+class GoogleSheetsApi implements GoogleApiBase {
+  String get _idPlanilha => const String.fromEnvironment('ID_PLANILHA');
+  String get _idCalendario => const String.fromEnvironment('ID_CALENDARIO');
 
-  static String get idPlanilha => const String.fromEnvironment('ID_PLANILHA');
+  @override
+  Future<Events> getEventos({
+    String? orderBy,
+    DateTime? timeMin,
+    DateTime? timeMax,
+    int maxResults = 250,
+  }) async {
+    var calendario = await conectarCalendario();
 
-  static String get idCalendario =>
-      const String.fromEnvironment('ID_CALENDARIO');
-
-  static Future<void> init() async {
-    planilhaApi = await conectar();
-    calendarApi = await conectarCalendario();
+    return calendario.events.list(_idCalendario,
+        orderBy: orderBy,
+        singleEvents: true,
+        timeMin: timeMin,
+        timeMax: timeMax,
+        maxResults: maxResults);
   }
 
-  static conectar() async {
+  @override
+  Future<ValueRange> getPlanilha(String intervalo) async {
+    var planilha = await conectarPlanilha();
+
+    return planilha.spreadsheets.values.get(_idPlanilha, intervalo);
+  }
+
+  @override
+  Future<void> setPlanilha(String intervalo, String valor) async {
+    var planilha = await conectarPlanilha();
+
+    await planilha.spreadsheets.values.update(
+        ValueRange(range: intervalo, values: [
+          [valor]
+        ]),
+        _idPlanilha,
+        intervalo,
+        valueInputOption: 'RAW');
+  }
+
+  static Future<SheetsApi> conectarPlanilha() async {
     return SheetsApi(await client);
   }
 
-  static conectarCalendario() async {
+  static Future<CalendarApi> conectarCalendario() async {
     return CalendarApi(await clientCalendario);
   }
 

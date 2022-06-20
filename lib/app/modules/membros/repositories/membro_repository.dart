@@ -1,12 +1,13 @@
-import 'package:desbravadores_tribos/app/core/api/google_sheets_api.dart';
+import 'package:desbravadores_tribos/app/core/api/google_api_base.dart';
 import 'package:desbravadores_tribos/app/modules/membros/models/membro_model.dart';
 import 'package:googleapis/sheets/v4.dart';
 
 class MembroRepository {
+  final GoogleApiBase api;
+
+  MembroRepository(this.api);
   Future<List<MembroModel>> listar() async {
-    ValueRange resultados = await GoogleSheetsApi
-        .planilhaApi!.spreadsheets.values
-        .get(GoogleSheetsApi.idPlanilha, 'Membros!A3:F100');
+    ValueRange resultados = await api.getPlanilha('Membros!A3:F100');
 
     if (resultados.values == null) {
       return [];

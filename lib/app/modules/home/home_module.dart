@@ -1,9 +1,11 @@
+import 'package:desbravadores_tribos/app/core/api/google_sheets_api.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/calendario_module.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/financeiro_module.dart';
 import 'package:desbravadores_tribos/app/modules/home/controllers/home_controller.dart';
 import 'package:desbravadores_tribos/app/modules/home/inicio_page.dart';
 import 'package:desbravadores_tribos/app/modules/home/repositories/home_repository.dart';
 import 'package:desbravadores_tribos/app/modules/membros/membros_module.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -19,8 +21,10 @@ class HomeModule extends Module {
   @override
   final List<Bind> binds = [
     Bind.singleton((i) => ValueNotifier<String>('Início')),
+    Bind.lazySingleton((i) => Dio()),
     Bind.lazySingleton((i) => HomeController(i.get<HomeRepository>())),
-    Bind.lazySingleton((i) => HomeRepository()),
+    Bind.lazySingleton((i) => GoogleSheetsApi()),
+    Bind.lazySingleton((i) => HomeRepository(i.get(), i.get())),
   ];
 
   @override
