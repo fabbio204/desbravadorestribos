@@ -33,9 +33,16 @@ class MembrosPageState extends ModularState<MembrosPage, MembroController> {
             physics: const BouncingScrollPhysics(),
             itemCount: membros.length,
             itemBuilder: (context, index) {
-              return MembroWidget(membro: membros[index]);
+              return GestureDetector(
+                onTap: () => abrirTelaMembro(membros[index]),
+                child: MembroWidget(membro: membros[index]),
+              );
             });
       },
     );
+  }
+
+  void abrirTelaMembro(MembroModel membro) {
+    Modular.to.pushNamed('/detalhes-membro/', arguments: membro);
   }
 }

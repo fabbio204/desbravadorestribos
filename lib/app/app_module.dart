@@ -1,5 +1,8 @@
+import 'package:desbravadores_tribos/app/core/pages/membro_detalhes.dart';
 import 'package:desbravadores_tribos/app/core/api/google_sheets_api.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/repository/calendario_repository.dart';
+import 'package:desbravadores_tribos/app/modules/membros/controllers/membro_detalhes_controller.dart';
+import 'package:desbravadores_tribos/app/modules/membros/repositories/membro_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:desbravadores_tribos/app/modules/home/repositories/home_repository.dart';
@@ -13,10 +16,18 @@ class AppModule extends Module {
     Bind.lazySingleton((i) => GoogleSheetsApi()),
     Bind.lazySingleton((i) => CalendarioRepository(i.get())),
     Bind.lazySingleton((i) => HomeRepository(i.get(), i.get())),
+    Bind.lazySingleton((i) => MembroRepository(i.get())),
+    Bind.lazySingleton((i) => MembroDetalhesController(i.get())),
   ];
 
   @override
   final List<ModularRoute> routes = [
     ModuleRoute(Modular.initialRoute, module: HomeModule()),
+    ChildRoute(
+      '/detalhes-membro/',
+      child: (_, args) => MembroDetalhes(
+        membro: args.data,
+      ),
+    )
   ];
 }

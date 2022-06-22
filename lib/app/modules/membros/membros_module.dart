@@ -1,3 +1,4 @@
+import 'package:desbravadores_tribos/app/modules/membros/controllers/membro_detalhes_controller.dart';
 import 'package:desbravadores_tribos/app/core/api/google_sheets_api.dart';
 import 'package:desbravadores_tribos/app/modules/membros/repositories/membro_repository.dart';
 import 'package:desbravadores_tribos/app/modules/membros/membro_controller.dart';
@@ -10,6 +11,7 @@ class MembrosModule extends Module {
     Bind.lazySingleton((i) => GoogleSheetsApi()),
     Bind.lazySingleton((i) => MembroRepository(i.get())),
     Bind.lazySingleton((i) => MembroController(i.get())),
+    Bind.lazySingleton((i) => MembroDetalhesController(i.get())),
   ];
 
   @override

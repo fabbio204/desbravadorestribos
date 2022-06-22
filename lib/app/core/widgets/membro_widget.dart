@@ -95,16 +95,21 @@ class MembroWidget extends StatelessWidget {
 
   Widget setImage() {
     if (membro.foto != null && membro.foto!.isNotEmpty) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(50),
-        child: CachedNetworkImage(
-          height: 60,
-          width: 60,
-          fit: BoxFit.cover,
-          key: const Key('foto'),
-          imageUrl: membro.foto!,
-          progressIndicatorBuilder: (context, url, downloadProgress) => Center(
-            child: CircularProgressIndicator(value: downloadProgress.progress),
+      return Hero(
+        tag: membro.nome,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(50),
+          child: CachedNetworkImage(
+            height: 60,
+            width: 60,
+            fit: BoxFit.cover,
+            key: const Key('foto'),
+            imageUrl: membro.foto!,
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                Center(
+              child:
+                  CircularProgressIndicator(value: downloadProgress.progress),
+            ),
           ),
         ),
       );
