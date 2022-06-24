@@ -32,6 +32,8 @@ class CalendarioPageState
     listaEventos = [];
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
     return ScopedBuilder<EventoController, Exception,

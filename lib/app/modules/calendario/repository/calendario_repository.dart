@@ -8,7 +8,7 @@ class CalendarioRepository {
   CalendarioRepository(this.api);
 
   Future<List<EventoModel>> calendarioCompleto() async {
-    Events resultados = await api.getEventos(
+    Events resultados = await api.listarEventos(
         orderBy: 'startTime',
         timeMin: DateTime(DateTime.now().year, 1, 1),
         timeMax: DateTime(DateTime.now().year, 12, 31));
@@ -25,5 +25,9 @@ class CalendarioRepository {
     aniversariantes.sort((a, b) => a.dia.compareTo(b.dia));
 
     return aniversariantes;
+  }
+
+  Future<void> cadastrarEvento(Event evento) {
+    return api.cadastrarEvento(evento);
   }
 }

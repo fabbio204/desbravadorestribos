@@ -50,7 +50,7 @@ class HomeRepository {
     DateTime agora = DateTime.now();
     DateTime ontem = DateTime(agora.year, agora.month, agora.day).toUtc();
 
-    Events resultados = await api.getEventos(
+    Events resultados = await api.listarEventos(
       timeMin: ontem,
       orderBy: 'startTime',
       maxResults: 10,

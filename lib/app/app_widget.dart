@@ -11,6 +11,7 @@ class AppWidget extends StatelessWidget {
     Modular.setInitialRoute(HomeModule.rotaResumo);
 
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       title: 'Desbravadores Tribos',
       theme: ThemeData(
         primarySwatch: Colors.green,

@@ -10,7 +10,7 @@ class GoogleSheetsApi implements GoogleApiBase {
   String get _idCalendario => const String.fromEnvironment('ID_CALENDARIO');
 
   @override
-  Future<Events> getEventos({
+  Future<Events> listarEventos({
     String? orderBy,
     DateTime? timeMin,
     DateTime? timeMax,
@@ -46,6 +46,17 @@ class GoogleSheetsApi implements GoogleApiBase {
         valueInputOption: 'RAW');
   }
 
+  @override
+  Future<void> cadastrarEvento(Event evento) async {
+    var calendario = await conectarCalendario();
+
+    await calendario.events.insert(
+      evento,
+      _idCalendario,
+      sendNotifications: true,
+    );
+  }
+
   static Future<SheetsApi> conectarPlanilha() async {
     return SheetsApi(await client);
   }
@@ -60,6 +71,7 @@ class GoogleSheetsApi implements GoogleApiBase {
   ];
 
   static const List<String> _scopesCalendar = [
+    CalendarApi.calendarScope,
     CalendarApi.calendarEventsScope,
   ];
 

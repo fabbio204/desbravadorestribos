@@ -103,7 +103,7 @@ void main() {
       Event(summary: "Teste 3", start: EventDateTime(date: DateTime.now())),
     ];
 
-    when(() => api.getEventos(
+    when(() => api.listarEventos(
           timeMin: any<DateTime>(named: "timeMin"),
           timeMax: any<DateTime>(named: "timeMax"),
           maxResults: any<int>(named: "maxResults"),
@@ -119,7 +119,7 @@ void main() {
   test('Testa HomeRepository.proximosEventos com 0 eventos', () async {
     List<Event> eventos = [];
 
-    when(() => api.getEventos(
+    when(() => api.listarEventos(
           timeMin: any<DateTime>(named: "timeMin"),
           timeMax: any<DateTime>(named: "timeMax"),
           maxResults: any<int>(named: "maxResults"),
@@ -132,7 +132,7 @@ void main() {
     expect(resultado.length, eventos.length);
   });
   test('Testa HomeRepository.proximosEventos com null no retorno', () async {
-    when(() => api.getEventos(
+    when(() => api.listarEventos(
           timeMin: any<DateTime>(named: "timeMin"),
           timeMax: any<DateTime>(named: "timeMax"),
           maxResults: any<int>(named: "maxResults"),

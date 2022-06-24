@@ -1,3 +1,4 @@
+import 'package:desbravadores_tribos/app/modules/calendario/controllers/cadastrar_evento_store.dart';
 import 'package:desbravadores_tribos/app/core/api/google_sheets_api.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/controllers/eventos_controller.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/repository/calendario_repository.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 class CalendarioModule extends Module {
   @override
   final List<Bind> binds = [
+    Bind.lazySingleton((i) => CadastrarEventoController(i.get())),
     Bind.lazySingleton((i) => GoogleSheetsApi()),
     Bind.lazySingleton((i) => CalendarioRepository(i.get())),
     Bind.lazySingleton((i) => EventoController(i.get())),

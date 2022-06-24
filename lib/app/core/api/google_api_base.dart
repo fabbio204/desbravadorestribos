@@ -5,10 +5,12 @@ abstract class GoogleApiBase {
   Future<ValueRange> getPlanilha(String intervalo);
   Future<void> setPlanilha(String intervalo, String valor);
 
-  Future<Events> getEventos({
+  Future<Events> listarEventos({
     String? orderBy,
     DateTime? timeMin,
     DateTime? timeMax,
     int maxResults = 250,
   });
+
+  Future<void> cadastrarEvento(Event evento);
 }

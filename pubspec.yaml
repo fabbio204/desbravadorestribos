@@ -48,6 +48,9 @@ dependencies:
   dio: ^4.0.6
   package_info_plus: ^1.4.2
   url_launcher: ^6.1.0
+  flutter_localizations: 
+    sdk: flutter
+    version: ^0.0.0
 
 dev_dependencies:
   flutter_test:

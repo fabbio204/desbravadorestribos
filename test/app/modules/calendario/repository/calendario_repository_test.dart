@@ -14,14 +14,15 @@ void main() {
     repository = CalendarioRepository(api);
   });
 
-  test('Testa CalendarioRepository - calendarioCompleto() com 3 eventos', () async {
+  test('Testa CalendarioRepository - calendarioCompleto() com 3 eventos',
+      () async {
     List<Event> eventos = [
       Event(summary: "Teste 1", start: EventDateTime(date: DateTime.now())),
       Event(summary: "Teste 2", start: EventDateTime(date: DateTime.now())),
       Event(summary: "Teste 3", start: EventDateTime(date: DateTime.now())),
     ];
 
-    when(() => api.getEventos(
+    when(() => api.listarEventos(
           timeMin: any<DateTime>(named: "timeMin"),
           timeMax: any<DateTime>(named: "timeMax"),
           maxResults: any<int>(named: "maxResults"),
@@ -34,10 +35,11 @@ void main() {
     expect(resultado, isNotEmpty);
     expect(resultado.length, eventos.length);
   });
-  test('Testa CalendarioRepository - calendarioCompleto() com 0 eventos', () async {
+  test('Testa CalendarioRepository - calendarioCompleto() com 0 eventos',
+      () async {
     List<Event> eventos = [];
 
-    when(() => api.getEventos(
+    when(() => api.listarEventos(
           timeMin: any<DateTime>(named: "timeMin"),
           timeMax: any<DateTime>(named: "timeMax"),
           maxResults: any<int>(named: "maxResults"),
@@ -49,8 +51,9 @@ void main() {
     expect(resultado, isNotNull);
     expect(resultado.length, eventos.length);
   });
-  test('Testa CalendarioRepository - calendarioCompleto() com null no retorno', () async {
-    when(() => api.getEventos(
+  test('Testa CalendarioRepository - calendarioCompleto() com null no retorno',
+      () async {
+    when(() => api.listarEventos(
           timeMin: any<DateTime>(named: "timeMin"),
           timeMax: any<DateTime>(named: "timeMax"),
           maxResults: any<int>(named: "maxResults"),

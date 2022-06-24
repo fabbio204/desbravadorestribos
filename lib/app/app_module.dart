@@ -1,3 +1,4 @@
+import 'package:desbravadores_tribos/app/core/pages/cadastrar_evento_page.dart';
 import 'package:desbravadores_tribos/app/core/pages/membro_detalhes.dart';
 import 'package:desbravadores_tribos/app/core/api/google_sheets_api.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/repository/calendario_repository.dart';
@@ -10,6 +11,8 @@ import 'package:desbravadores_tribos/app/modules/home/repositories/home_reposito
 import 'modules/home/home_module.dart';
 
 class AppModule extends Module {
+  static String rotaCadastrarEvento = "/cadastrar-evento/";
+
   @override
   final List<Bind> binds = [
     Bind.lazySingleton((i) => Dio()),
@@ -28,6 +31,8 @@ class AppModule extends Module {
       child: (_, args) => MembroDetalhes(
         membro: args.data,
       ),
-    )
+    ),
+    ChildRoute(rotaCadastrarEvento,
+        child: (_, args) => const CadastrarEventoPage()),
   ];
 }

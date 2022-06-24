@@ -21,6 +21,7 @@ class HomeModule extends Module {
   @override
   final List<Bind> binds = [
     Bind.singleton((i) => ValueNotifier<String>('Início')),
+    Bind.singleton((i) => ValueNotifier<List<Widget>?>([])),
     Bind.lazySingleton((i) => Dio()),
     Bind.lazySingleton((i) => HomeController(i.get<HomeRepository>())),
     Bind.lazySingleton((i) => GoogleSheetsApi()),
