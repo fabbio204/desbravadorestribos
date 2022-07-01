@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class InicioPage extends StatefulWidget {
   const InicioPage({Key? key}) : super(key: key);
@@ -40,10 +41,12 @@ class _InicioPageState extends ModularState<InicioPage, HomeController> {
               content: const Text('Existe uma nova versão do aplicativo'),
               actions: [
                 TextButton(
-                  onPressed: () {
-                    launchUrl(Uri.parse(
+                  onPressed: () async {
+                    if (await canLaunchUrl(Uri.parse(
                       const String.fromEnvironment('URL_APK'),
-                    ));
+                    ))) {
+                      launchUrlString(const String.fromEnvironment('URL_APK'), mode: LaunchMode.externalApplication);
+                    }
                   },
                   child: const Text('Baixar'),
                 )

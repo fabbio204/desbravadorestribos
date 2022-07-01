@@ -76,6 +76,12 @@ class HomeRepository {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String versaoInstalada = packageInfo.version;
 
-    return versaoRecente != versaoInstalada;
+    int intVersaoRecente =
+        int.parse(versaoRecente.replaceAll(RegExp('[.]'), ''));
+
+    int intVersaoInstalada =
+        int.parse(versaoInstalada.replaceAll(RegExp('[.]'), ''));
+
+    return intVersaoRecente > intVersaoInstalada;
   }
 }
