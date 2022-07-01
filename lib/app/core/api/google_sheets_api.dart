@@ -29,7 +29,6 @@ class GoogleSheetsApi implements GoogleApiBase {
   @override
   Future<ValueRange> getPlanilha(String intervalo) async {
     var planilha = await conectarPlanilha();
-
     return planilha.spreadsheets.values.get(_idPlanilha, intervalo);
   }
 
@@ -43,7 +42,17 @@ class GoogleSheetsApi implements GoogleApiBase {
         ]),
         _idPlanilha,
         intervalo,
-        valueInputOption: 'RAW');
+        valueInputOption: 'USER_ENTERED');
+  }
+
+  @override
+  Future<void> setPlanilhaConjunto(
+      String intervalo, List<List<Object>> valor) async {
+    var planilha = await conectarPlanilha();
+
+    await planilha.spreadsheets.values.update(
+        ValueRange(range: intervalo, values: valor), _idPlanilha, intervalo,
+        valueInputOption: 'USER_ENTERED');
   }
 
   @override

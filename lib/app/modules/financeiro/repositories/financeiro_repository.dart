@@ -66,4 +66,25 @@ class FinanceiroRepository {
 
     return lista;
   }
+
+  Future<int> quantidadeLinhas() async {
+    int linhaInicial = 7;
+    var linhas = await api.getPlanilha('Caixa!A$linhaInicial:A');
+    return linhaInicial - 1 + linhas.values!.length;
+  }
+
+  Future<void> cadastrarLancamento(LancamentoModel model) async {
+    int quantidade = await quantidadeLinhas();
+    quantidade++;
+    await api.setPlanilhaConjunto('Caixa!A$quantidade:F$quantidade', [
+      [
+        model.data,
+        model.descricao,
+        model.entrada ?? '',
+        model.saida ?? '',
+        model.subCaixa ?? '',
+        model.envolvido ?? '',
+      ],
+    ]);
+  }
 }

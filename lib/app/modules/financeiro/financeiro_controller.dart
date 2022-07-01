@@ -18,7 +18,7 @@ class FinanceiroController extends NotifierStore<Exception, FinanceiroModel> {
       model.lancamentos = await repository.lancamentos();
 
       for (var x in model.saldoCaixas) {
-        x.lancamentos = await getLancamentos(x.nome, model.lancamentos);
+        x.lancamentos = getLancamentos(x.nome, model.lancamentos);
       }
 
       model.lancamentos.sort((a, b) => b.dataEvento.compareTo(a.dataEvento));
@@ -37,7 +37,8 @@ class FinanceiroController extends NotifierStore<Exception, FinanceiroModel> {
     }
   }
 
-  getLancamentos(String nome, List<LancamentoModel> lancamentos) {
+  List<LancamentoModel> getLancamentos(
+      String nome, List<LancamentoModel> lancamentos) {
     var lista =
         lancamentos.where((element) => element.subCaixa == nome).toList();
     lista.sort((a, b) => b.dataEvento.compareTo(a.dataEvento));

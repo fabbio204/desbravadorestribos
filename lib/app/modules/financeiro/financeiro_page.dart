@@ -1,3 +1,4 @@
+import 'package:desbravadores_tribos/app/app_module.dart';
 import 'package:desbravadores_tribos/app/core/widgets/carregando.dart';
 import 'package:desbravadores_tribos/app/core/widgets/log_erro.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/financeiro_controller.dart';
@@ -31,56 +32,70 @@ class FinanceiroPageState
       store: store,
       onLoading: (_) => const Carregando(),
       onError: (_, erro) => LogErro(erro: erro),
-      onState: (context, financeiro) => DefaultTabController(
-        length: financeiro.saldoCaixas.length,
-        child: Column(
-          children: [
-            Material(
-              color: context.primaryColor,
-              child: TabBar(
-                isScrollable: true,
-                tabs: financeiro.saldoCaixas
-                    .map(
-                      (e) => Tab(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(e.nome),
-                            gerarSaldo(e.saldo),
-                          ],
-                        ),
-                      ),
-                    )
-                    .toList(),
-              ),
-            ),
-            Expanded(
-              child: TabBarView(
-                children: financeiro.saldoCaixas.map(
-                  (e) {
-                    if (e.lancamentos == null || e.lancamentos!.isEmpty) {
-                      return const Center(
-                        child: Text('Sem lançamentos'),
-                      );
-                    }
+      onState: (context, financeiro) => Scaffold(
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () async {
+            bool? atualizar = await Modular.to
+                .pushNamed<bool>(AppModule.rotaCadastrarLancamento);
 
-                    return RefreshIndicator(
-                      onRefresh: () async {
-                        controller.init();
-                      },
-                      child: ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: e.lancamentos!.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return LancamentoWidget(model: e.lancamentos![index]);
-                        },
-                      ),
-                    );
-                  },
-                ).toList(),
+            if (atualizar != null && atualizar) {
+              controller.init();
+            }
+          },
+        ),
+        body: DefaultTabController(
+          length: financeiro.saldoCaixas.length,
+          child: Column(
+            children: [
+              Material(
+                color: context.primaryColor,
+                child: TabBar(
+                  isScrollable: true,
+                  tabs: financeiro.saldoCaixas
+                      .map(
+                        (e) => Tab(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(e.nome),
+                              gerarSaldo(e.saldo),
+                            ],
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
               ),
-            )
-          ],
+              Expanded(
+                child: TabBarView(
+                  children: financeiro.saldoCaixas.map(
+                    (e) {
+                      if (e.lancamentos == null || e.lancamentos!.isEmpty) {
+                        return const Center(
+                          child: Text('Sem lançamentos'),
+                        );
+                      }
+
+                      return RefreshIndicator(
+                        onRefresh: () async {
+                          controller.init();
+                        },
+                        child: ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: e.lancamentos!.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return LancamentoWidget(
+                                model: e.lancamentos![index]);
+                          },
+                        ),
+                      );
+                    },
+                  ).toList(),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
