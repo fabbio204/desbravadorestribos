@@ -16,9 +16,7 @@ main() {
   Modular.navigatorDelegate = navigate;
 
   setUp(() {
-    initModule(HomeModule(), replaceBinds: [
-      Bind.singleton((i) => ValueNotifier<String>('Início')),
-    ]);
+    initModule(HomeModule(), replaceBinds: []);
   });
 
   testWidgets('Testa MenuLateralWidget', (WidgetTester tester) async {

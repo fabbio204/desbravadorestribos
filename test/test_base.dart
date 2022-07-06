@@ -1,8 +1,11 @@
+import 'package:desbravadores_tribos/app/core/api/google_api_base.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mocktail/mocktail.dart';
 
 class NavigatorObserverMock extends Mock implements NavigatorObserver {}
+
+class GoogleApiMock extends Mock implements GoogleApiBase {}
 
 mixin DiagnosticableMock implements Diagnosticable {
   @override
@@ -57,4 +60,8 @@ Widget montarBaseComContext(Widget child, BuildContext contextMock) {
       },
     ),
   );
+}
+
+Future<void> voidFunction() async {
+  await Future.delayed(const Duration(microseconds: 1));
 }

@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class InicioPage extends StatefulWidget {
   const InicioPage({Key? key}) : super(key: key);
@@ -31,43 +32,52 @@ class _InicioPageState extends ModularState<InicioPage, HomeController> {
       store: controller,
       onLoading: (_) => const Carregando(),
       onError: (_, erro) => LogErro(erro: erro),
-      onState: (context, value) => SingleChildScrollView(
-        child: Column(
-          children: [
-            if (value.temNovaVersao)
-              MaterialBanner(
-                padding: const EdgeInsets.all(10),
-                leading: const Icon(Icons.new_releases),
-                content: const Text('Existe uma nova versão do aplicativo'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      launchUrl(Uri.parse(
-                        const String.fromEnvironment('URL_APK'),
-                      ));
-                    },
-                    child: const Text('Baixar'),
-                  )
+      onState: (context, value) => Column(
+        children: [
+          if (value.temNovaVersao)
+            MaterialBanner(
+              padding: const EdgeInsets.all(10),
+              leading: const Icon(Icons.new_releases),
+              content: const Text('Existe uma nova versão do aplicativo'),
+              actions: [
+                TextButton(
+                  onPressed: () async {
+                    if (await canLaunchUrl(Uri.parse(
+                      const String.fromEnvironment('URL_APK'),
+                    ))) {
+                      launchUrlString(const String.fromEnvironment('URL_APK'), mode: LaunchMode.externalApplication);
+                    }
+                  },
+                  child: const Text('Baixar'),
+                )
+              ],
+            ),
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 80,
+                    width: context.screenWidth,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      physics: const BouncingScrollPhysics(),
+                      children: value.resumo
+                          .map((e) => ResumoWidget(
+                                titulo: e.titulo,
+                                valor: e.valor,
+                              ))
+                          .toList(),
+                    ),
+                  ),
+                  AniversariantesWidget(aniversariantes: value.aniversariantes),
+                  ProximosEventosWidget(eventos: value.eventos),
                 ],
               ),
-            SizedBox(
-              height: 80,
-              width: context.screenWidth,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                physics: const BouncingScrollPhysics(),
-                children: value.resumo
-                    .map((e) => ResumoWidget(
-                          titulo: e.titulo,
-                          valor: e.valor,
-                        ))
-                    .toList(),
-              ),
             ),
-            AniversariantesWidget(aniversariantes: value.aniversariantes),
-            ProximosEventosWidget(eventos: value.eventos),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

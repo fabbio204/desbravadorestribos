@@ -1,13 +1,15 @@
-import 'package:desbravadores_tribos/app/core/api/google_sheets_api.dart';
+import 'package:desbravadores_tribos/app/core/api/google_api_base.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/models/evento_model.dart';
 import 'package:googleapis/calendar/v3.dart';
 
 class CalendarioRepository {
+  final GoogleApiBase api;
+
+  CalendarioRepository(this.api);
+
   Future<List<EventoModel>> calendarioCompleto() async {
-    Events resultados = await GoogleSheetsApi.calendarApi!.events.list(
-        GoogleSheetsApi.idCalendario,
+    Events resultados = await api.listarEventos(
         orderBy: 'startTime',
-        singleEvents: true,
         timeMin: DateTime(DateTime.now().year, 1, 1),
         timeMax: DateTime(DateTime.now().year, 12, 31));
 
@@ -23,5 +25,9 @@ class CalendarioRepository {
     aniversariantes.sort((a, b) => a.dia.compareTo(b.dia));
 
     return aniversariantes;
+  }
+
+  Future<void> cadastrarEvento(Event evento) {
+    return api.cadastrarEvento(evento);
   }
 }

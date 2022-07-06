@@ -1,18 +1,21 @@
 import 'package:desbravadores_tribos/app/core/api/app_version.dart';
+import 'package:desbravadores_tribos/app/core/api/google_api_base.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/models/evento_model.dart';
 import 'package:desbravadores_tribos/app/modules/home/models/resumo_model.dart';
 import 'package:desbravadores_tribos/app/modules/membros/models/membro_model.dart';
 import 'package:dio/dio.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:googleapis/sheets/v4.dart';
-import 'package:desbravadores_tribos/app/core/api/google_sheets_api.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class HomeRepository {
+  final GoogleApiBase api;
+  final Dio dio;
+
+  HomeRepository(this.api, this.dio);
+
   Future<List<MembroModel>> listarAniversariantes() async {
-    ValueRange resultados = await GoogleSheetsApi
-        .planilhaApi!.spreadsheets.values
-        .get(GoogleSheetsApi.idPlanilha, 'Dashboard!A12:C21');
+    ValueRange resultados = await api.getPlanilha('Dashboard!A12:C21');
 
     if (resultados.values == null) {
       return [];
@@ -30,9 +33,7 @@ class HomeRepository {
   }
 
   Future<List<ResumoModel>> listarResumo() async {
-    ValueRange resultados = await GoogleSheetsApi
-        .planilhaApi!.spreadsheets.values
-        .get(GoogleSheetsApi.idPlanilha, 'Dashboard!C2:D8');
+    ValueRange resultados = await api.getPlanilha('Dashboard!C2:D8');
 
     if (resultados.values == null) {
       return [];
@@ -49,11 +50,9 @@ class HomeRepository {
     DateTime agora = DateTime.now();
     DateTime ontem = DateTime(agora.year, agora.month, agora.day).toUtc();
 
-    Events resultados = await GoogleSheetsApi.calendarApi!.events.list(
-      GoogleSheetsApi.idCalendario,
+    Events resultados = await api.listarEventos(
       timeMin: ontem,
       orderBy: 'startTime',
-      singleEvents: true,
       maxResults: 10,
     );
 
@@ -72,12 +71,17 @@ class HomeRepository {
   }
 
   Future<bool> temNovaVersao() async {
-    Dio dio = Dio();
     String versaoRecente = await AppVersion(dio).releaseVersion();
 
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String versaoInstalada = packageInfo.version;
 
-    return versaoRecente != versaoInstalada;
+    int intVersaoRecente =
+        int.parse(versaoRecente.replaceAll(RegExp('[.]'), ''));
+
+    int intVersaoInstalada =
+        int.parse(versaoInstalada.replaceAll(RegExp('[.]'), ''));
+
+    return intVersaoRecente > intVersaoInstalada;
   }
 }

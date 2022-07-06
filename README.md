@@ -1,25 +1,21 @@
 [![build](https://github.com/fabbio204/desbravadorestribos/actions/workflows/build.yml/badge.svg)](https://github.com/fabbio204/desbravadorestribos/actions/workflows/build.yml)
 [![codecov](https://codecov.io/gh/fabbio204/desbravadorestribos/branch/main/graph/badge.svg?token=O6KP8XLO0C)](https://codecov.io/gh/fabbio204/desbravadorestribos)
 
-# Tribos App
+# Desbravadores App
 
-Aplicativo do Clube de Desbravadores Tribos
+Aplicativo de gerenciamento local de Desbravadores
 
 ## Pacotes utilizados
 
 - Slidy (linha de comando para estruturação do projeto)
-- Mobx (gerência de estado)
-- Modular (estrutura do projeto)
+- Triple e ValueNotifier (gerência de estado)
+- Modular (estrutura do projeto em módulos e sub-módulos)
 
 ## Como rodar
 
 Execute o comando para instalar o slidy globalmente em seu computador
 
 > dart pub global activate slidy
-
-Qual alterar os actions e observer do Mobx (classes _store.dart) use o comando para gerar os arquivos do mobx
-
-> slidy run mobx
 
 ## Gerando o splash screen
 
@@ -36,3 +32,9 @@ Pacote utilizado: [flutter_launcher_icons_maker](https://pub.dev/packages/flutte
 Caso atualize o ícone do aplicativo, execute o comando para gerar novamente os arquivos
 
 > flutter pub run flutter_launcher_icons_maker:main
+
+## Planilha modelo que o aplicativo usa para consultar os dados
+
+O Aplicativo usa o a Api do Google Planilhas para ler e escrever os dados.
+
+[https://docs.google.com/spreadsheets/d/1Y-ZfcBLb0yyKlLgB7x8rA1P3-6Eb2BSQ5UnitvLDqJI/edit#gid=552494114](https://docs.google.com/spreadsheets/d/1Y-ZfcBLb0yyKlLgB7x8rA1P3-6Eb2BSQ5UnitvLDqJI/edit#gid=552494114)
