@@ -61,3 +61,7 @@ Widget montarBaseComContext(Widget child, BuildContext contextMock) {
     ),
   );
 }
+
+Future<void> voidFunction() async {
+  await Future.delayed(const Duration(microseconds: 1));
+}

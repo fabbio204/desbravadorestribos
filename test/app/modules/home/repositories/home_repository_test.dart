@@ -147,7 +147,7 @@ void main() {
 
   test('Testa HomeRepository.temNovaVersao com nova versão', () async {
     final responsePayload = json.encode([
-      {'name': '1.0.0'}
+      {'name': '1.1.1'}
     ]);
 
     final ResponseBody httpResponse =
