@@ -46,3 +46,6 @@ app.*.map.json
 /android/app/release
 .vscode/
 coverage/
+
+# Link simbólico para a pasta que contém o flutter instalado pelo fvm
+.fvm/flutter_sdk
