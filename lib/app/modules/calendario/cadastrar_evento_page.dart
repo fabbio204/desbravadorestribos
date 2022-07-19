@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:desbravadores_tribos/app/modules/calendario/controllers/cadastrar_evento_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -11,13 +13,26 @@ class CadastrarEventoPage extends StatefulWidget {
   State<CadastrarEventoPage> createState() => _CadastrarEventoPageState();
 }
 
-class _CadastrarEventoPageState
-    extends ModularState<CadastrarEventoPage, CadastrarEventoController> {
+class _CadastrarEventoPageState extends State<CadastrarEventoPage> {
   static GlobalKey<FormState> formKey = GlobalKey();
   TextEditingController dataController = TextEditingController();
+  CadastrarEventoController controller = Modular.get();
 
   ValueNotifier<String> texto = ValueNotifier('');
   ValueNotifier<DateTime> data = ValueNotifier(DateTime.now());
+
+  @override
+  void initState() {
+    controller.observer(
+      onState: (state) {
+        if (state) {
+          bool recarregarTela = true;
+          Navigator.pop(context, recarregarTela);
+        }
+      },
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,26 +87,20 @@ class _CadastrarEventoPageState
                       },
                     ),
                   ),
-                  ElevatedButton(
-                    onPressed: controller.isLoading
-                        ? null
-                        : () async {
-                            bool? valido = formKey.currentState?.validate();
-                            if (valido != null && valido) {
-                              await controller.salvar(texto.value, data.value);
-                              if(controller.state) {
-                                Navigator.pop(context);
-                              }                              
-                            }
-                          },
-                    child: const Text('Salvar'),
-                  ),
                   ScopedBuilder<CadastrarEventoController, Exception, bool>(
-                    store: store,
+                    store: controller,
                     onError: (context, error) => Text(error.toString()),
                     onLoading: (context) => const CircularProgressIndicator(),
                     onState: (_, bool retorno) {
-                      return Container();
+                      return ElevatedButton(
+                        onPressed: () async {
+                          bool? valido = formKey.currentState?.validate();
+                          if (valido != null && valido) {
+                            controller.salvar(texto.value, data.value);
+                          }
+                        },
+                        child: const Text('Salvar'),
+                      );
                     },
                   ),
                 ],

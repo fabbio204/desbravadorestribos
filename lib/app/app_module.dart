@@ -1,5 +1,5 @@
-import 'package:desbravadores_tribos/app/core/pages/cadastrar_evento_page.dart';
-import 'package:desbravadores_tribos/app/core/pages/cadastrar_lancamento_page.dart';
+import 'package:desbravadores_tribos/app/modules/calendario/cadastrar_evento_page.dart';
+import 'package:desbravadores_tribos/app/modules/financeiro/cadastrar_lancamento_page.dart';
 import 'package:desbravadores_tribos/app/core/pages/membro_detalhes.dart';
 import 'package:desbravadores_tribos/app/core/api/google_sheets_api.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/repository/calendario_repository.dart';

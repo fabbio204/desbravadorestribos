@@ -7,6 +7,7 @@ import 'package:desbravadores_tribos/app/modules/membros/repositories/membro_rep
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_triple/flutter_triple.dart';
 import 'package:intl/intl.dart';
 
 class CadastrarLancamentoPage extends StatefulWidget {
@@ -17,10 +18,10 @@ class CadastrarLancamentoPage extends StatefulWidget {
       _CadastrarLancamentoPageState();
 }
 
-class _CadastrarLancamentoPageState
-    extends ModularState<CadastrarLancamentoPage, CadastrarLancamentoStore> {
+class _CadastrarLancamentoPageState extends State<CadastrarLancamentoPage> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final TextEditingController dataController = TextEditingController();
+  CadastrarLancamentoStore controller = Modular.get();
 
   late FinanceiroRepository financeiroRepository;
   late MembroRepository membroRepository;
@@ -39,6 +40,15 @@ class _CadastrarLancamentoPageState
 
     financeiroRepository = Modular.get();
     membroRepository = Modular.get();
+
+    controller.observer(
+      onState: (state) {
+        if (state) {
+          bool recarregarTela = true;
+          Navigator.pop(context, recarregarTela);
+        }
+      },
+    );
 
     super.initState();
   }
@@ -268,27 +278,29 @@ class _CadastrarLancamentoPageState
                     },
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () async {
-                    bool? valido = _formKey.currentState?.validate();
-                    if (valido != null && valido) {
-                      LancamentoModel model = LancamentoModel(
-                        data: dataController.text,
-                        descricao: descricao.value,
-                        subCaixa: subCaixa.value,
-                        envolvido: envolvido.value,
-                        entrada: entrada.value,
-                        saida: saida.value,
-                      );
-
-                      await store.cadastrar(model);
-                      if (store.state) {
-                        bool recarregarTela = true;
-                        Navigator.pop(context, recarregarTela);
-                      }
-                    }
+                ScopedBuilder<CadastrarLancamentoStore, Exception, bool>(
+                  store: controller,
+                  onError: (context, error) => Text(error.toString()),
+                  onLoading: (context) => const CircularProgressIndicator(),
+                  onState: (_, bool retorno) {
+                    return ElevatedButton(
+                      onPressed: () async {
+                        bool? valido = _formKey.currentState?.validate();
+                        if (valido != null && valido) {
+                          LancamentoModel model = LancamentoModel(
+                            data: dataController.text,
+                            descricao: descricao.value,
+                            subCaixa: subCaixa.value,
+                            envolvido: envolvido.value,
+                            entrada: entrada.value,
+                            saida: saida.value,
+                          );
+                          controller.cadastrar(model);
+                        }
+                      },
+                      child: const Text('Salvar'),
+                    );
                   },
-                  child: const Text('Salvar'),
                 )
               ]),
             ),
