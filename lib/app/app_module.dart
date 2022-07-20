@@ -1,6 +1,6 @@
 import 'package:desbravadores_tribos/app/modules/calendario/cadastrar_evento_page.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/cadastrar_lancamento_page.dart';
-import 'package:desbravadores_tribos/app/core/pages/membro_detalhes.dart';
+import 'package:desbravadores_tribos/app/modules/membros/membro_detalhes.dart';
 import 'package:desbravadores_tribos/app/core/api/google_sheets_api.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/repository/calendario_repository.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/controllers/cadastrar_lancamento_store.dart';
@@ -16,6 +16,7 @@ import 'modules/home/home_module.dart';
 class AppModule extends Module {
   static String rotaCadastrarEvento = "/cadastrar-evento/";
   static String rotaCadastrarLancamento = "/cadastrar-lancamento/";
+  static String rotaDetalhesMembro = '/detalhes-membro/';
 
   @override
   final List<Bind> binds = [
@@ -32,15 +33,11 @@ class AppModule extends Module {
   @override
   final List<ModularRoute> routes = [
     ModuleRoute(Modular.initialRoute, module: HomeModule()),
-    ChildRoute(
-      '/detalhes-membro/',
-      child: (_, args) => MembroDetalhes(
-        membro: args.data,
-      ),
-    ),
+    ChildRoute(rotaDetalhesMembro,
+        child: (_, args) => MembroDetalhes(membro: args.data)),
     ChildRoute(rotaCadastrarEvento,
         child: (_, args) => const CadastrarEventoPage()),
     ChildRoute(rotaCadastrarLancamento,
-        child: (_, args) => const CadastrarLancamentoPage()),
+        child: (_, args) => CadastrarLancamentoPage(args: args.data)),
   ];
 }

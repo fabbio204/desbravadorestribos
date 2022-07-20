@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:desbravadores_tribos/app/app_module.dart';
 import 'package:desbravadores_tribos/app/core/widgets/carregando.dart';
 import 'package:desbravadores_tribos/app/core/widgets/log_erro.dart';
+import 'package:desbravadores_tribos/app/modules/financeiro/cadastrar_lancamento_page.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/models/lancamento_model.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/widgets/lancamento_widget.dart';
 import 'package:desbravadores_tribos/app/modules/membros/controllers/membro_detalhes_controller.dart';
@@ -17,11 +19,11 @@ class MembroDetalhes extends StatefulWidget {
   State<MembroDetalhes> createState() => _MembroDetalhesState();
 }
 
-class _MembroDetalhesState
-    extends ModularState<MembroDetalhes, MembroDetalhesController> {
+class _MembroDetalhesState extends State<MembroDetalhes> {
+  MembroDetalhesController controller = Modular.get();
   @override
   void initState() {
-    store.listarLancamentos(widget.membro.nome);
+    controller.listarLancamentos(widget.membro.nome);
     super.initState();
   }
 
@@ -29,6 +31,22 @@ class _MembroDetalhesState
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () async {
+            CadastrarLancamentoArgumentos args =
+                CadastrarLancamentoArgumentos(nome: widget.membro.nome);
+
+            bool? atualizar = await Modular.to.pushNamed<bool>(
+              AppModule.rotaCadastrarLancamento,
+              arguments: args,
+            );
+
+            if (atualizar != null && atualizar) {
+              controller.listarLancamentos(widget.membro.nome);
+            }
+          },
+        ),
         body: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: [
@@ -57,7 +75,7 @@ class _MembroDetalhesState
             SliverToBoxAdapter(
               child: ScopedBuilder<MembroDetalhesController, Exception,
                   List<LancamentoModel>>(
-                store: store,
+                store: controller,
                 onLoading: (_) {
                   return const Padding(
                     padding: EdgeInsets.only(top: 50),

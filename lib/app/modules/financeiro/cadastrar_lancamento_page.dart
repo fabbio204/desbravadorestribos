@@ -1,17 +1,29 @@
 import 'package:brasil_fields/brasil_fields.dart';
-import 'package:desbravadores_tribos/app/modules/financeiro/controllers/cadastrar_lancamento_store.dart';
-import 'package:desbravadores_tribos/app/modules/financeiro/models/lancamento_model.dart';
-import 'package:desbravadores_tribos/app/modules/financeiro/repositories/financeiro_repository.dart';
-import 'package:desbravadores_tribos/app/modules/membros/models/membro_model.dart';
-import 'package:desbravadores_tribos/app/modules/membros/repositories/membro_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:intl/intl.dart';
 
+import 'package:desbravadores_tribos/app/modules/financeiro/controllers/cadastrar_lancamento_store.dart';
+import 'package:desbravadores_tribos/app/modules/financeiro/models/lancamento_model.dart';
+import 'package:desbravadores_tribos/app/modules/financeiro/repositories/financeiro_repository.dart';
+import 'package:desbravadores_tribos/app/modules/membros/models/membro_model.dart';
+import 'package:desbravadores_tribos/app/modules/membros/repositories/membro_repository.dart';
+
+class CadastrarLancamentoArgumentos {
+  String nome;
+  CadastrarLancamentoArgumentos({
+    required this.nome,
+  });
+}
+
 class CadastrarLancamentoPage extends StatefulWidget {
-  const CadastrarLancamentoPage({Key? key}) : super(key: key);
+  final CadastrarLancamentoArgumentos? args;
+  const CadastrarLancamentoPage({
+    Key? key,
+    this.args,
+  }) : super(key: key);
 
   @override
   State<CadastrarLancamentoPage> createState() =>
@@ -28,7 +40,7 @@ class _CadastrarLancamentoPageState extends State<CadastrarLancamentoPage> {
 
   ValueNotifier<String> descricao = ValueNotifier('');
   ValueNotifier<String> subCaixa = ValueNotifier('');
-  ValueNotifier<String> envolvido = ValueNotifier('');
+  late ValueNotifier<String> envolvido;
   ValueNotifier<String> entrada = ValueNotifier('');
   ValueNotifier<String> saida = ValueNotifier('');
   ValueNotifier<DateTime> data = ValueNotifier(DateTime.now());
@@ -37,6 +49,8 @@ class _CadastrarLancamentoPageState extends State<CadastrarLancamentoPage> {
   void initState() {
     DateFormat formatter = DateFormat('dd/MM/yyyy');
     dataController.text = formatter.format(data.value);
+
+    envolvido = ValueNotifier(widget.args?.nome ?? '');
 
     financeiroRepository = Modular.get();
     membroRepository = Modular.get();
@@ -241,6 +255,7 @@ class _CadastrarLancamentoPageState extends State<CadastrarLancamentoPage> {
 
                             return null;
                           },
+                          value: widget.args?.nome,
                           items: snapshot.data!
                               .map(
                                 (e) => DropdownMenuItem<String>(
