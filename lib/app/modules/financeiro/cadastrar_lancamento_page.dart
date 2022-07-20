@@ -132,6 +132,7 @@ class _CadastrarLancamentoPageState extends State<CadastrarLancamentoPage> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
+                          keyboardType: TextInputType.number,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                             CentavosInputFormatter()
@@ -158,6 +159,7 @@ class _CadastrarLancamentoPageState extends State<CadastrarLancamentoPage> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
+                          keyboardType: TextInputType.number,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                             CentavosInputFormatter()
