@@ -13,6 +13,7 @@ void main() {
 
       when(repositoryMock.calendarioCompleto).thenAnswer((_) async => [
             EventoModel(
+              id: '',
               dia: DateTime(2022, 1, 1),
               titulo: 'Primeiro evento 2022',
             ),

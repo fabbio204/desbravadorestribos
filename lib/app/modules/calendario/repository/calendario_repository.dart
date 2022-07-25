@@ -19,7 +19,12 @@ class CalendarioRepository {
 
     List<EventoModel> aniversariantes = resultados.items!.map((Event item) {
       DateTime? data = item.start?.date ?? item.start?.dateTime;
-      return EventoModel(dia: data!, titulo: item.summary!);
+      return EventoModel(
+        id: item.id!,
+        dia: data!,
+        titulo: item.summary!,
+        descricao: item.description,
+      );
     }).toList();
 
     aniversariantes.sort((a, b) => a.dia.compareTo(b.dia));
@@ -29,5 +34,13 @@ class CalendarioRepository {
 
   Future<void> cadastrarEvento(Event evento) {
     return api.cadastrarEvento(evento);
+  }
+
+  Future<void> excluirEvento(String id) {
+    return api.excluirEvento(id);
+  }
+
+  Future<void> editarEvento(Event evento) {
+    return api.editarEvento(evento);
   }
 }

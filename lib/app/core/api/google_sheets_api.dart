@@ -66,6 +66,24 @@ class GoogleSheetsApi implements GoogleApiBase {
     );
   }
 
+  @override
+  Future<void> excluirEvento(String id) async {
+    CalendarApi calendario = await conectarCalendario();
+
+    await calendario.events.delete(
+      _idCalendario,
+      id,
+      sendUpdates: 'all',
+    );
+  }
+
+  @override
+  Future<void> editarEvento(Event evento) async {
+    CalendarApi calendario = await conectarCalendario();
+
+    await calendario.events.update(evento, _idCalendario, evento.id!);
+  }
+
   static Future<SheetsApi> conectarPlanilha() async {
     return SheetsApi(await client);
   }

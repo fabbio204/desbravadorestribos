@@ -36,7 +36,7 @@ class AppModule extends Module {
     ChildRoute(rotaDetalhesMembro,
         child: (_, args) => MembroDetalhes(membro: args.data)),
     ChildRoute(rotaCadastrarEvento,
-        child: (_, args) => const CadastrarEventoPage()),
+        child: (_, args) => CadastrarEventoPage(args: args.data)),
     ChildRoute(rotaCadastrarLancamento,
         child: (_, args) => CadastrarLancamentoPage(args: args.data)),
   ];

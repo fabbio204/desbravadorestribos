@@ -29,8 +29,8 @@ void main() {
 
       when(repositoryMock.proximosEventos).thenAnswer(
         (_) async => [
-          EventoModel(dia: DateTime(2022, 1, 1), titulo: 'Evento 1'),
-          EventoModel(dia: DateTime(2022, 1, 2), titulo: 'Evento 2'),
+          EventoModel(id: '', dia: DateTime(2022, 1, 1), titulo: 'Evento 1'),
+          EventoModel(id: '', dia: DateTime(2022, 1, 2), titulo: 'Evento 2'),
         ],
       );
 

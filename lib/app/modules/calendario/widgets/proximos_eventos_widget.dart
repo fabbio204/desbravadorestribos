@@ -22,13 +22,14 @@ class ProximosEventosWidget extends StatelessWidget {
           ),
           ListView.builder(
             key: const Key('listaEventos'),
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: eventos.length,
-              itemBuilder: (context, index) {
-                EventoModel evento = eventos[index];
-                return EventoWidget(evento: evento);
-              }),
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: eventos.length,
+            itemBuilder: (context, index) {
+              EventoModel evento = eventos[index];
+              return EventoWidget(evento: evento);
+            },
+          ),
         ],
       ),
     );

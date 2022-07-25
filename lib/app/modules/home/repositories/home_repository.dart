@@ -62,7 +62,7 @@ class HomeRepository {
 
     List<EventoModel> aniversariantes = resultados.items!.map((Event item) {
       DateTime? data = item.start?.date ?? item.start?.dateTime;
-      return EventoModel(dia: data!, titulo: item.summary!);
+      return EventoModel(id: '', dia: data!, titulo: item.summary!);
     }).toList();
 
     aniversariantes.sort((a, b) => a.dia.compareTo(b.dia));

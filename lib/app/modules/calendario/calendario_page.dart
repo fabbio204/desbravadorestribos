@@ -101,7 +101,10 @@ class CalendarioPageState extends State<CalendarioPage> {
                         shrinkWrap: true,
                         itemCount: eventos.length,
                         itemBuilder: (context, index) {
-                          return EventoWidget(evento: eventos[index]);
+                          return EventoWidget(
+                            evento: eventos[index],
+                            exibirMenuAcoes: true,
+                          );
                         },
                       );
                     },

@@ -14,4 +14,8 @@ abstract class GoogleApiBase {
   });
 
   Future<void> cadastrarEvento(Event evento);
+
+  Future<void> excluirEvento(String id);
+
+  Future<void> editarEvento(Event evento);
 }
