@@ -12,8 +12,22 @@ class EventoController extends NotifierStore<Exception, List<EventoModel>> {
     setLoading(true);
 
     try {
-      List<EventoModel> calendario = await _repository.calendarioCompleto();
-      update(calendario);
+      Future<List<EventoModel>> futureGoogleCalendario =
+          _repository.calendarioCompleto();
+      Future<List<EventoModel>> futureMembros = _repository.aniversariantes();
+
+      List<List<EventoModel>> calendario = await Future.wait([
+        futureGoogleCalendario,
+        futureMembros,
+      ]);
+
+      List<EventoModel> eventos = [];
+      eventos.addAll(calendario[0]);
+      eventos.addAll(calendario[1]);
+
+      eventos.sort((a, b) => a.dia.compareTo(b.dia));
+
+      update(eventos);
     } on Exception catch (e) {
       setError(e);
     } finally {

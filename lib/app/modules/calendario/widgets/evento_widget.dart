@@ -86,7 +86,9 @@ class _EventoWidgetState extends State<EventoWidget> {
             ),
           ),
         ),
-        if (widget.exibirMenuAcoes)
+        if (widget.exibirMenuAcoes &&
+            widget.evento.id != null &&
+            widget.evento.id!.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: PopupMenuButton<int>(
@@ -160,7 +162,7 @@ class _EventoWidgetState extends State<EventoWidget> {
             },
           ),
           onPressed: () {
-            repository.excluirEvento(widget.evento.id).then((value) {
+            repository.excluirEvento(widget.evento.id!).then((value) {
               Navigator.of(context).pop();
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(

@@ -3,11 +3,11 @@ import 'dart:convert';
 class EventoModel {
   DateTime dia;
   String titulo;
-  String id;
+  String? id;
   String? descricao;
 
   EventoModel({
-    required this.id,
+    this.id,
     required this.dia,
     required this.titulo,
     this.descricao,
