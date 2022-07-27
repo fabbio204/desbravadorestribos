@@ -80,7 +80,7 @@ class _EventoWidgetState extends State<EventoWidget> {
                     widget.evento.descricao!.isNotEmpty)
                   Text(
                     widget.evento.descricao!,
-                    style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                   ),
               ],
             ),

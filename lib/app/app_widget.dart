@@ -8,7 +8,7 @@ class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Setando rota inicial
-    Modular.setInitialRoute(HomeModule.rotaResumo);
+    Modular.setInitialRoute(HomeModule.rotaCheckBiometria);
 
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,

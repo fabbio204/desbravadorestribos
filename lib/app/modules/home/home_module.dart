@@ -12,6 +12,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'home_page.dart';
 
 class HomeModule extends Module {
+  static String rotaCheckBiometria = '/biometria/';
   static String rotaResumo = '/inicio/';
   static String rotaCalendario = '/calendario/';
   static String rotaMembros = '/membros/';

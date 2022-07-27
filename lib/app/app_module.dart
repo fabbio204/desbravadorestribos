@@ -1,5 +1,7 @@
+import 'package:desbravadores_tribos/app/core/auth/auth_config.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/cadastrar_evento_page.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/cadastrar_lancamento_page.dart';
+import 'package:desbravadores_tribos/app/modules/home/biometria_page.dart';
 import 'package:desbravadores_tribos/app/modules/membros/membro_detalhes.dart';
 import 'package:desbravadores_tribos/app/core/api/google_sheets_api.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/repository/calendario_repository.dart';
@@ -20,6 +22,7 @@ class AppModule extends Module {
 
   @override
   final List<Bind> binds = [
+    Bind.lazySingleton((i) => AuthConfig()),
     Bind.lazySingleton((i) => Dio()),
     Bind.lazySingleton((i) => GoogleSheetsApi()),
     Bind.lazySingleton((i) => CadastrarLancamentoStore(i.get())),
@@ -39,5 +42,7 @@ class AppModule extends Module {
         child: (_, args) => CadastrarEventoPage(args: args.data)),
     ChildRoute(rotaCadastrarLancamento,
         child: (_, args) => CadastrarLancamentoPage(args: args.data)),
+    ChildRoute(HomeModule.rotaCheckBiometria,
+        child: (_, args) => const BiometriaPage()),
   ];
 }
