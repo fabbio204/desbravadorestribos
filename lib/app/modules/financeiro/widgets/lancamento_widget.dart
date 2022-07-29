@@ -2,6 +2,7 @@ import 'package:desbravadores_tribos/app/app_module.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/cadastrar_lancamento_page.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/financeiro_controller.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/models/lancamento_model.dart';
+import 'package:desbravadores_tribos/app/modules/financeiro/repositories/financeiro_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -15,6 +16,7 @@ class LancamentoWidget extends StatefulWidget {
 
 class _LancamentoWidgetState extends State<LancamentoWidget> {
   FinanceiroController controller = Modular.get();
+  FinanceiroRepository repository = Modular.get();
 
   @override
   Widget build(BuildContext context) {
@@ -58,29 +60,17 @@ class _LancamentoWidgetState extends State<LancamentoWidget> {
               PopupMenuItem<int>(
                 value: LancamentoWidgetOpcoes.editar.id,
                 child: const Text('Editar'),
-              )
+              ),
+              PopupMenuItem<int>(
+                value: LancamentoWidgetOpcoes.excluir.id,
+                child: const Text('Excluir'),
+              ),
             ],
-            onSelected: (int value) async {
+            onSelected: (int value) {
               if (value == LancamentoWidgetOpcoes.editar.id) {
-                var args = CadastrarLancamentoArgumentos(
-                  id: widget.model.id,
-                  nome: widget.model.envolvido,
-                  entrada: widget.model.entrada,
-                  saida: widget.model.saida,
-                  descricao: widget.model.descricao,
-                  caixa: widget.model.subCaixa,
-                  data: widget.model.data,
-                  editar: true,
-                );
-
-                bool? atualizar = await Modular.to.pushNamed<bool>(
-                  AppModule.rotaCadastrarLancamento,
-                  arguments: args,
-                );
-
-                if (atualizar != null && atualizar) {
-                  controller.init();
-                }
+                editarLancamento();
+              } else if (value == LancamentoWidgetOpcoes.excluir.id) {
+                excluirLancamento();
               }
             },
           )
@@ -88,10 +78,81 @@ class _LancamentoWidgetState extends State<LancamentoWidget> {
       ),
     );
   }
+
+  Future<void> editarLancamento() async {
+    var args = CadastrarLancamentoArgumentos(
+      id: widget.model.id,
+      nome: widget.model.envolvido,
+      entrada: widget.model.entrada,
+      saida: widget.model.saida,
+      descricao: widget.model.descricao,
+      caixa: widget.model.subCaixa,
+      data: widget.model.data,
+      editar: true,
+    );
+
+    bool? atualizar = await Modular.to.pushNamed<bool>(
+      AppModule.rotaCadastrarLancamento,
+      arguments: args,
+    );
+
+    if (atualizar != null && atualizar) {
+      controller.init();
+    }
+  }
+  
+  void excluirLancamento() {
+    ValueNotifier<bool> excluindo = ValueNotifier(false);
+    showDialog(
+      context: context,
+      builder: (context) {
+        Widget cancelar = TextButton(
+          child: const Text("Cancelar"),
+          onPressed: () {
+            // Fecha o dialog
+            Navigator.of(context).pop();
+          },
+        );
+
+        Widget excluir = TextButton(
+          child: ValueListenableBuilder<bool>(
+            valueListenable: excluindo,
+            builder: (context, value, child) {
+              if (value) {
+                return const CircularProgressIndicator();
+              } else {
+                return const Text("Excluir");
+              }
+            },
+          ),
+          onPressed: () {
+            repository.excluirLancamento(widget.model.id!).then((value) {
+              Navigator.of(context).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Excluído com sucesso'),
+                ),
+              );
+              controller.init();
+              excluindo.value = false;
+            });
+            excluindo.value = true;
+          },
+        );
+
+        return AlertDialog(
+          title: const Text('Excluir Lançamento'),
+          content: const Text('Tem certeza que deseja excluir?'),
+          actions: [cancelar, excluir],
+        );
+      },
+    );
+  }
 }
 
 enum LancamentoWidgetOpcoes {
-  editar(id: 1);
+  editar(id: 1),
+  excluir(id: 2);
 
   const LancamentoWidgetOpcoes({required this.id});
   final int id;

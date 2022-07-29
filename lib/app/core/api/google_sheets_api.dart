@@ -2,7 +2,7 @@ import 'package:desbravadores_tribos/app/core/api/google_api_base.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:googleapis/sheets/v4.dart';
 import 'package:googleapis_auth/auth_io.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class GoogleSheetsApi implements GoogleApiBase {
@@ -48,7 +48,7 @@ class GoogleSheetsApi implements GoogleApiBase {
   @override
   Future<void> setPlanilhaConjunto(
       String intervalo, List<List<Object>> valor) async {
-    var planilha = await conectarPlanilha();
+    SheetsApi planilha = await conectarPlanilha();
 
     await planilha.spreadsheets.values.update(
         ValueRange(range: intervalo, values: valor), _idPlanilha, intervalo,
@@ -57,7 +57,7 @@ class GoogleSheetsApi implements GoogleApiBase {
 
   @override
   Future<void> cadastrarEvento(Event evento) async {
-    var calendario = await conectarCalendario();
+    CalendarApi calendario = await conectarCalendario();
 
     await calendario.events.insert(
       evento,
@@ -84,6 +84,45 @@ class GoogleSheetsApi implements GoogleApiBase {
     await calendario.events.update(evento, _idCalendario, evento.id!);
   }
 
+  @override
+  Future<void> excluirLinha(int row) async {
+    SheetsApi planilha = await conectarPlanilha();
+
+    List<List<String>> valores = [
+      ['', '', '', '', '', '']
+    ];
+
+    String intervalo = 'Caixa!A$row:F$row';
+
+    // coloca vazio nas colunas
+    await planilha.spreadsheets.values.update(
+        ValueRange(range: intervalo, values: valores), _idPlanilha, intervalo,
+        valueInputOption: 'USER_ENTERED');
+
+    Spreadsheet consulta =
+        await planilha.spreadsheets.get(_idPlanilha, ranges: [intervalo]);
+
+    int? sheetId = consulta.sheets![0].properties!.sheetId;
+
+    // ordena o filtro
+    await planilha.spreadsheets.batchUpdate(
+      BatchUpdateSpreadsheetRequest(requests: [
+        Request(
+          sortRange: SortRangeRequest(
+            range: GridRange(
+              sheetId: sheetId,
+              startColumnIndex: 0,
+              startRowIndex: 6,
+              endColumnIndex: 5,
+            ),
+            sortSpecs: [SortSpec(sortOrder: "ASCENDING")],
+          ),
+        )
+      ]),
+      _idPlanilha,
+    );
+  }
+
   static Future<SheetsApi> conectarPlanilha() async {
     return SheetsApi(await client);
   }
@@ -102,26 +141,30 @@ class GoogleSheetsApi implements GoogleApiBase {
     CalendarApi.calendarEventsScope,
   ];
 
-  static Future<Client> get client async {
+  static Future<http.Client> get client async {
     Codec<String, String> stringToBase64 = utf8.fuse(base64);
     var chave = const String.fromEnvironment('API_KEY');
     String decoded = stringToBase64.decode(chave);
     var credenciais = await obtainAccessCredentialsViaServiceAccount(
-        ServiceAccountCredentials.fromJson(decoded), _scopesSheets, Client());
+        ServiceAccountCredentials.fromJson(decoded),
+        _scopesSheets,
+        http.Client());
 
-    AuthClient client = authenticatedClient(Client(), credenciais);
+    AuthClient client = authenticatedClient(http.Client(), credenciais);
 
     return client;
   }
 
-  static Future<Client> get clientCalendario async {
+  static Future<http.Client> get clientCalendario async {
     Codec<String, String> stringToBase64 = utf8.fuse(base64);
     var chave = const String.fromEnvironment('API_KEY');
     String decoded = stringToBase64.decode(chave);
     var credenciais = await obtainAccessCredentialsViaServiceAccount(
-        ServiceAccountCredentials.fromJson(decoded), _scopesCalendar, Client());
+        ServiceAccountCredentials.fromJson(decoded),
+        _scopesCalendar,
+        http.Client());
 
-    AuthClient client = authenticatedClient(Client(), credenciais);
+    AuthClient client = authenticatedClient(http.Client(), credenciais);
 
     return client;
   }

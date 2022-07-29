@@ -18,4 +18,6 @@ abstract class GoogleApiBase {
   Future<void> excluirEvento(String id);
 
   Future<void> editarEvento(Event evento);
+
+  Future<void> excluirLinha(int row);
 }

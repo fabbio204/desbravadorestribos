@@ -166,7 +166,7 @@ class _EventoWidgetState extends State<EventoWidget> {
               Navigator.of(context).pop();
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('Excluido com sucesso'),
+                  content: Text('Excluído com sucesso'),
                 ),
               );
               controller.init();

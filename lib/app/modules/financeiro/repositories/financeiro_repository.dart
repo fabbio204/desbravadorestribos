@@ -109,4 +109,8 @@ class FinanceiroRepository {
       ],
     ]);
   }
+
+  Future<void> excluirLancamento(int row) async {
+    await api.excluirLinha(row);
+  }
 }
