@@ -33,31 +33,39 @@ class FinanceiroRepository {
       return item[0].toString();
     }).toList();
 
-    // Ordena pelo nome
+    // Ordena em ordem alfabética
     lista.sort((a, b) => a.compareTo(b));
 
     return lista;
   }
 
   Future<List<LancamentoModel>> lancamentos() async {
-    ValueRange resultados = await api.getPlanilha('Caixa!A7:F');
+    int rowInicial = 7;
+    ValueRange resultados = await api.getPlanilha('Caixa!A$rowInicial:F');
 
     if (resultados.values == null) {
       return [];
     }
 
-    List<LancamentoModel> lista = resultados.values!.map((List<Object?> item) {
-      var lancamento = LancamentoModel(
+    List<LancamentoModel> lista = resultados.values!
+        .asMap()
+        .entries
+        .map((MapEntry<int, List<Object?>> e) {
+      int index = e.key + rowInicial;
+      List<Object?> item = e.value;
+      LancamentoModel lancamento = LancamentoModel(
+          id: index,
           data: item[0].toString(),
           descricao: item[1].toString(),
           entrada: item[2]?.toString(),
           subCaixa: item[4]?.toString());
 
-      if (item.asMap().keys.contains(3)) {
+      Iterable<int> posicoes = item.asMap().keys;
+      if (posicoes.contains(3)) {
         lancamento.saida = item[3]?.toString();
       }
 
-      if (item.asMap().keys.contains(5)) {
+      if (posicoes.contains(5)) {
         lancamento.envolvido = item[5]?.toString();
       }
 
@@ -69,7 +77,7 @@ class FinanceiroRepository {
 
   Future<int> quantidadeLinhas() async {
     int linhaInicial = 7;
-    var linhas = await api.getPlanilha('Caixa!A$linhaInicial:A');
+    ValueRange linhas = await api.getPlanilha('Caixa!A$linhaInicial:A');
     return linhaInicial - 1 + linhas.values!.length;
   }
 
@@ -77,6 +85,20 @@ class FinanceiroRepository {
     int quantidade = await quantidadeLinhas();
     quantidade++;
     await api.setPlanilhaConjunto('Caixa!A$quantidade:F$quantidade', [
+      [
+        model.data,
+        model.descricao,
+        model.entrada ?? '',
+        model.saida ?? '',
+        model.subCaixa ?? '',
+        model.envolvido ?? '',
+      ],
+    ]);
+  }
+
+  Future<void> editarLancamento(LancamentoModel model) async {
+    int linha = model.id!;
+    await api.setPlanilhaConjunto('Caixa!A$linha:F$linha', [
       [
         model.data,
         model.descricao,

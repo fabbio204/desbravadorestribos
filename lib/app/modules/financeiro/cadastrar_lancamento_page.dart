@@ -12,9 +12,23 @@ import 'package:desbravadores_tribos/app/modules/membros/models/membro_model.dar
 import 'package:desbravadores_tribos/app/modules/membros/repositories/membro_repository.dart';
 
 class CadastrarLancamentoArgumentos {
-  String nome;
+  int? id;
+  String? nome;
+  String? entrada;
+  String? saida;
+  String? descricao;
+  String? caixa;
+  String? data;
+  bool? editar;
   CadastrarLancamentoArgumentos({
-    required this.nome,
+    this.id,
+    this.nome,
+    this.entrada,
+    this.saida,
+    this.descricao,
+    this.caixa,
+    this.data,
+    this.editar,
   });
 }
 
@@ -33,27 +47,46 @@ class CadastrarLancamentoPage extends StatefulWidget {
 class _CadastrarLancamentoPageState extends State<CadastrarLancamentoPage> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final TextEditingController dataController = TextEditingController();
+
   CadastrarLancamentoStore controller = Modular.get();
+  FinanceiroRepository financeiroRepository = Modular.get();
+  MembroRepository membroRepository = Modular.get();
 
-  late FinanceiroRepository financeiroRepository;
-  late MembroRepository membroRepository;
-
-  ValueNotifier<String> descricao = ValueNotifier('');
-  ValueNotifier<String> subCaixa = ValueNotifier('');
   late ValueNotifier<String> envolvido;
-  ValueNotifier<String> entrada = ValueNotifier('');
-  ValueNotifier<String> saida = ValueNotifier('');
-  ValueNotifier<DateTime> data = ValueNotifier(DateTime.now());
+  late ValueNotifier<String> descricao;
+  late ValueNotifier<String> subCaixa;
+  late ValueNotifier<String> entrada;
+  late ValueNotifier<String> saida;
+  late ValueNotifier<DateTime> data;
+
+  late String titulo;
+  late bool editar;
 
   @override
   void initState() {
+    envolvido = ValueNotifier(widget.args?.nome ?? '');
+    descricao = ValueNotifier(widget.args?.descricao ?? '');
+    subCaixa = ValueNotifier(widget.args?.caixa ?? '');
+    entrada = ValueNotifier(widget.args?.entrada ?? '');
+    saida = ValueNotifier(widget.args?.saida ?? '');
+
     DateFormat formatter = DateFormat('dd/MM/yyyy');
+
+    if (widget.args?.data != null) {
+      var dateTime = formatter.parse(widget.args!.data!);
+      data = ValueNotifier(dateTime);
+    } else {
+      data = ValueNotifier(DateTime.now());
+    }
+
     dataController.text = formatter.format(data.value);
 
-    envolvido = ValueNotifier(widget.args?.nome ?? '');
-
-    financeiroRepository = Modular.get();
-    membroRepository = Modular.get();
+    editar = widget.args?.editar != null && widget.args?.editar == true;
+    if (editar) {
+      titulo = 'Editar Lançamento';
+    } else {
+      titulo = 'Cadastrar Lançamento';
+    }
 
     controller.observer(
       onState: (state) {
@@ -69,6 +102,7 @@ class _CadastrarLancamentoPageState extends State<CadastrarLancamentoPage> {
 
   @override
   void dispose() {
+    Modular.dispose<CadastrarLancamentoStore>();
     Modular.dispose<FinanceiroRepository>();
     Modular.dispose<MembroRepository>();
 
@@ -79,7 +113,7 @@ class _CadastrarLancamentoPageState extends State<CadastrarLancamentoPage> {
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
-        appBar: AppBar(title: const Text('Cadastrar Lançamento')),
+        appBar: AppBar(title: Text(titulo)),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Form(
@@ -110,6 +144,7 @@ class _CadastrarLancamentoPageState extends State<CadastrarLancamentoPage> {
                   child: TextFormField(
                     maxLines: 2,
                     maxLength: 70,
+                    initialValue: descricao.value,
                     decoration: const InputDecoration(
                       labelText: 'Descrição',
                       border: OutlineInputBorder(),
@@ -132,6 +167,7 @@ class _CadastrarLancamentoPageState extends State<CadastrarLancamentoPage> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
+                          initialValue: entrada.value,
                           keyboardType: TextInputType.number,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
@@ -159,6 +195,7 @@ class _CadastrarLancamentoPageState extends State<CadastrarLancamentoPage> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
+                          initialValue: saida.value,
                           keyboardType: TextInputType.number,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
@@ -195,6 +232,7 @@ class _CadastrarLancamentoPageState extends State<CadastrarLancamentoPage> {
                             labelText: 'Caixa',
                             border: OutlineInputBorder(),
                           ),
+                          value: widget.args?.caixa,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Campo obrigatório';
@@ -243,6 +281,9 @@ class _CadastrarLancamentoPageState extends State<CadastrarLancamentoPage> {
                     builder:
                         (context, AsyncSnapshot<List<MembroModel>> snapshot) {
                       if (snapshot.hasData) {
+                        List<MembroModel> dados = snapshot.data!;
+                        dados.insert(0, MembroModel(nome: ''));
+
                         return DropdownButtonFormField<String>(
                           itemHeight: null,
                           isExpanded: true,
@@ -250,15 +291,8 @@ class _CadastrarLancamentoPageState extends State<CadastrarLancamentoPage> {
                             labelText: 'Envolvido',
                             border: OutlineInputBorder(),
                           ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Campo obrigatório';
-                            }
-
-                            return null;
-                          },
                           value: widget.args?.nome,
-                          items: snapshot.data!
+                          items: dados
                               .map(
                                 (e) => DropdownMenuItem<String>(
                                   child: Text(
@@ -280,13 +314,6 @@ class _CadastrarLancamentoPageState extends State<CadastrarLancamentoPage> {
                           labelText: 'Envolvido',
                           border: OutlineInputBorder(),
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Campo obrigatório';
-                          }
-
-                          return null;
-                        },
                         items: const [],
                         onChanged: (String? value) {
                           envolvido.value = value ?? '';
@@ -305,6 +332,7 @@ class _CadastrarLancamentoPageState extends State<CadastrarLancamentoPage> {
                         bool? valido = _formKey.currentState?.validate();
                         if (valido != null && valido) {
                           LancamentoModel model = LancamentoModel(
+                            id: widget.args?.id,
                             data: dataController.text,
                             descricao: descricao.value,
                             subCaixa: subCaixa.value,
@@ -312,7 +340,11 @@ class _CadastrarLancamentoPageState extends State<CadastrarLancamentoPage> {
                             entrada: entrada.value,
                             saida: saida.value,
                           );
-                          controller.cadastrar(model);
+                          if (editar) {
+                            controller.editar(model);
+                          } else {
+                            controller.cadastrar(model);
+                          }
                         }
                       },
                       child: const Text('Salvar'),

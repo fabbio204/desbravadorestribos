@@ -13,11 +13,13 @@ class FinanceiroController extends NotifierStore<Exception, FinanceiroModel> {
 
     try {
       FinanceiroModel model = FinanceiroModel();
-      model.saldoCaixas = await repository.saldoCaixas();
 
-      model.lancamentos = await repository.lancamentos();
+      await Future.wait<void>([
+        (() async => model.saldoCaixas = await repository.saldoCaixas())(),
+        (() async => model.lancamentos = await repository.lancamentos())(),
+      ]);
 
-      for (var x in model.saldoCaixas) {
+      for (CaixaModel x in model.saldoCaixas) {
         x.lancamentos = getLancamentos(x.nome, model.lancamentos);
       }
 
@@ -39,7 +41,7 @@ class FinanceiroController extends NotifierStore<Exception, FinanceiroModel> {
 
   List<LancamentoModel> getLancamentos(
       String nome, List<LancamentoModel> lancamentos) {
-    var lista =
+    List<LancamentoModel> lista =
         lancamentos.where((element) => element.subCaixa == nome).toList();
     lista.sort((a, b) => b.dataEvento.compareTo(a.dataEvento));
 

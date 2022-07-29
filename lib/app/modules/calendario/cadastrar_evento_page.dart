@@ -62,6 +62,12 @@ class _CadastrarEventoPageState extends State<CadastrarEventoPage> {
   }
 
   @override
+  void dispose() {
+    Modular.dispose<CadastrarEventoController>();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
@@ -107,13 +113,6 @@ class _CadastrarEventoPageState extends State<CadastrarEventoPage> {
                       ),
                       initialValue: descricao.value,
                       onChanged: (value) => descricao.value = value,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Campo obrigatório';
-                        }
-
-                        return null;
-                      },
                     ),
                   ),
                   Padding(
@@ -148,10 +147,11 @@ class _CadastrarEventoPageState extends State<CadastrarEventoPage> {
                                 widget.args?.editar == true &&
                                 widget.args?.id != null &&
                                 widget.args!.id!.isNotEmpty) {
-                              controller.editar(
-                                  widget.args?.id, texto.value, descricao.value, data.value);
+                              controller.editar(widget.args?.id, texto.value,
+                                  descricao.value, data.value);
                             } else {
-                              controller.salvar(texto.value, descricao.value, data.value);
+                              controller.salvar(
+                                  texto.value, descricao.value, data.value);
                             }
                           }
                         },
