@@ -1,25 +1,61 @@
 import 'package:desbravadores_tribos/app/modules/calendario/controllers/eventos_controller.dart';
-import 'package:desbravadores_tribos/app/modules/calendario/models/evento_model.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/repository/calendario_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:googleapis/calendar/v3.dart';
+import 'package:googleapis/sheets/v4.dart';
 import 'package:mocktail/mocktail.dart';
 
-class CalendarioRepositoryMock extends Mock implements CalendarioRepository {}
+import '../../../test_base.dart';
+import '../membros/repositories/membro_repository_test.dart';
 
 void main() {
   group('Testa MembroController', () {
+    late GoogleApiMock api;
+    late CalendarioRepository repository;
+    late EventoController controller;
+
+    setUpAll(() {
+      api = GoogleApiMock();
+      repository = CalendarioRepository(api);
+      controller = EventoController(repository);
+
+      registerFallbackValue(Event());
+    });
     test('Testa CalendarioController resultando sucesso', () async {
-      var repositoryMock = CalendarioRepositoryMock();
+      List<Event> eventos = [
+        Event(
+            id: 'id1',
+            summary: "Teste 1",
+            start: EventDateTime(date: DateTime.now())),
+        Event(
+            id: 'id2',
+            summary: "Teste 2",
+            start: EventDateTime(date: DateTime.now())),
+        Event(
+            id: 'id3',
+            summary: "Teste 3",
+            start: EventDateTime(date: DateTime.now())),
+      ];
 
-      when(repositoryMock.calendarioCompleto).thenAnswer((_) async => [
-            EventoModel(
-              id: '',
-              dia: DateTime(2022, 1, 1),
-              titulo: 'Primeiro evento 2022',
-            ),
-          ]);
+      List<List<StringMock>> membros = [
+        [
+          StringMock('Nome Teste'),
+          StringMock('01/01/1990'),
+          StringMock('Juda'),
+          StringMock('01/01/2022')
+        ],
+      ];
 
-      var controller = EventoController(repositoryMock);
+      when(() => api.listarEventos(
+            timeMin: any<DateTime>(named: "timeMin"),
+            timeMax: any<DateTime>(named: "timeMax"),
+            maxResults: any<int>(named: "maxResults"),
+            orderBy: any<String>(named: "orderBy"),
+          )).thenAnswer((_) => Future.value(Events(items: eventos)));
+
+      when(() => api.getPlanilha(any())).thenAnswer(
+        (_) => Future.value(ValueRange(values: membros)),
+      );
 
       Future<void> future = controller.init();
 
@@ -28,17 +64,21 @@ void main() {
       future.then((value) {
         expect(controller.isLoading, false);
         expect(controller.state, isNotNull);
-        expect(controller.state.length, equals(1));
+        expect(
+            controller.state.length, equals(eventos.length + membros.length));
       });
     });
 
     test('Testa MembroController recebendo erro', () async {
-      var repositoryMock = CalendarioRepositoryMock();
+      when(() => api.listarEventos(
+            timeMin: any<DateTime>(named: "timeMin"),
+            timeMax: any<DateTime>(named: "timeMax"),
+            maxResults: any<int>(named: "maxResults"),
+            orderBy: any<String>(named: "orderBy"),
+          )).thenThrow(Exception('Erro ao carregar os eventos'));
 
-      when(repositoryMock.calendarioCompleto)
-          .thenThrow(Exception('Erro ao carregar os eventos'));
-
-      var controller = EventoController(repositoryMock);
+      when(() => api.getPlanilha(any()))
+          .thenThrow(Exception('Erro ao carregar os aniversariantes'));
 
       Future<void> future = controller.init();
 

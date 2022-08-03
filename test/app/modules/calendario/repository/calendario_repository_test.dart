@@ -1,3 +1,4 @@
+import 'package:desbravadores_tribos/app/modules/calendario/models/evento_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/repository/calendario_repository.dart';
 import 'package:googleapis/calendar/v3.dart';
@@ -17,9 +18,18 @@ void main() {
   test('Testa CalendarioRepository - calendarioCompleto() com 3 eventos',
       () async {
     List<Event> eventos = [
-      Event(summary: "Teste 1", start: EventDateTime(date: DateTime.now())),
-      Event(summary: "Teste 2", start: EventDateTime(date: DateTime.now())),
-      Event(summary: "Teste 3", start: EventDateTime(date: DateTime.now())),
+      Event(
+          id: 'id1',
+          summary: "Teste 1",
+          start: EventDateTime(date: DateTime.now())),
+      Event(
+          id: 'id2',
+          summary: "Teste 2",
+          start: EventDateTime(date: DateTime.now())),
+      Event(
+          id: 'id3',
+          summary: "Teste 3",
+          start: EventDateTime(date: DateTime.now())),
     ];
 
     when(() => api.listarEventos(
@@ -29,7 +39,9 @@ void main() {
           orderBy: any<String>(named: "orderBy"),
         )).thenAnswer((_) async => Events(items: eventos));
 
-    var resultado = await repository.calendarioCompleto();
+    
+
+    List<EventoModel> resultado = await repository.calendarioCompleto();
 
     expect(resultado, isNotNull);
     expect(resultado, isNotEmpty);
@@ -46,7 +58,7 @@ void main() {
           orderBy: any<String>(named: "orderBy"),
         )).thenAnswer((_) async => Events(items: eventos));
 
-    var resultado = await repository.calendarioCompleto();
+    List<EventoModel> resultado = await repository.calendarioCompleto();
 
     expect(resultado, isNotNull);
     expect(resultado.length, eventos.length);
@@ -60,7 +72,7 @@ void main() {
           orderBy: any<String>(named: "orderBy"),
         )).thenAnswer((_) async => Events());
 
-    var resultado = await repository.calendarioCompleto();
+    List<EventoModel> resultado = await repository.calendarioCompleto();
 
     expect(resultado, isNotNull);
     expect(resultado.length, 0);

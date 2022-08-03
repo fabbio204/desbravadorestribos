@@ -1,11 +1,16 @@
+import 'package:desbravadores_tribos/app/modules/financeiro/financeiro_module.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/models/lancamento_model.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/widgets/lancamento_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:modular_test/modular_test.dart';
 
 import '../../../../test_base.dart';
 
 void main() {
+  setUpAll(() {
+    initModule(FinanceiroModule());
+  });
   group('Testa lancamento Widget', () {
     testWidgets('Testa LancamentoWidget com entrada', (tester) async {
       LancamentoModel model = LancamentoModel(
@@ -15,7 +20,11 @@ void main() {
           envolvido: 'Pessoa 1',
           entrada: '10');
 
-      await tester.pumpWidget(montarBase(LancamentoWidget(model: model)));
+      await tester.pumpWidget(
+        montarBase(
+          Material(child: LancamentoWidget(model: model)),
+        ),
+      );
 
       var labelEntrada = find.byKey(const Key('labelEntrada'));
       expect(labelEntrada, findsOneWidget);
@@ -35,7 +44,8 @@ void main() {
           envolvido: 'Pessoa 1',
           saida: '10');
 
-      await tester.pumpWidget(montarBase(LancamentoWidget(model: model)));
+      await tester.pumpWidget(
+          montarBase(Material(child: LancamentoWidget(model: model))));
 
       var labelSaida = find.byKey(const Key('labelSaida'));
       expect(labelSaida, findsOneWidget);
@@ -54,7 +64,8 @@ void main() {
           subCaixa: 'Geral',
           saida: '10');
 
-      await tester.pumpWidget(montarBase(LancamentoWidget(model: model)));
+      await tester.pumpWidget(
+          montarBase(Material(child: LancamentoWidget(model: model))));
 
       var labelSaida = find.byKey(const Key('labelSaida'));
       expect(labelSaida, findsOneWidget);

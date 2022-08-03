@@ -1,7 +1,6 @@
 import 'package:desbravadores_tribos/app/core/api/google_api_base.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/models/evento_model.dart';
 import 'package:googleapis/calendar/v3.dart';
-import 'package:googleapis/cloudsearch/v1.dart';
 import 'package:googleapis/sheets/v4.dart';
 
 class CalendarioRepository {
