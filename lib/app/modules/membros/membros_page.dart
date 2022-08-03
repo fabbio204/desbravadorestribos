@@ -1,3 +1,4 @@
+import 'package:desbravadores_tribos/app/app_module.dart';
 import 'package:desbravadores_tribos/app/core/widgets/carregando.dart';
 import 'package:desbravadores_tribos/app/core/widgets/log_erro.dart';
 import 'package:desbravadores_tribos/app/core/widgets/membro_widget.dart';
@@ -43,6 +44,6 @@ class MembrosPageState extends ModularState<MembrosPage, MembroController> {
   }
 
   void abrirTelaMembro(MembroModel membro) {
-    Modular.to.pushNamed('/detalhes-membro/', arguments: membro);
+    Modular.to.pushNamed(AppModule.rotaDetalhesMembro, arguments: membro);
   }
 }

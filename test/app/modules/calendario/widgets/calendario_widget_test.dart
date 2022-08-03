@@ -8,9 +8,9 @@ main() {
   group('CalendarioWidget', () {
     testWidgets('has a title and message', (WidgetTester tester) async {
       List<EventoModel> listaEventos = [
-        EventoModel(dia: DateTime.now(), titulo: 'Evento 1'),
-        EventoModel(dia: DateTime.now(), titulo: 'Evento 2'),
-        EventoModel(dia: DateTime.now(), titulo: 'Evento 3'),
+        EventoModel(id: '', dia: DateTime.now(), titulo: 'Evento 1'),
+        EventoModel(id: '', dia: DateTime.now(), titulo: 'Evento 2'),
+        EventoModel(id: '', dia: DateTime.now(), titulo: 'Evento 3'),
       ];
       await tester.pumpWidget(
         Directionality(

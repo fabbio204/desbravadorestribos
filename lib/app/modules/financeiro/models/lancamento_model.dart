@@ -1,27 +1,32 @@
 import 'dart:convert';
 
 class LancamentoModel {
+  int? id;
   String data;
   String descricao;
   String? entrada;
   String? saida;
   String? subCaixa;
   String? envolvido;
-  DateTime get dataEvento {
-    List<String> pedacos = data.split('/');
-    return DateTime(int.parse(pedacos[2]), int.parse(pedacos[1]), int.parse(pedacos[0]));
-  }
-  
+
   LancamentoModel({
+    this.id,
     required this.data,
     required this.descricao,
     this.entrada,
     this.saida,
-    required this.subCaixa,
+    this.subCaixa,
     this.envolvido,
   });
 
+  DateTime get dataEvento {
+    List<String> pedacos = data.split('/');
+    return DateTime(
+        int.parse(pedacos[2]), int.parse(pedacos[1]), int.parse(pedacos[0]));
+  }
+
   LancamentoModel copyWith({
+    int? id,
     String? data,
     String? descricao,
     String? entrada,
@@ -30,6 +35,7 @@ class LancamentoModel {
     String? envolvido,
   }) {
     return LancamentoModel(
+      id: id ?? this.id,
       data: data ?? this.data,
       descricao: descricao ?? this.descricao,
       entrada: entrada ?? this.entrada,
@@ -40,28 +46,20 @@ class LancamentoModel {
   }
 
   Map<String, dynamic> toMap() {
-    final result = <String, dynamic>{};
-
-    result.addAll({'data': data});
-    result.addAll({'descricao': descricao});
-    if (entrada != null) {
-      result.addAll({'entrada': entrada});
-    }
-    if (saida != null) {
-      result.addAll({'saida': saida});
-    }
-    if (subCaixa != null) {
-      result.addAll({'subCaixa': subCaixa});
-    }
-    if (envolvido != null) {
-      result.addAll({'envolvido': envolvido});
-    }
-
-    return result;
+    return {
+      'id': id,
+      'data': data,
+      'descricao': descricao,
+      'entrada': entrada,
+      'saida': saida,
+      'subCaixa': subCaixa,
+      'envolvido': envolvido,
+    };
   }
 
   factory LancamentoModel.fromMap(Map<String, dynamic> map) {
     return LancamentoModel(
+      id: map['id'],
       data: map['data'] ?? '',
       descricao: map['descricao'] ?? '',
       entrada: map['entrada'],
@@ -78,7 +76,7 @@ class LancamentoModel {
 
   @override
   String toString() {
-    return 'LancamentoModel(data: $data, descricao: $descricao, entrada: $entrada, saida: $saida, subCaixa: $subCaixa, envolvido: $envolvido)';
+    return 'LancamentoModel(id: $id, data: $data, descricao: $descricao, entrada: $entrada, saida: $saida, subCaixa: $subCaixa, envolvido: $envolvido)';
   }
 
   @override
@@ -86,6 +84,7 @@ class LancamentoModel {
     if (identical(this, other)) return true;
 
     return other is LancamentoModel &&
+        other.id == id &&
         other.data == data &&
         other.descricao == descricao &&
         other.entrada == entrada &&
@@ -96,7 +95,8 @@ class LancamentoModel {
 
   @override
   int get hashCode {
-    return data.hashCode ^
+    return id.hashCode ^
+        data.hashCode ^
         descricao.hashCode ^
         entrada.hashCode ^
         saida.hashCode ^

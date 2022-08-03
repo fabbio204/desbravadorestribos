@@ -3,12 +3,16 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('Testa EventoModel', () {
-    var model1 =
-        EventoModel(dia: DateTime(2022, 1, 1), titulo: 'Primeira Reunião');
+    var model1 = EventoModel(
+      id: '',
+      dia: DateTime(2022, 1, 1),
+      titulo: 'Primeira Reunião',
+    );
 
     var model2 = model1.copyWith();
 
     var model3 = EventoModel(
+      id: '',
       dia: DateTime(2022, 2, 1),
       titulo: "Primeira Reunião de Pais",
     );

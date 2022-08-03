@@ -19,4 +19,17 @@ class CadastrarLancamentoStore extends NotifierStore<Exception, bool> {
       setLoading(false);
     }
   }
+
+  Future<void> editar(LancamentoModel model) async {
+    setLoading(true);
+
+    try {
+      await repository.editarLancamento(model);
+      update(true);
+    } on Exception catch (e) {
+      setError(e);
+    } finally {
+      setLoading(false);
+    }
+  }
 }

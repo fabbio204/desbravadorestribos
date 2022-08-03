@@ -1,30 +1,78 @@
-import 'package:desbravadores_tribos/app/modules/calendario/controllers/cadastrar_evento_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:intl/intl.dart';
 
+import 'package:desbravadores_tribos/app/modules/calendario/controllers/cadastrar_evento_store.dart';
+
+class CadastrarEventoPageArgs {
+  String? id;
+  String? texto;
+  DateTime? data;
+  String? descricao;
+  bool? editar;
+  CadastrarEventoPageArgs({
+    this.id,
+    this.texto,
+    this.data,
+    this.descricao,
+    this.editar,
+  });
+}
+
 class CadastrarEventoPage extends StatefulWidget {
-  const CadastrarEventoPage({Key? key}) : super(key: key);
+  final CadastrarEventoPageArgs? args;
+  const CadastrarEventoPage({Key? key, this.args}) : super(key: key);
 
   @override
   State<CadastrarEventoPage> createState() => _CadastrarEventoPageState();
 }
 
-class _CadastrarEventoPageState
-    extends ModularState<CadastrarEventoPage, CadastrarEventoController> {
+class _CadastrarEventoPageState extends State<CadastrarEventoPage> {
   static GlobalKey<FormState> formKey = GlobalKey();
   TextEditingController dataController = TextEditingController();
+  CadastrarEventoController controller = Modular.get();
 
-  ValueNotifier<String> texto = ValueNotifier('');
-  ValueNotifier<DateTime> data = ValueNotifier(DateTime.now());
+  late ValueNotifier<String> texto;
+  late ValueNotifier<String> descricao;
+  late ValueNotifier<DateTime> data;
+  late String titulo;
+
+  @override
+  void initState() {
+    controller.observer(
+      onState: (state) {
+        if (state) {
+          bool recarregarTela = true;
+          Navigator.pop(context, recarregarTela);
+        }
+      },
+    );
+
+    data = ValueNotifier(widget.args?.data ?? DateTime.now());
+    DateFormat formatter = DateFormat('dd/MM/yyyy');
+    dataController.text = formatter.format(data.value);
+
+    texto = ValueNotifier(widget.args?.texto ?? '');
+    descricao = ValueNotifier(widget.args?.descricao ?? '');
+
+    titulo = widget.args?.editar == true ? 'Editar evento' : 'Cadastrar evento';
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    Modular.dispose<CadastrarEventoController>();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Cadastrar Evento'),
+          title: Text(titulo),
         ),
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -37,12 +85,13 @@ class _CadastrarEventoPageState
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
-                      maxLines: 3,
+                      maxLines: 1,
                       textCapitalization: TextCapitalization.words,
                       decoration: const InputDecoration(
                         labelText: 'Título',
                         border: OutlineInputBorder(),
                       ),
+                      initialValue: texto.value,
                       onChanged: (value) => texto.value = value,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -51,6 +100,19 @@ class _CadastrarEventoPageState
 
                         return null;
                       },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      maxLines: 3,
+                      textCapitalization: TextCapitalization.sentences,
+                      decoration: const InputDecoration(
+                        labelText: 'Descrição',
+                        border: OutlineInputBorder(),
+                      ),
+                      initialValue: descricao.value,
+                      onChanged: (value) => descricao.value = value,
                     ),
                   ),
                   Padding(
@@ -72,26 +134,29 @@ class _CadastrarEventoPageState
                       },
                     ),
                   ),
-                  ElevatedButton(
-                    onPressed: controller.isLoading
-                        ? null
-                        : () async {
-                            bool? valido = formKey.currentState?.validate();
-                            if (valido != null && valido) {
-                              await controller.salvar(texto.value, data.value);
-                              if(controller.state) {
-                                Navigator.pop(context);
-                              }                              
-                            }
-                          },
-                    child: const Text('Salvar'),
-                  ),
                   ScopedBuilder<CadastrarEventoController, Exception, bool>(
-                    store: store,
+                    store: controller,
                     onError: (context, error) => Text(error.toString()),
                     onLoading: (context) => const CircularProgressIndicator(),
                     onState: (_, bool retorno) {
-                      return Container();
+                      return ElevatedButton(
+                        onPressed: () async {
+                          bool? valido = formKey.currentState?.validate();
+                          if (valido != null && valido) {
+                            if (widget.args?.editar != null &&
+                                widget.args?.editar == true &&
+                                widget.args?.id != null &&
+                                widget.args!.id!.isNotEmpty) {
+                              controller.editar(widget.args?.id, texto.value,
+                                  descricao.value, data.value);
+                            } else {
+                              controller.salvar(
+                                  texto.value, descricao.value, data.value);
+                            }
+                          }
+                        },
+                        child: const Text('Salvar'),
+                      );
                     },
                   ),
                 ],
@@ -109,13 +174,13 @@ class _CadastrarEventoPageState
     DateTime anoQueVem = DateTime(hoje.year + 1, 12, 31);
     final DateTime? dataSelecionada = await showDatePicker(
         context: context,
-        initialDate: hoje,
+        initialDate: data.value,
         firstDate: inicioDoAno,
         lastDate: anoQueVem);
 
     if (dataSelecionada != null) {
       data.value = dataSelecionada;
-      var formatter = DateFormat('dd/MM/yyyy');
+      DateFormat formatter = DateFormat('dd/MM/yyyy');
       dataController.text = formatter.format(dataSelecionada);
     }
   }

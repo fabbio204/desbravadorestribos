@@ -1,4 +1,3 @@
-import 'package:desbravadores_tribos/app/app_module.dart';
 import 'package:desbravadores_tribos/app/modules/home/home_module.dart';
 import 'package:desbravadores_tribos/app/utils/extensions/build_extension.dart';
 import 'package:flutter/material.dart';
@@ -27,13 +26,7 @@ class _MenuLateralWidgetState extends State<MenuLateralWidget> {
       case Tela.calendario:
         Modular.to.navigate(HomeModule.rotaCalendario);
         Modular.get<ValueNotifier<String>>().value = 'Calendário';
-        Modular.get<ValueNotifier<List<Widget>?>>().value = [
-          IconButton(
-              onPressed: () {
-                Modular.to.pushNamed(AppModule.rotaCadastrarEvento);
-              },
-              icon: const Icon(Icons.add))
-        ];
+        Modular.get<ValueNotifier<List<Widget>?>>().value = [];
         break;
 
       case Tela.membros:

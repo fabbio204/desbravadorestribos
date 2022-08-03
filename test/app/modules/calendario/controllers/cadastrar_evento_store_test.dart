@@ -22,7 +22,8 @@ void main() {
   test('Testa CadastrarEventoController resultando sucesso', () {
     when(() => api.cadastrarEvento(any())).thenAnswer((_) => voidFunction());
 
-    Future<void> future = controller.salvar('Teste Evento 1', DateTime.now());
+    Future<void> future =
+        controller.salvar('Teste Evento 1', 'Observação 1', DateTime.now());
 
     expect(controller.isLoading, true);
 
@@ -37,7 +38,7 @@ void main() {
     when(() => api.cadastrarEvento(any()))
         .thenThrow(Exception('Erro ao salvar o evento'));
 
-    await controller.salvar('Teste Evento 2', DateTime.now());
+    await controller.salvar('Teste Evento 2', '', DateTime.now());
 
     expect(controller.error, isNotNull);
   });

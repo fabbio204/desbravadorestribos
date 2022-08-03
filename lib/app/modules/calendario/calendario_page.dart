@@ -1,3 +1,4 @@
+import 'package:desbravadores_tribos/app/app_module.dart';
 import 'package:desbravadores_tribos/app/core/widgets/carregando.dart';
 import 'package:desbravadores_tribos/app/core/widgets/log_erro.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/controllers/eventos_controller.dart';
@@ -17,13 +18,13 @@ class CalendarioPage extends StatefulWidget {
   CalendarioPageState createState() => CalendarioPageState();
 }
 
-class CalendarioPageState
-    extends ModularState<CalendarioPage, EventoController> {
+class CalendarioPageState extends State<CalendarioPage> {
   final CalendarFormat _calendarFormat = CalendarFormat.month;
   final ValueNotifier<DateTime> _diaFocado = ValueNotifier(DateTime.now());
   final ValueNotifier<DateTime> _diaClicado = ValueNotifier(DateTime.now());
   late final ValueNotifier<List<EventoModel>> eventosDoDia = ValueNotifier([]);
   late List<EventoModel> listaEventos;
+  EventoController controller = Modular.get();
 
   @override
   void initState() {
@@ -32,70 +33,84 @@ class CalendarioPageState
     listaEventos = [];
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     return ScopedBuilder<EventoController, Exception,
         List<EventoModel>>.transition(
-      store: store,
+      store: controller,
       onLoading: (_) => const Carregando(),
       onError: (_, exception) => LogErro(erro: exception),
       onState: (context, eventos) {
         listaEventos = eventos;
         _carregarEventosDoMes(_diaFocado.value);
-        return Align(
-          alignment: Alignment.topCenter,
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                ValueListenableBuilder<DateTime>(
-                  valueListenable: _diaClicado,
-                  builder: (context, dia, widget) {
-                    return TableCalendar<EventoModel>(
-                      firstDay: DateTime.utc(_diaFocado.value.year, 1, 1),
-                      lastDay: DateTime.utc(_diaFocado.value.year, 12, 31),
-                      focusedDay: _diaFocado.value,
-                      locale: 'pt_BR',
-                      calendarFormat: _calendarFormat,
-                      startingDayOfWeek: StartingDayOfWeek.sunday,
-                      eventLoader: (hoje) => _getEventosDoAno(hoje, eventos),
-                      selectedDayPredicate: (day) {
-                        return isSameDay(day, dia);
-                      },
-                      onDaySelected: _diaSelecionado,
-                      onPageChanged: _carregarEventosDoMes,
-                      headerStyle:
-                          const HeaderStyle(formatButtonVisible: false),
-                      calendarStyle: CalendarStyle(
-                        selectedDecoration: BoxDecoration(
-                          color: context.primaryColor,
-                          shape: BoxShape.circle,
+        return Scaffold(
+          floatingActionButton: FloatingActionButton(
+            child: const Icon(Icons.add),
+            onPressed: () async {
+              bool? atualizar = await Modular.to
+                  .pushNamed<bool>(AppModule.rotaCadastrarEvento);
+
+              if (atualizar != null && atualizar) {
+                controller.init();
+              }
+            },
+          ),
+          body: Align(
+            alignment: Alignment.topCenter,
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                children: [
+                  ValueListenableBuilder<DateTime>(
+                    valueListenable: _diaClicado,
+                    builder: (context, dia, widget) {
+                      return TableCalendar<EventoModel>(
+                        firstDay: DateTime.utc(_diaFocado.value.year, 1, 1),
+                        lastDay: DateTime.utc(_diaFocado.value.year, 12, 31),
+                        focusedDay: _diaFocado.value,
+                        locale: 'pt_BR',
+                        calendarFormat: _calendarFormat,
+                        startingDayOfWeek: StartingDayOfWeek.sunday,
+                        eventLoader: (hoje) => _getEventosDoAno(hoje, eventos),
+                        selectedDayPredicate: (day) {
+                          return isSameDay(day, dia);
+                        },
+                        onDaySelected: _diaSelecionado,
+                        onPageChanged: _carregarEventosDoMes,
+                        headerStyle:
+                            const HeaderStyle(formatButtonVisible: false),
+                        calendarStyle: CalendarStyle(
+                          selectedDecoration: BoxDecoration(
+                            color: context.primaryColor,
+                            shape: BoxShape.circle,
+                          ),
+                          todayDecoration: BoxDecoration(
+                            color: context.secondaryColor,
+                            shape: BoxShape.circle,
+                          ),
                         ),
-                        todayDecoration: BoxDecoration(
-                          color: context.secondaryColor,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 8.0),
-                ValueListenableBuilder<List<EventoModel>>(
-                  valueListenable: eventosDoDia,
-                  builder: (context, eventos, _) {
-                    return ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: eventos.length,
-                      itemBuilder: (context, index) {
-                        return EventoWidget(evento: eventos[index]);
-                      },
-                    );
-                  },
-                ),
-              ],
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 8.0),
+                  ValueListenableBuilder<List<EventoModel>>(
+                    valueListenable: eventosDoDia,
+                    builder: (context, eventos, _) {
+                      return ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: eventos.length,
+                        itemBuilder: (context, index) {
+                          return EventoWidget(
+                            evento: eventos[index],
+                            exibirMenuAcoes: true,
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         );
