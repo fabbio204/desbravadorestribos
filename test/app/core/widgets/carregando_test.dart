@@ -8,7 +8,7 @@ void main() {
   testWidgets('Carregando', (WidgetTester tester) async {
     await tester.pumpWidget(montarBase(const Carregando()));
     await tester.pumpFrames(
-        montarBase(const Carregando()), const Duration(seconds: 5));
+        montarBase(const Carregando()), const Duration(seconds: 1));
 
     Finder icone = find.byKey(const Key('iconeCarregando'));
     expect(icone, findsOneWidget);

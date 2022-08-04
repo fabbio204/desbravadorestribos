@@ -15,18 +15,19 @@ class MembrosPage extends StatefulWidget {
   MembrosPageState createState() => MembrosPageState();
 }
 
-class MembrosPageState extends ModularState<MembrosPage, MembroController> {
+class MembrosPageState extends State<MembrosPage> {
+  MembroController controller = Modular.get();
   @override
   void initState() {
     super.initState();
-    store.init();
+    controller.init();
   }
 
   @override
   Widget build(BuildContext context) {
     return ScopedBuilder<MembroController, Exception,
         List<MembroModel>>.transition(
-      store: store,
+      store: controller,
       onLoading: (_) => const Carregando(),
       onError: (_, erro) => LogErro(erro: erro),
       onState: (context, membros) {

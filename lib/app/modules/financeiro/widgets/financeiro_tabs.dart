@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:desbravadores_tribos/app/modules/financeiro/financeiro_controller.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/models/caixa_model.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/widgets/lancamento_widget.dart';
 import 'package:desbravadores_tribos/app/utils/extensions/build_extension.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:desbravadores_tribos/app/modules/financeiro/models/financeiro_model.dart';

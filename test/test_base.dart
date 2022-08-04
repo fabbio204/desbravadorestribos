@@ -33,7 +33,6 @@ class BuildContextMock extends Mock
   DiagnosticsNode describeElement(String name,
       {DiagnosticsTreeStyle style = DiagnosticsTreeStyle.errorProperty}) {
     return DiagnosticsNode.message('Foo');
-    ;
   }
 }
 

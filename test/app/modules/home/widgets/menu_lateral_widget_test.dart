@@ -68,24 +68,24 @@ main() {
     await tester.tap(botaoInicio);
 
     scaffoldKey.currentState?.openEndDrawer();
-    await tester.pump(const Duration(seconds: 1));
+    await tester.pump(const Duration(milliseconds: 50));
 
     Finder botaoCalendario = find.byKey(const Key('botaoCalendario'));
     await tester.tap(botaoCalendario);
 
     scaffoldKey.currentState?.openDrawer();
-    await tester.pump(const Duration(seconds: 1));
+    await tester.pump(const Duration(milliseconds: 50));
 
     Finder botaoMembros = find.byKey(const Key('botaoMembros'));
     await tester.tap(botaoMembros);
 
     scaffoldKey.currentState?.openDrawer();
-    await tester.pump(const Duration(seconds: 1));
+    await tester.pump(const Duration(milliseconds: 50));
 
     Finder botaoFinanceiro = find.byKey(const Key('botaoFinanceiro'));
     await tester.tap(botaoFinanceiro);
 
     scaffoldKey.currentState?.openDrawer();
-    await tester.pump(const Duration(seconds: 1));
+    await tester.pump(const Duration(milliseconds: 50));
   });
 }

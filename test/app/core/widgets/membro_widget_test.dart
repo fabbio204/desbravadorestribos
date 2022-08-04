@@ -116,7 +116,7 @@ void main() {
           montarBase(MembroWidget(
             membro: model,
           )),
-          const Duration(seconds: 5));
+          const Duration(seconds: 1));
 
       Finder nome = find.byKey(const Key('nome'));
       expect(nome, findsOneWidget);
