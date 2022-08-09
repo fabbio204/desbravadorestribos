@@ -17,6 +17,7 @@ class MembroWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: const Key('cardMembroWidget'),
       color: getCor(),
       child: Padding(
         padding: const EdgeInsets.all(8.0),

@@ -25,11 +25,11 @@ class CadastrarEventoPage extends StatefulWidget {
   const CadastrarEventoPage({Key? key, this.args}) : super(key: key);
 
   @override
-  State<CadastrarEventoPage> createState() => _CadastrarEventoPageState();
+  State<CadastrarEventoPage> createState() => CadastrarEventoPageState();
 }
 
-class _CadastrarEventoPageState extends State<CadastrarEventoPage> {
-  static GlobalKey<FormState> formKey = GlobalKey();
+class CadastrarEventoPageState extends State<CadastrarEventoPage> {
+  GlobalKey<FormState> formKey = GlobalKey();
   TextEditingController dataController = TextEditingController();
   CadastrarEventoController controller = Modular.get();
 
@@ -85,6 +85,7 @@ class _CadastrarEventoPageState extends State<CadastrarEventoPage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      key: const Key('titulo'),
                       maxLines: 1,
                       textCapitalization: TextCapitalization.words,
                       decoration: const InputDecoration(
@@ -105,6 +106,7 @@ class _CadastrarEventoPageState extends State<CadastrarEventoPage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      key: const Key('descricao'),
                       maxLines: 3,
                       textCapitalization: TextCapitalization.sentences,
                       decoration: const InputDecoration(
@@ -118,6 +120,7 @@ class _CadastrarEventoPageState extends State<CadastrarEventoPage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      key: const Key('data'),
                       onTap: _abrirDatePicker,
                       readOnly: true,
                       controller: dataController,
@@ -140,6 +143,7 @@ class _CadastrarEventoPageState extends State<CadastrarEventoPage> {
                     onLoading: (context) => const CircularProgressIndicator(),
                     onState: (_, bool retorno) {
                       return ElevatedButton(
+                        key: const Key('salvar'),
                         onPressed: () async {
                           bool? valido = formKey.currentState?.validate();
                           if (valido != null && valido) {

@@ -2,6 +2,7 @@ import 'package:desbravadores_tribos/app/core/widgets/membro_widget.dart';
 import 'package:desbravadores_tribos/app/modules/membros/models/membro_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 
 import '../../../test_base.dart';
 
@@ -132,6 +133,31 @@ void main() {
 
       Finder foto = find.byKey(const Key('foto'));
       expect(foto, findsOneWidget);
+    });
+
+    testWidgets(
+        'Membro que faz aniversário hoje deveria ser exibido em amarelo',
+        (WidgetTester tester) async {
+      DateTime hoje = DateTime.now();
+
+      DateFormat formataData = DateFormat('dd/MM/yyyy');
+
+      MembroModel model = MembroModel(
+          nome: 'Teste 1',
+          aniversario: formataData.format(hoje),
+          idade: 20,
+          unidade: 'Tribos',
+          foto: 'https://via.placeholder.com/150');
+
+      await tester.pumpWidget(montarBase(MembroWidget(
+        membro: model,
+      )));
+
+      Finder container = find.byKey(const Key('cardMembroWidget'));
+      expect(container, isNotNull);
+      expect(container, findsOneWidget);
+      Container widget = container.evaluate().first.widget as Container;
+      expect(widget.color, Colors.yellow.shade200);
     });
   });
 }
