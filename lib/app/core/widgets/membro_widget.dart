@@ -12,7 +12,7 @@ class MembroWidget extends StatelessWidget {
 
   static const TextStyle estilo = TextStyle(color: Colors.grey, fontSize: 12);
   static const double tamanhoIcone = 12;
-  static const double altura = 60;
+  static const double alturaImagem = 55;
 
   @override
   Widget build(BuildContext context) {
@@ -20,19 +20,19 @@ class MembroWidget extends StatelessWidget {
       key: const Key('cardMembroWidget'),
       color: getCor(),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         child: Column(
           children: [
             Row(
               children: [
                 if (!ocultarIcone)
                   Expanded(
-                    child: SizedBox(height: 60, child: setImage()),
+                    child: SizedBox(height: alturaImagem, child: setImage()),
                     flex: 2,
                   ),
                 const SizedBox(width: 8),
                 Expanded(
-                  flex: 10,
+                  flex: 11,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
