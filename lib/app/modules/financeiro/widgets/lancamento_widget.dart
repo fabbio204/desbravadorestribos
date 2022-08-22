@@ -18,10 +18,12 @@ class _LancamentoWidgetState extends State<LancamentoWidget> {
   FinanceiroController controller = Modular.get();
   FinanceiroRepository repository = Modular.get();
 
+  static double fonteValor = 12.0;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+      padding: const EdgeInsets.only(top: 8, bottom: 8, left: 8, right: 0),
       child: Row(
         children: [
           Expanded(
@@ -34,28 +36,48 @@ class _LancamentoWidgetState extends State<LancamentoWidget> {
                     Expanded(
                       child: Text(
                         widget.model.descricao,
-                        style: const TextStyle(fontSize: 16),
+                        style: const TextStyle(fontSize: 14),
                       ),
-                      flex: 5,
                     ),
-                    Text(widget.model.data),
+                    Text(
+                      widget.model.data,
+                      style: const TextStyle(fontSize: 12),
+                    ),
                   ],
                 ),
                 if (widget.model.entrada != null &&
                     widget.model.entrada!.isNotEmpty)
-                  Text(widget.model.entrada.toString(),
-                      key: const Key('labelEntrada')),
+                  Text(
+                    widget.model.entrada.toString(),
+                    key: const Key('labelEntrada'),
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontSize: fonteValor,
+                    ),
+                  ),
                 if (widget.model.saida != null &&
                     widget.model.saida!.isNotEmpty)
-                  Text("-" + widget.model.saida.toString(),
-                      key: const Key('labelSaida')),
+                  Text(
+                    "-" + widget.model.saida.toString(),
+                    key: const Key('labelSaida'),
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: fonteValor,
+                    ),
+                  ),
                 if (widget.model.envolvido != null)
-                  Text(widget.model.envolvido.toString(),
-                      key: const Key('labelEnvolvido')),
+                  Text(
+                    widget.model.envolvido.toString(),
+                    key: const Key('labelEnvolvido'),
+                    style: TextStyle(
+                        color: Colors.grey[700], fontSize: fonteValor),
+                  ),
               ],
             ),
           ),
           PopupMenuButton<int>(
+            padding:
+                const EdgeInsets.only(right: 2, top: 2, left: 4, bottom: 2),
             itemBuilder: (context) => [
               PopupMenuItem<int>(
                 value: LancamentoWidgetOpcoes.editar.id,
@@ -100,7 +122,7 @@ class _LancamentoWidgetState extends State<LancamentoWidget> {
       controller.init();
     }
   }
-  
+
   void excluirLancamento() {
     ValueNotifier<bool> excluindo = ValueNotifier(false);
     showDialog(

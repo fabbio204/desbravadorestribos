@@ -95,7 +95,10 @@ class _FinanceiroTabsState extends State<FinanceiroTabs>
                     onRefresh: () async {
                       controller.init();
                     },
-                    child: ListView.builder(
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) => const Divider(
+                        height: 2,
+                      ),
                       physics: const BouncingScrollPhysics(),
                       itemCount: e.lancamentos!.length,
                       itemBuilder: (BuildContext context, int index) {
