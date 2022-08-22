@@ -23,7 +23,7 @@ class FinanceiroController extends NotifierStore<Exception, FinanceiroModel> {
         x.lancamentos = getLancamentos(x.nome, model.lancamentos);
       }
 
-      model.lancamentos.sort((a, b) => b.dataEvento.compareTo(a.dataEvento));
+      model.lancamentos.sort((a, b) => b.id!.compareTo(a.id!));
       model.saldoCaixas.insert(
           0,
           CaixaModel(
