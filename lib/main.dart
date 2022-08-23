@@ -1,3 +1,4 @@
+import 'package:desbravadores_tribos/app/core/storage/hive_config.dart';
 import 'package:desbravadores_tribos/quick_actions_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -12,6 +13,8 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
 
   QuickActionsConfig.init();
+
+  await HiveConfig.init();
 
   // Mantém a splash scrren na tela
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);

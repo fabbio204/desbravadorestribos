@@ -54,6 +54,8 @@ dependencies:
   brasil_fields: ^1.4.5
   quick_actions: ^0.6.0+11
   local_auth: ^2.1.0
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
 
 dev_dependencies:
   flutter_test:

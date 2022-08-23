@@ -40,6 +40,12 @@ class _MenuLateralWidgetState extends State<MenuLateralWidget> {
         Modular.get<ValueNotifier<String>>().value = 'Financeiro';
         Modular.get<ValueNotifier<List<Widget>?>>().value = [];
         break;
+
+      case Tela.configuracoes:
+        Modular.to.navigate(HomeModule.rotaConfiguracoes);
+        Modular.get<ValueNotifier<String>>().value = 'Configurações';
+        Modular.get<ValueNotifier<List<Widget>?>>().value = [];
+        break;
     }
 
     _fecharDrawer();
@@ -97,10 +103,16 @@ class _MenuLateralWidgetState extends State<MenuLateralWidget> {
             title: const Text('Financeiro'),
             onTap: () => abrirTela(Tela.financeiro),
           ),
+          ListTile(
+            key: const Key('botaoConfiguracoes'),
+            leading: const Icon(Icons.settings),
+            title: const Text('Configurações'),
+            onTap: () => abrirTela(Tela.configuracoes),
+          ),
         ],
       ),
     );
   }
 }
 
-enum Tela { inicio, calendario, membros, financeiro }
+enum Tela { inicio, calendario, membros, financeiro, configuracoes }

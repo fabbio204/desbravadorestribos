@@ -1,5 +1,6 @@
 import 'package:desbravadores_tribos/app/core/api/google_sheets_api.dart';
 import 'package:desbravadores_tribos/app/modules/calendario/calendario_module.dart';
+import 'package:desbravadores_tribos/app/modules/configuracao/configuracao_module.dart';
 import 'package:desbravadores_tribos/app/modules/financeiro/financeiro_module.dart';
 import 'package:desbravadores_tribos/app/modules/home/controllers/home_controller.dart';
 import 'package:desbravadores_tribos/app/modules/home/inicio_page.dart';
@@ -17,6 +18,7 @@ class HomeModule extends Module {
   static String rotaCalendario = '/calendario/';
   static String rotaMembros = '/membros/';
   static String rotaFinanceiro = '/financeiro/';
+  static String rotaConfiguracoes = '/configuracoes/';
 
   // Configura a injeção de dependência do módulo
   @override
@@ -39,6 +41,7 @@ class HomeModule extends Module {
         ModuleRoute(rotaCalendario, module: CalendarioModule()),
         ModuleRoute(rotaMembros, module: MembrosModule()),
         ModuleRoute(rotaFinanceiro, module: FinanceiroModule()),
+        ModuleRoute(rotaConfiguracoes, module: ConfiguracaoModule()),
       ],
       transition: TransitionType.noTransition,
     ),
